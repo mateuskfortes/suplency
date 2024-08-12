@@ -1,0 +1,82 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static "css/home.css" %}">
+{% endblock head %}
+{% block tittle %}
+    SUPLENCY
+{% endblock tittle %}
+{% block content %}
+    <main>
+        <section class="section_top">
+            <section class="tittle">
+                <h1 class="suplency_gradient_tittle">Suplency</h1>
+                <h2 class="studyplataform_tittle">Study Plataform</h2>
+                <p class="introduction_text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat et itaque nobis necessitatibus mollitia ea nemo commodi. Dignissimos, odit vitae, ut ex in minus magni et perferendis, minima molestiae repudiandae.</p>
+                <div class="tittle_buttons">
+                    <label for="link_study" class="button black_button">
+                        <a href="{% url "study" %}" name="link_study">Comece Agora!</a>
+                    </label>
+                    <label for="link_login" class="button white_button">
+                        <a name="link_login" href="{% url "sing-in" %}">Login</a>
+                    </label>
+                </div>
+            </section>
+            
+            <section class="draw">
+                <img src="{% static 'img/presentation_img.png'%}" alt="study image">
+            </section>
+        </section>
+
+        <section class="suplency_products">
+            <h1 class="poppins suplency_products_tittle">Na Suplency você conta com:</h1>
+            <div class="grid_products">
+                <div class="product">
+                    <img src="#" alt="Simbolo de tempo">
+                    <h1>Cartões de Memória</h1>
+                    <p>Contamos com FlaschCards optimizados para ajuda-lo no aprendizado e na fixação de conteúdos!</p>
+                </div>
+                <div class="product">
+                    <img src="#" alt="Simbolo de tempo">
+                    <h1>Método Pomodoro</h1>
+                    <p>Nosso site também abrange o Método Pomodoro, que busca mais foco e menos distração à partir da organização de seu tempo!</p>
+                </div>
+                <div class="product">
+                    <img src="#" alt="Simbolo de tempo">
+                    <h1>Biblioteca Ilimitada</h1>
+                    <p>Também está incluído uma biblioteca ilimitada para você armazenar suas anotações, FlashCards e focos!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <section class="attachments">
+            <div class="navigate">
+                <div class="social_media">
+                    <img class="logo" src="../../../static/img/suplency.png" alt="logo suplency">
+                    <div class="content">   
+                        <p>Encontre a Suplency nas redes sociais</p>
+                        <ul class="links_social_media">
+                            <li class="link"><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733635.png" alt=""></a></li>
+                            <li class="link"><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733635.png" alt=""></a></li>
+                            <li class="link"><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733635.png" alt=""></a></li>
+                            <li class="link"><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733635.png" alt=""></a></li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <ul class="suplency_navigate">
+                    <li><a href="#">Sobre nós</a></li>
+                    <li><a href="#">Tutoriais</a></li>
+                </ul>
+            </div>
+    
+            <div class="support">
+                <h1 class="poppins support_tittle">Suporte:</h1>
+                <input class="input_box" type="text" placeholder="Precisa de ajuda?... Digite aqui!">
+            </div>
+        </section>
+        <hr>
+    </footer>
+{% endblock content %}

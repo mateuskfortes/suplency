@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static "css/study.css" %}">
+    <link rel="stylesheet" href="{% static "css/pomodoro.css" %}">
+    <link rel="stylesheet" href="{% static "css/notebook.css" %}">
+{% endblock head %}
+
+{% block tittle %}
+    estudando...
+{% endblock tittle %}
+
+{% block content %}
+
+    <!-- POMODORO -->
+
+    <section id="centro">
+        <div class="titulo_estudo">
+            <h1>CHEGOU A HORA DE ESTUDAR</h1>
+        </div>
+        <div class="pomodoro">
+            <div class="conteiner_watch">
+                <div><span id="estado_timer"></span>
+                    <span id="estado_foco" class="estado"></span>
+                    <span id="estado_pausa" class="estado"></span>
+                    <span id="estado_descanso" class="estado"></span>
+                </div>
+                <div class="watch">
+                    <div>
+                    <span id="minutes">00</span>
+                    </div>
+                    <div>
+                    <span id="seconds">00</span>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="start/stop">Iniciar</button>
+                    <button id="continuar">continuar</button>
+                </div>
+            </div>
+
+            <label for="tp_foco">
+                <p>Digite o tempo de foco:</p>
+                <input id="tp_foco" type="number" min="0">
+            </label>
+            <label for="tp_pausa">
+                <p>Digite o tempo de pausa:</p>
+                <input id="tp_pausa" type="number" min="0">
+            </label>
+            <label for="tp_pausa_longa">
+                <p>Digite o tempo da pausa longa</p>
+                <input id="tp_pausa_longa" type="number" min="0">
+            </label>
+            <label for="focos_ate_pausa_longa">
+                <p>Digite o numero de focos até a pausa longa</p>
+                <input id="focos_ate_pausa_longa" type="number" min="1">
+            </label>
+        </div> 
+    </section>
+
+    <!-- NOTEBOOK -->
+
+    <div id="conteiner_materias">
+        <div id="select_materias">
+        </div>
+        <div id="bt_nova_materia">+</div>
+    </div>
+    <div id="toolbar"></div>
+    <div id="caderno"></div>
+    <div>
+        <button id="prev-page">prev</button>
+        <button id="next-page">next</button>
+        <button id="new-page">new</button>
+        <button id="save">save</button>
+        <div id="show-numero-pg">1</div>
+    </div>
+
+    <a href="{% url "logout" %}">logout</a>
+{% endblock content %}
