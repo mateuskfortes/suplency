@@ -28,7 +28,7 @@ class Subject(models.Model):
         null=True,
         on_delete=models.SET_NULL, 
         related_name='last_subject')
-    notebook = models.ForeignKey('Notebook', null=True, on_delete=models.CASCADE, related_name='subject')
+    notebook = models.ForeignKey('Notebook', null=False, on_delete=models.CASCADE, related_name='subject')
 
 class Page(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

@@ -8,7 +8,6 @@ from main_pages.models import FlashCard, Notebook, Page, Subject
 import json
 import uuid
 
-
 def homeView(request):
     return render(request, 'home.html')
 
