@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import './css/Pomodoro.scss'
 
 class Time {
     minutes: number;
@@ -28,66 +29,93 @@ class Time {
 }
 
 class PomodoroObj {
-    sequence: [Time, string][] = [];
+    sequence: [Time, string][] = []
+    focus_time: number
+    break_time: number
+    rest_time: number
+    breakUntiRest: number
     setTimeFunction: any;
     setStateFunction: any
-    isPaused: boolean;
+    setIsRunningFunction: any
+    setAlreadyStartedFunction: any
     intervalId: any;
     currentStepIndex: number;
+    started: boolean;
 
-    constructor(setTimeFunction: any, setStateFunction: any, ...args: any) {
-       this.fillSequence(...args)
+    constructor(setTimeFunction: any, 
+        setStateFunction: any, 
+        setIsRunningFunction: any, 
+        setAlreadyStartedFunction: any,
+        focus_time: number, 
+        break_time: number, 
+        rest_time: number, 
+        break_until_rest: number
+        ) {
+            this.focus_time = focus_time
+            this.breakUntiRest = break_until_rest
+            this.break_time = break_time
+            this.rest_time = rest_time
+            this.setTimeFunction = setTimeFunction
+            this.setStateFunction = setStateFunction
+            this.setIsRunningFunction = setIsRunningFunction
+            this.setAlreadyStartedFunction = setAlreadyStartedFunction
+            this.intervalId = null;
+            this.currentStepIndex = 0;
+            this.started = false
 
-        this.setTimeFunction = setTimeFunction
-        this.setStateFunction = setStateFunction
-        this.isPaused = true
-        this.intervalId = null;
-        this.currentStepIndex = 0;
+            this.fillSequence()
     }
 
-    fillSequence(focus_time: number, break_time: number, rest_time: number, break_until_rest: number) {
-        for (let i = 0; i < break_until_rest; i++) {
-            this.sequence.push([new Time(focus_time), "focus"]);
-            this.sequence.push([new Time(break_time), "break"]);
+    fillSequence() {
+        this.sequence = []
+        for (let i = 0; i < this.breakUntiRest; i++) {
+            this.sequence.push([new Time(this.focus_time), "focus"]);
+            this.sequence.push([new Time(this.break_time), "break"]);
         }
-        this.sequence.push([new Time(focus_time), "focus"]);
-        this.sequence.push([new Time(rest_time), "rest"]);
+        this.sequence.push([new Time(this.focus_time), "focus"]);
+        this.sequence.push([new Time(this.rest_time), "rest"]);
+    }
+
+    restore() {
+        this.currentStepIndex = 0
+        this.started = false
+        this.setAlreadyStartedFunction(false)
+        this.fillSequence()
     }
 
     run() {
-        if (!this.isPaused) return false
-        this.isPaused = false;
+        this.started = true;
+        this.setAlreadyStartedFunction(true)
+        this.setIsRunningFunction(true)
         this.runCurrentStep();
-        return true
     }
 
     pause() {
-        this.isPaused = true;
+        this.setIsRunningFunction(false)
+        clearInterval(this.intervalId);
     }
     
     private runCurrentStep() {
-        if (this.currentStepIndex >= this.sequence.length) return;
+
+        function passTime(obj: any) {
+            if (current_timer.subtractSecond()) {
+                obj.setTimeFunction(current_timer.formatTime());
+                obj.setStateFunction(current_state);
+            } else {
+                clearInterval(obj.intervalId);
+                obj.currentStepIndex++;
+                obj.setIsRunningFunction(false)
+                obj.setTimeFunction(current_timer.formatTime());
+                obj.setStateFunction('');
+                if (obj.currentStepIndex >= obj.sequence.length) obj.restore()
+            }
+        }
+
+        if (this.currentStepIndex >= this.sequence.length) this.restore()
 
         const [current_timer, current_state] = this.sequence[this.currentStepIndex];
-
-        this.intervalId = setInterval(() => {
-            if (this.isPaused) {
-                this.setTimeFunction(current_timer.formatTime());
-                clearInterval(this.intervalId);
-                return;
-            }
-
-            if (current_timer.subtractSecond()) {
-                this.setTimeFunction(current_timer.formatTime());
-                this.setStateFunction(current_state);
-            } else {
-                clearInterval(this.intervalId);
-                this.currentStepIndex++;
-                this.isPaused = true
-                this.setTimeFunction(current_timer.formatTime());
-                this.setStateFunction('');
-            }
-        }, 1000);
+        passTime(this)
+        this.intervalId = setInterval(() => passTime(this), 1000);
     }
 
 }
@@ -96,18 +124,47 @@ function Pomodoro() {
     const [focus_time, setFocusTime] = useState(0);
     const [break_time, setBreakTime] = useState(0);
     const [rest_time, setRestTime] = useState(0);
-    const [break_until_rest, setBUR] = useState(0);
-    const [[formatted_minutes, formatted_seconds], setFormattedTime] = useState(["00", "00"]);
+    const [break_until_rest, setBUR] = useState(1);
+    const [is_running, setIsRunning] = useState(false)
+    const [already_started, setAlreadyStarted] = useState(false)
     const [timer_state, setTimerState] = useState("");
-    const [timer, setTimer] = useState(new PomodoroObj(setFormattedTime, setTimerState, 0, 0, 0, 0));
+    const [[formatted_minutes, formatted_seconds], setFormattedTime] = useState(["00", "00"]);
+    const [timer, setTimer] = useState(new PomodoroObj(setFormattedTime, 
+                                                       setTimerState, 
+                                                       setIsRunning,
+                                                       setAlreadyStarted, 
+                                                       focus_time, 
+                                                       break_time, 
+                                                       rest_time,
+                                                       break_until_rest
+                                                      ));
+    
+    function defineTimer() {
+        setTimer(new PomodoroObj(setFormattedTime, 
+                                 setTimerState, 
+                                 setIsRunning,
+                                 setAlreadyStarted,
+                                 focus_time, 
+                                 break_time, 
+                                 rest_time, 
+                                 break_until_rest
+                                ));
+    }
 
-    useEffect(() => {
-        setTimer(new PomodoroObj(setFormattedTime, setTimerState, focus_time, break_time, rest_time, break_until_rest));
-        setFormattedTime(new Time(focus_time).formatTime());
-    }, [focus_time, break_time, rest_time, break_until_rest]);
+    
+    function runTimer() {
+        timer.run()
+    }
 
-    function start_stop() {
-        if(!timer.run()) timer.pause()
+    function restoreTimer() {
+        setFormattedTime(new Time(focus_time).formatTime())
+        setTimerState('')
+        defineTimer()
+        timer.restore()
+    }
+
+    function pauseTimer() {
+        timer.pause()
     }
 
     function defineBUR(e: any) {
@@ -141,17 +198,29 @@ function Pomodoro() {
         }
     }
 
+    useEffect(() => {
+        defineTimer()
+        setFormattedTime(new Time(focus_time).formatTime());
+    }, [focus_time, break_time, rest_time, break_until_rest]);
+
     return (
         <div className="pomodoro">
-            {timer_state}
             <div className="conteiner_watch">
-                <div>
-                    <span id="estado_timer"></span>
-                    <span id="estado_foco" className="estado"></span>
-                    <span id="estado_pausa" className="estado"></span>
-                    <span id="estado_descanso" className="estado"></span>
+                <div className="conteiner_timer_state">
+                    <div className="timer_state">
+                        <p>Foco</p>
+                        <hr className={timer_state === 'focus' ? 'activated' : ''}/>
+                    </div>
+                    <div className="timer_state">
+                        <p>Pausa</p>
+                        <hr className={timer_state === 'break' ? 'activated' : ''}/>
+                    </div>
+                    <div className="timer_state">
+                        <p>Descanso</p>
+                        <hr className={timer_state === 'rest' ? 'activated' : ''}/>
+                    </div>
                 </div>
-                <div className="watch">
+                <div className="clock">
                     <div>
                         <span id="minutes">{formatted_minutes}</span>
                     </div>
@@ -160,14 +229,30 @@ function Pomodoro() {
                     </div>
                 </div>
                 <div className="buttons">
-                <button onClick={start_stop} id="start/stop">
-                        {timer.isPaused ? "Iniciar" : "Parar"}
-                    </button>
+                    {!already_started ? (
+                        <button className="button black_button" onClick={runTimer}>
+                            iniciar
+                        </button>
+                    ) : is_running ? (
+                        <button className="button black_button" onClick={pauseTimer}>
+                            Pausar
+                        </button>
+                    ) : (
+                        <>
+                            <button className="button black_button" onClick={runTimer}>
+                                Continuar
+                            </button>
+                            <button className="button black_button" onClick={restoreTimer}>
+                                Recomeçar
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
-
-            <label htmlFor="tp_foco">
-                <p>Digite o tempo de foco:</p>
+            <div className="pomodoro_config">
+                <label htmlFor="tp_foco" className="config_input">
+                    Digite o tempo de foco:
+                </label>
                 <input
                     onChange={(e) => defineTimes(e, "focus")}
                     name="tp_foco"
@@ -175,9 +260,9 @@ function Pomodoro() {
                     type="number"
                     min="0"
                 />
-            </label>
-            <label htmlFor="tp_pausa">
-                <p>Digite o tempo de pausa:</p>
+                <label htmlFor="tp_pausa" className="config_input">
+                    Digite o tempo de pausa:
+                </label>
                 <input
                     onChange={(e) => defineTimes(e, "break")}
                     name="tp_pausa"
@@ -185,9 +270,9 @@ function Pomodoro() {
                     type="number"
                     min="0"
                 />
-            </label>
-            <label htmlFor="tp_pausa_longa">
-                <p>Digite o tempo da pausa longa</p>
+                <label htmlFor="tp_pausa_longa" className="config_input">
+                    Digite o tempo da pausa longa
+                </label>
                 <input
                     onChange={(e) => defineTimes(e, "rest")}
                     name="tp_pausa_longa"
@@ -195,17 +280,19 @@ function Pomodoro() {
                     type="number"
                     min="0"
                 />
-            </label>
-            <label htmlFor="focos_ate_pausa_longa">
-                <p>Digite o numero de focos até a pausa longa</p>
-                <input
-                    onChange={defineBUR}
-                    name="focos_ate_pausa_longa"
-                    id="focos_ate_pausa_longa"
-                    type="number"
-                    min="1"
-                />
-            </label>
+                {/*
+                <label htmlFor="focos_ate_pausa_longa">
+                    <p>Digite o numero de focos até a pausa longa</p>
+                    <input
+                        onChange={defineBUR}
+                        name="focos_ate_pausa_longa"
+                        id="focos_ate_pausa_longa"
+                        type="number"
+                        min="1"
+                    />
+                </label>
+                */}
+            </div>
         </div>
     );
 }
