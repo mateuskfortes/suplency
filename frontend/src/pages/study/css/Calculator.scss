@@ -1,0 +1,61 @@
+.calculator {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+
+    .operation_display {
+        height: 5rem;
+        border: 1px solid black;
+        font-size: 1.5rem;
+        text-align: right;
+
+        .previous_operation {
+            color: #D2D3DA;
+        }
+    }
+
+    .buttons_display {
+        display: grid;
+        gap: .3rem;
+        grid-template-columns: 3fr 1fr;
+
+        .left {
+            .gray_buttons {
+                display: grid;
+                gap: .3rem;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: 3.5rem;
+            }
+            .white_buttons {
+                display: grid;
+                gap: .3rem;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(4, 3.5rem);
+            }
+        }
+
+        .right {
+            display: grid;
+            gap: .3rem;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(5, 3.5rem);
+        }
+
+        .arithmetic_button{
+            border-radius: .7rem;
+        }
+    
+        .purple {
+            background-color: #7F2AD4;
+        }
+
+        .gray {
+            background-color: #D2D3DA;
+        }
+
+        .white {
+            background-color: white;
+        }
+    }
+}
+
