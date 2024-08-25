@@ -1,59 +1,85 @@
-import { createContext, useRef, useState } from "react"
+import { createContext, useState } from "react";
+import { evaluate } from "mathjs";
 
-import { evaluate } from "mathjs"
-
-import ButtonsDisplay from "../../components/ButtonsDisplay"
-import NumbersDisplay from "../../components/OperationDisplay"
-import './css/calculator.scss'
+import ButtonsLayout from "../../components/ButtonsLayout";
+import Display from "../../components/Display";
+import './css/calculator.scss';
 
 export const CalculatorContext = createContext({
-    operation: '',
-    prev_operation: '',
-    addOperation: (opr: string) => {},
-    backOperation: () => {},
-    clearOperation: () => {},
-    makeOperation: () => {},
-})
+    currentExpression: '',
+    previousExpression: '',
+    appendToExpression: (input: string) => {console.log(input)},
+    deleteLastCharacter: () => {},
+    clearExpression: () => {},
+    evaluateExpression: () => {},
+});
 
 function Calculator() {
-    const [operation, setOperation] = useState('')
-    const prev_operation_ref = useRef('')
+    const [currentExpression, setCurrentExpression] = useState('');
+    const [previousExpression, setPreviousExpression] = useState('');
 
-    function addOperation(opr: string) {
-        setOperation(prev => prev + opr)
+    function formatExpression(expression: string, toMathFormat: boolean = true): string {
+        /*
+        torna a string formatada em uma expressão para a função evaluate() e vice-versa
+        */
+        const replacements: Record<string, string> = toMathFormat ? {
+            ',': '.',
+            'x': '*',
+            '%': '/100',
+        } : {
+            '.': ',',
+        };
+
+        return Object.entries(replacements).reduce((formattedExpression, [original, replacement]) => {
+            const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(escapedOriginal, 'g');
+            return formattedExpression.replace(regex, replacement);
+        }, expression);
     }
 
-    function backOperation() {
-        setOperation(prev => prev.slice(0, -1))
+    function appendToExpression(input: string) {
+        setCurrentExpression(prev => prev + input);
     }
-    
-    function clearOperation() {
-        prev_operation_ref.current = ''
-        setOperation('')
+
+    function deleteLastCharacter() {
+        setCurrentExpression(prev => prev.slice(0, -1));
     }
-    
-    function makeOperation() {
-        setOperation(prev => {
+
+    function clearExpression() {
+        setPreviousExpression('')
+        setCurrentExpression('');
+    }
+
+    function evaluateExpression() {
+        setCurrentExpression(prev => {
             try {
-                prev_operation_ref.current = prev 
-                return evaluate(prev).toString()
+                setPreviousExpression(prev)
+                const mathFormat = formatExpression(prev)
+                const result = evaluate(mathFormat).toString();
+                const viewFormat = formatExpression(result, false);
+                return viewFormat
             } catch {
-                prev_operation_ref.current = 'error'
-                return ''
+                setPreviousExpression('Error');
+                return '';
             }
-        })
+        });
     }
 
-    const prev_operation = prev_operation_ref.current
-    
     return (
-        <CalculatorContext.Provider value={{operation, prev_operation, addOperation, backOperation, clearOperation, makeOperation}}>
+        <CalculatorContext.Provider value={{
+            currentExpression,
+            previousExpression,
+            appendToExpression,
+            deleteLastCharacter,
+            clearExpression,
+            evaluateExpression
+        }}>
             <div className="calculator">
-                <NumbersDisplay />
-                <ButtonsDisplay />
+                <Display />
+                <ButtonsLayout />
             </div>
         </CalculatorContext.Provider>
-    )
+    );
 }
 
-export default Calculator
+export default Calculator;

@@ -1,60 +1,64 @@
+$gray:#D2D3DA;
+$purple: #7F2AD4;
+$white: white;
+$calculator_height: 24rem;
+$calculator_width: 20rem;
+
 .calculator {
     display: flex;
     flex-direction: column;
-    width: 20rem;
-
-    .operation_display {
-        height: 5rem;
+    height: $calculator_height;
+    width: $calculator_width;
+    .display {
+        display: flex;
+        flex-direction: column;
+        height: 6rem;
         border: 1px solid black;
         font-size: 1.5rem;
-        text-align: right;
-
+        align-items: end;
+        justify-content: center;
         .previous_operation {
-            color: #D2D3DA;
+            color: $gray;
         }
     }
-
-    .buttons_display {
+    .buttons_layout {
+        height: 100%;
         display: grid;
         gap: .3rem;
         grid-template-columns: 3fr 1fr;
-
+        grid-template-rows: 1fr;
         .left {
+            display: grid;
+            grid-template-rows: 1fr 4fr;
             .gray_buttons {
                 display: grid;
                 gap: .3rem;
                 grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: 3.5rem;
+                button {
+                    background-color: $gray;
+                }
             }
             .white_buttons {
                 display: grid;
                 gap: .3rem;
                 grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(4, 3.5rem);
+                grid-template-rows: repeat(4, 1fr);
+                button {
+                    background-color: $white;
+                }
             }
         }
-
         .right {
             display: grid;
             gap: .3rem;
             grid-template-columns: 1fr;
-            grid-template-rows: repeat(5, 3.5rem);
+            grid-template-rows: repeat(5, 1fr);
+            button {
+                background-color: $purple;
+            }
         }
-
         .arithmetic_button{
             border-radius: .7rem;
-        }
-    
-        .purple {
-            background-color: #7F2AD4;
-        }
-
-        .gray {
-            background-color: #D2D3DA;
-        }
-
-        .white {
-            background-color: white;
         }
     }
 }

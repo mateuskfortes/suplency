@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { RiLinkedinFill } from "react-icons/ri";
-import './footer.scss'
+import '../assets/footer.scss'
 
 export default function Footer() {
     return (
