@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import Home from './pages/home/Home';
 import Study from './pages/study/Study';
+import Flashcards from './pages/flashcards/Flashcards';
 import './assets/default.scss'
 
 const router = createBrowserRouter(
@@ -13,7 +14,8 @@ const router = createBrowserRouter(
         <Route path='login' element={<Home />}/>
         <Route path='singup' element={<Home />}/>
       </Route>
-      <Route path='study' element={<Study />}/>
+      <Route path='study' element={<Study />} />
+      <Route path='flashcards' element={<Flashcards/>} />
     </>
   )
 );
@@ -21,5 +23,5 @@ const router = createBrowserRouter(
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 )
