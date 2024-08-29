@@ -7,11 +7,11 @@
         background-color: #7F2AD4;
         border-radius: 1.3rem;
         
-        .conteiner_timer_state {
+        .timer_state {
             margin-top: .8rem;
             display: flex;
     
-            .timer_state {
+            .state {
                 width: 6.5rem;
                 text-align: center;
     
@@ -59,7 +59,7 @@
     }
 
 
-    .pomodoro_config {
+    .input_area {
         font-size: 1.5rem;
         grid-template-columns: auto 7rem;
         row-gap: 1rem;
@@ -81,8 +81,4 @@
             background-color: #505050;
         }
     }
-
-    .config_input{
-        display: flex;
-    } 
 }

@@ -8,7 +8,7 @@ import './assets/default.scss'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Home />}/>
+      <Route path="/" element={<Home />} />
       <Route path='account' element={<Home />}>
         <Route path='login' element={<Home />}/>
         <Route path='singup' element={<Home />}/>
