@@ -4,6 +4,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Home from './pages/home/Home';
 import Study from './pages/study/Study';
 import Flashcards from './pages/flashcards/Flashcards';
+import './assets/default.scss'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
