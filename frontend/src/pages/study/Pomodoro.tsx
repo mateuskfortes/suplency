@@ -42,6 +42,12 @@ const Pomodoro = () => {
                 <InputArea />
             </div>
         </PomodoroContext.Provider>
+        <PomodoroContext.Provider value={{ times, dispatchTimes }}>
+            <div className="pomodoro">
+                <Clock />
+                <InputArea />
+            </div>
+        </PomodoroContext.Provider>
     )
 }
 
