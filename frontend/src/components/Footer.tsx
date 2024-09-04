@@ -39,7 +39,7 @@ export default function Footer() {
         
                 <div className="support">
                     <h3 className="poppins support_tittle">Suporte:</h3>
-                    <input className="input_box" type="text" placeholder="Precisa de ajuda?... Digite aqui!"/>
+                    <input name="help" className="input_box" type="text" placeholder="Precisa de ajuda?... Digite aqui!"/>
                 </div>
             </section>
             <hr/>

@@ -6,8 +6,8 @@
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
-    list-style-type: none;
     color: black;
+    border: none;
 }
 
 :root {
@@ -16,7 +16,6 @@
 }
 
 a, .poppins{
-    color: black;
     font-family: 'Poppins', "Source Sans 3", sans-serif;
     font-style: normal;
     font-weight: 700;
@@ -31,4 +30,20 @@ a, .poppins{
     border: 2px solid #000000;
     border-radius: 2rem;
     font-size: 1rem;
+}
+
+.white_button {
+    font-size: 1.2rem;
+    display: inline-flex;
+    margin: 0 0 0 2rem;
+    padding: 0.8rem 1rem;
+}
+
+.black_button {
+    @extend .poppins;
+    color: white;
+    font-size: 1.2rem;
+    background-color: black;
+    display: inline-flex;
+    padding: 0.8rem 1rem;
 }
