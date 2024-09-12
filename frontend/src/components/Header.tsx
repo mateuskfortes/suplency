@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import grid_background from '../assets/grid_background.svg'
-import '../assets/header.scss'
+import '../assets/Header.scss'
  
 export default function Header() {
     return (

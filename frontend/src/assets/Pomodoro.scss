@@ -5,14 +5,17 @@
 
     .conteiner_watch {
         background-color: #7F2AD4;
+        width: 22rem;
         border-radius: 1.3rem;
+        margin: 1rem;
         
         .timer_state {
             margin-top: .8rem;
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
     
             .state {
-                width: 6.5rem;
+
                 text-align: center;
     
                 hr {
@@ -54,31 +57,44 @@
             display: flex;
             justify-content: center;
             margin-bottom: 1rem;
+            
+            .show_config {
+                display: flex;
+                background-color: transparent;
+                padding: 1rem 1rem;
+                font-size: 1.5rem;
+            }
         }
 
     }
 
 
     .input_area {
-        font-size: 1.5rem;
-        grid-template-columns: auto 7rem;
-        row-gap: 1rem;
-        width: 40rem;
-        padding: 2em;
         display: grid;
-        background-color: #7F2AD4;
+        grid-template-columns: auto 5rem;
+        grid-template-rows: repeat(3, 2rem);
+        row-gap: 1rem;
+        height: 100%;
+        width: 30rem;
+        padding: 1.5rem;
+        margin: 1rem;
+        font-size: 1.5rem;
         border-radius: 1.3rem;
+        background-color: #7F2AD4;
 
         label {
             margin: auto;
             text-align: center;
+            font-size: 1.2rem;
         }
 
-        input {
+        .pomodoro_input {
             color: white;
             border: 1px solid white;
             border-radius: 8px;
+            padding: .5rem;
             background-color: #505050;
         }
+
     }
 }

@@ -1,40 +1,51 @@
 import { useContext } from "react"
 import { PomodoroContext } from "../pages/study/Pomodoro"
+import PomodoroInput from "./PomodoroInput"
 
 const InputArea = () => {
     const { dispatchTimes } = useContext(PomodoroContext)
+
+    const setFocusTime = (e: any) => {
+        dispatchTimes({
+            type: 'focus', 
+            payload: e.target.value
+        })
+    }
+    const setBreakTime = (e: any) => {
+        dispatchTimes({
+            type: 'break', 
+            payload: e.target.value
+        })
+    }
+    const setRestTime = (e: any) => {
+        dispatchTimes({
+            type: 'rest', 
+            payload: e.target.value
+        })
+    }
 
     return (
         <div className="input_area">
             <label htmlFor="focus_time">
                 Digite o tempo de foco:
             </label>
-            <input
-                onChange={(e) => dispatchTimes({type: 'focus', payload: e.target.value})}
-                id="focus_time"
-                type="number"
-                min="0"
-                max="99"
+            <PomodoroInput 
+                onChange={setFocusTime}
+                id="focus_time" 
             />
             <label htmlFor="break_time">
                 Digite o tempo de pausa:
             </label>
-            <input
-                onChange={(e) => dispatchTimes({type: 'break', payload: e.target.value})}
+            <PomodoroInput 
+                onChange={setBreakTime}
                 id="break_time"
-                type="number"
-                min="0"
-                max="99"
             />
             <label htmlFor="rest_time">
-                Digite o tempo da pausa longa
+                Digite o tempo da pausa longa:
             </label>
-            <input
-                onChange={(e) => dispatchTimes({type: 'rest', payload: e.target.value})}
+            <PomodoroInput
+                onChange={setRestTime}
                 id="rest_time"
-                type="number"
-                min="0"
-                max="99"
             />
         </div>
     )

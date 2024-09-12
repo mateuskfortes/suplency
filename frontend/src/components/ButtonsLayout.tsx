@@ -1,5 +1,6 @@
+import { IoBackspaceOutline } from "react-icons/io5";
+import { FaDivide } from "react-icons/fa6";
 import CalculatorButton from "./CalculatorButton";
-
 import { CalculatorContext } from "../pages/study/Calculator";
 import { useContext, memo } from "react";
 
@@ -26,11 +27,11 @@ const ButtonsLayout = memo(() => {
                     <CalculatorButton value="3" />
                     <CalculatorButton value="," />
                     <CalculatorButton value="0" />
-                    <CalculatorButton func={deleteLastCharacter}  value="Back"/>
+                    <CalculatorButton func={deleteLastCharacter}  children={<IoBackspaceOutline />}/>
                 </div>
             </section>
             <section className="right">
-                <CalculatorButton value="/" />
+                <CalculatorButton value="&divide;" children={<FaDivide />} />
                 <CalculatorButton value="x" />
                 <CalculatorButton value="-" />
                 <CalculatorButton value="+" />

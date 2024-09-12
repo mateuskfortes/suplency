@@ -1,9 +1,10 @@
-import { createContext, useReducer } from "react"
+import { createContext, useReducer, useState } from "react"
 import InputArea from "../../components/InputArea";
 import Clock from "../../components/Clock";
 import '../../assets/Pomodoro.scss'
 
 export const PomodoroContext = createContext({
+    toggleIsInputVisible: () => {},
     times: {
         focus: 0,
         break: 0,
@@ -12,7 +13,9 @@ export const PomodoroContext = createContext({
     },
     dispatchTimes: ({type, payload}: {type: string, payload: string}) => {  
         console.log(type, payload)
-    }
+    },
+    isRunning: false,
+    setIsRunning: (b: boolean) => {console.log(b)},
 })
 
 const reducer = (state: any, action: any) => {
@@ -28,24 +31,24 @@ const reducer = (state: any, action: any) => {
 }
 
 const Pomodoro = () => {
+    const [isRunning, setIsRunning] = useState(false)
+    const [isInputVisible, setIsInputVisible] = useState(false)
     const [times, dispatchTimes] = useReducer(reducer, {
-        focus: 0,
-        break: 0,
-        rest: 0,
+        focus: 1,
+        break: 1,
+        rest: 1,
         breaksUntilRest: 1,
     })
 
+    const toggleIsInputVisible = () => {
+        setIsInputVisible(!isInputVisible)
+    }
+
     return (
-        <PomodoroContext.Provider value={{ times, dispatchTimes }}>
+        <PomodoroContext.Provider value={{ isRunning, setIsRunning, toggleIsInputVisible, times, dispatchTimes }}>
             <div className="pomodoro">
                 <Clock />
-                <InputArea />
-            </div>
-        </PomodoroContext.Provider>
-        <PomodoroContext.Provider value={{ times, dispatchTimes }}>
-            <div className="pomodoro">
-                <Clock />
-                <InputArea />
+                { isInputVisible && <InputArea /> }
             </div>
         </PomodoroContext.Provider>
     )

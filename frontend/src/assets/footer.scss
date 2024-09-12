@@ -65,8 +65,17 @@
 
 /*------*/
 
-footer hr {
-    background: black;
-    height: 3px;
-    margin-bottom: 8vh;
+footer {
+    hr {
+        background: black;
+        height: 3px;
+        margin-bottom: 8vh;
+    }
+    ol, ul {
+        list-style-type: none;
+    }
+
+    a{
+        color: black;
+    }
 }

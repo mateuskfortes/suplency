@@ -40,8 +40,7 @@ class Time {
 }
 
 const Clock = () => {
-    const { times } = useContext(PomodoroContext)
-    const [isRunning, setIsRunning] = useState(false)
+    const { times, isRunning, setIsRunning } = useContext(PomodoroContext)
     const [isStarted, setIsStarted] = useState(false)
     const [currentSequenceIndex, setCurrentSequenceIndex] = useState(0)
     const [sequence, setSequence]: [any, any] = useState()
@@ -69,6 +68,7 @@ const Clock = () => {
         setCurrentSequenceIndex(0)
         setIsStarted(false)
         fillSequence()
+        setFormattedTime(new Time(times.focus).formatTime())
     }
 
     function runTimer() {

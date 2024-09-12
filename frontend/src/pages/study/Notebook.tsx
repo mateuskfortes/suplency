@@ -1,49 +1,51 @@
-import { createContext, MutableRefObject, useRef, useState } from 'react'
-import { createEditor } from 'slate'
-import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
-import '../../assets/Notebook.scss'
-import FormatButtons from '../../components/FormatButtons';
-import SlateLeaf from '../../components/SlateLeaf';
-import SlateElement from '../../components/SlateElement';
-
-const initialValue = [
-    {
-        type: 'paragraph',
-        children: [{ text: 'Pimerio negoço', bold: true }],
-    },
-]
+import { createContext, MutableRefObject, useRef, useState } from 'react';
+import { createEditor } from 'slate';
+import { ReactEditor, withReact } from 'slate-react';
+import SlateEditor from '../../components/SlateEditor';
+import '../../assets/Notebook.scss';
 
 export const NotebookContext = createContext({
     editor: {} as ReactEditor,
     editable: { current: null } as MutableRefObject<HTMLDivElement | null>,
-})
+    currentContent: {},
+});
 
-const Notebook = () => {
-    const [editor] = useState(() => withReact(createEditor()))
-    const editable = useRef<HTMLDivElement | null>(null)
-
-    const renderElement = (props: any) => {
-        return <SlateElement {...props} />
+const notebookContent = {
+    'lastSubject': '-1',
+    'subjects': {
+        '-1': {
+            'name': 'New subject',
+            'lastPage': '0',
+            'pages': [
+                {
+                    'id': '-1',
+                    'content': [
+                        {
+                            type: 'paragraph',
+                            children: [{ text: 'faaaaaaaaaaaaaaaaaaaala' }],
+                        },
+                    ]
+                }
+            ]
+        }
     }
-
-    const renderLeaf = (props: any) => {
-        return <SlateLeaf {...props} />
-    } 
-
-    return (
-        <NotebookContext.Provider value={{ editor, editable }}>
-            <div className='notebook'>
-                <Slate editor={editor} initialValue={initialValue}>
-                    <FormatButtons />
-                    <Editable 
-                        ref={editable}
-                        renderElement={renderElement}
-                        renderLeaf={renderLeaf}
-                    />
-                </Slate>
-            </div>
-        </NotebookContext.Provider>
-    )
 }
 
-export default Notebook
+const Notebook = () => {
+    const [ editor ] = useState(() => withReact(createEditor()));
+    const editable = useRef<HTMLDivElement | null>(null);
+    const [ subjectId, setSubject ] = useState(notebookContent.lastSubject)
+    const [ pageIndex, setPage ] = useState(notebookContent.subjects[subjectId].lastPage)
+    const [ currentContent, setCurrentContent ] = useState(notebookContent.subjects[subjectId].pages[parseInt(pageIndex)].content);
+    console.log(currentContent)
+
+    return (
+        <NotebookContext.Provider value={{ editor, editable, currentContent }}>
+            <div className='notebook'>
+                <SlateEditor />
+            </div>
+        </NotebookContext.Provider>
+    );
+};
+
+export default Notebook;

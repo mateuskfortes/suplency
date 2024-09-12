@@ -19,13 +19,11 @@ function Calculator() {
     const [previousExpression, setPreviousExpression] = useState('');
 
     function formatExpression(expression: string, toMathFormat: boolean = true): string {
-        /*
-        torna a string formatada em uma expressão para a função evaluate() e vice-versa
-        */
         const replacements: Record<string, string> = toMathFormat ? {
             ',': '.',
             'x': '*',
             '%': '/100',
+            '÷': '/'
         } : {
             '.': ',',
         };

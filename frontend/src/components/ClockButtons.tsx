@@ -1,8 +1,11 @@
 import { useContext } from "react"
 import { ClockContext } from "./Clock"
+import { PomodoroContext } from "../pages/study/Pomodoro"
+import { GoGear } from "react-icons/go";
 
 const ClockButtons = () => {
     const { isStarted, isRunning, runTimer, pauseTimer, resetTimer } = useContext(ClockContext)
+    const { toggleIsInputVisible } = useContext(PomodoroContext)
 
     return(
         <div className="buttons">
@@ -24,6 +27,9 @@ const ClockButtons = () => {
                     </button>
                 </>
             )}
+            <button className="show_config" onClick={toggleIsInputVisible}>
+                <GoGear />
+            </button>
         </div>
     )
 }

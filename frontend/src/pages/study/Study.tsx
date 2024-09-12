@@ -1,7 +1,5 @@
 import Header from "../../components/Header.tsx"
 import Footer from "../../components/Footer.tsx"
-import Header from "../../components/Header.tsx"
-import Footer from "../../components/Footer.tsx"
 import Pomodoro from "./Pomodoro.tsx"
 import Calculator from "./Calculator.tsx"
 import Notebook from "./Notebook.tsx"

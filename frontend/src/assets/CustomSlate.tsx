@@ -1,75 +1,86 @@
-import { Editor, Transforms, Element as SlateElement, Node } from 'slate';
+import { Editor, Transforms, Element, Node } from 'slate';
 
-interface CustomElement extends SlateElement {
-    type: string;
-    children: CustomText[];
-}
+const LIST_TYPES = ['numbered-list', 'bulleted-list']
+export const fontSizes = [ '8pt', '9pt', '10pt', '11pt', '12pt', '14pt', '18pt']
+export const defaultFontSize = '12pt'
 
-interface CustomText {
-    text: string;
-    bold?: boolean;
-}
-
-interface EditorMarks {
-    bold: boolean;
-}
-
-const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+export const grayScale = [
+    '#FFFFFF', '#E0E0E0', '#C0C0C0', '#A0A0A0', '#808080', 
+    '#606060', '#404040', '#303030', '#202020', '#000000'
+];
+export const colors = [
+    'rgb(152, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 153, 0)', 'rgb(255, 255, 0)', 'rgb(0, 255, 0)', 
+    'rgb(0, 255, 255)', 'rgb(74, 134, 232)', 'rgb(0, 0, 255)', 'rgb(153, 0, 255)', 'rgb(255, 0, 255)',
+]
 
 const CustomSlate = {
-    toggleBold(editor: Editor) {
-        const marks: EditorMarks | null = Editor.marks(editor) as EditorMarks | null;
-        const isBold = marks ? marks.bold === true : false;
-        if (isBold) {
-            Editor.removeMark(editor, 'bold');
-        } else {
-            Editor.addMark(editor, 'bold', true);
-        }
-    },
-
     isBlockActive(editor: Editor, format: string) {
         const [match] = Editor.nodes(editor, {
             match: (n: Node) => {
                 return (
                     !Editor.isEditor(n) &&
-                    SlateElement.isElement(n) &&
-                    (n as CustomElement).type === format
+                    Element.isElement(n) &&
+                    n.type === format
                 );
             },
         });
         return !!match;
     },
 
+    isMarkActive(editor: Editor, markName: string) {
+        const marks = Editor.marks(editor);
+        return marks ? marks[markName] === true : false;
+    },
+
+    toggleMark(editor: Editor, markName: string) {
+        const isActive = this.isMarkActive(editor, markName)
+        if (isActive)Editor.removeMark(editor, markName)
+        else Editor.addMark(editor, markName, true)
+    },
+
+    toggleScriptType(editor: Editor, scriptType: string) {
+        const isActive = this.isMarkActive(editor, scriptType)
+        if (isActive) Editor.removeMark(editor, scriptType)
+        else {
+            switch (scriptType) {
+                case 'superscript':
+                    Editor.addMark(editor, 'superscript', true)
+                    Editor.removeMark(editor, 'subscript')
+                    break
+                case 'subscript':
+                    Editor.addMark(editor, 'subscript', true)
+                    Editor.removeMark(editor, 'superscript')
+                    break
+            }
+        }
+    },
+    
     toggleList(editor: Editor, format: string) {
         const isActive = CustomSlate.isBlockActive(editor, format);
-        const isList = LIST_TYPES.includes(format);
-
         Transforms.unwrapNodes(editor, {
             match: (n: Node) =>
                 !Editor.isEditor(n) &&
-                SlateElement.isElement(n) &&
-                LIST_TYPES.includes((n as CustomElement).type),
+                Element.isElement(n) &&
+                LIST_TYPES.includes(n.type),
             split: true,
         });
-
-        const newType = isActive ? 'paragraph' : isList ? 'list-item' : 'paragraph';
-        Transforms.setNodes(editor, { type: newType } as Partial<CustomElement>);
-
-        if (!isActive && isList) {
-            const block = { type: format, children: [] } as CustomElement;
-            Transforms.wrapNodes(editor, block);
-            Transforms.setNodes(
-                editor,
-                { type: 'list-item' } as Partial<CustomElement>,
-                {
-                    match: (n: Node) =>
-                        !Editor.isEditor(n) &&
-                        SlateElement.isElement(n) &&
-                        (n as CustomElement).type === 'paragraph',
-                }
-            );
+        const newType = isActive ? 'paragraph' : 'list-item';
+        Transforms.setNodes(editor, { type: newType });
+        if (!isActive) {
+            const block = { type: format, children: [] };
+            Transforms.wrapNodes(editor, block)
         }
     },
+
+    setColor(editor: Editor, color: string) {
+        if (color == '#000000' || color == 'rgb(0, 0, 0)') Editor.removeMark(editor, 'color')
+        else Editor.addMark(editor, 'color', color)
+    },
+
+    setFontSize(editor: Editor, fontSize: string) {
+        if (fontSize == '12px') Editor.removeMark(editor, 'fontSize')
+        else Editor.addMark(editor, 'fontSize', fontSize)
+    }
 };
 
 export default CustomSlate;
