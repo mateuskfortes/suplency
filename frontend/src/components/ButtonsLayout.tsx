@@ -1,7 +1,7 @@
 import { IoBackspaceOutline } from "react-icons/io5";
 import { FaDivide } from "react-icons/fa6";
 import CalculatorButton from "./CalculatorButton";
-import { CalculatorContext } from "../pages/study/Calculator";
+import { CalculatorContext } from "./Calculator";
 import { useContext, memo } from "react";
 
 const ButtonsLayout = memo(() => {

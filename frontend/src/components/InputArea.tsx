@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { PomodoroContext } from "../pages/study/Pomodoro"
+import { PomodoroContext } from "./Pomodoro"
 import PomodoroInput from "./PomodoroInput"
 
 const InputArea = () => {

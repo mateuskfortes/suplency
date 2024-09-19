@@ -3,7 +3,7 @@ import { Slate, Editable } from 'slate-react'
 import FormatButtonsArea from './FormatButtonsArea';
 import SlateLeaf from './SlateLeaf';
 import SlateElement from './SlateElement';
-import { NotebookContext } from '../pages/study/Notebook';
+import { NotebookContext } from './Notebook';
 
 const SlateEditor = () => {
     const { editor, editable, notebookObj } = useContext(NotebookContext)

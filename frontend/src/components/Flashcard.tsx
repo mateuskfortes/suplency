@@ -13,12 +13,13 @@ const Flashcard = ({question, answer}: types) => {
 	}
 
 	return (
-		<div>
-			<h1>{question}</h1>
-			{isAnswerVisible && <p>{answer}</p>}
-			<div>
-				<button onClick={toggleAnswerVisibility}>{isAnswerVisible ? 'Esconder resposta' : 'Mostrar resposta' }</button>
+		<div className="flashcard">
+			<div className="content">
+				<h1>{question}</h1>
+				{isAnswerVisible && <p>{answer}</p>}
 			</div>
+			<hr />
+			<button onClick={toggleAnswerVisibility}>{isAnswerVisible ? 'Esconder resposta' : 'Mostrar resposta' }</button>
 		</div>
 	)
 }

@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { NotebookContext } from "../pages/study/Notebook"
+import { NotebookContext } from "./Notebook"
 
 const SelectInput = ({ options, onChange, ...props }: any) => {
     const { editable } = useContext(NotebookContext)

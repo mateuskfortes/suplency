@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import { NotebookContext } from "../pages/study/Notebook"
+import { NotebookContext } from "./Notebook"
 
 const Subject = ({ id, subjectName, start=false }: any) => {
     const { notebookObj } = useContext(NotebookContext)

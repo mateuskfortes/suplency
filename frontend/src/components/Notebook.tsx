@@ -2,12 +2,12 @@ import { createContext, MutableRefObject, useRef, useState } from 'react';
 import { createEditor } from 'slate';
 import { ReactEditor, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import SlateEditor from '../../components/SlateEditor';
-import SelectSubjectArea from '../../components/SelectSubjectArea';
-import { NotebookContent, NotebookContextType } from '../../assets/NotebookTemplate';
-import {Notebook as NotebookClass} from '../../assets/Notebook';
-import SetPage from '../../components/SetPage';
-import '../../assets/Notebook.scss';
+import SlateEditor from './SlateEditor';
+import SelectSubjectArea from './SelectSubjectArea';
+import { NotebookContent, NotebookContextType } from '../assets/NotebookTemplate';
+import {Notebook as NotebookClass} from '../assets/Notebook';
+import SetPage from './SetPage';
+import '../assets/Notebook.scss';
 
 export const NotebookContext = createContext<NotebookContextType>({
     editor: {} as ReactEditor,

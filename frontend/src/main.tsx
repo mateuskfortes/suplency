@@ -1,27 +1,25 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
-import Home from './pages/home/Home';
-import Study from './pages/study/Study';
-import Flashcards from './pages/flashcards/Flashcards';
+import { Route, Routes, HashRouter } from "react-router-dom";
+import Home from './pages/Home';
+import Study from './pages/Study';
+import Flashcards from './pages/Flashcards';
 import './assets/Default.scss'
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="/" element={<Home />} />
-      <Route path='account' element={<Home />}>
-        <Route path='login' element={<Home />}/>
-        <Route path='singup' element={<Home />}/>
-      </Route>
-      <Route path='study' element={<Study />} />
-      <Route path='flashcards' element={<Flashcards/>} />
-    </>
-  )
-);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="account" element={<Home />}>
+          <Route path="login" element={<Home />} />
+          <Route path="signup" element={<Home />} />
+        </Route>
+        <Route path="study" >
+          <Route index element={<Study />} />
+          <Route path="flashcards" element={<Flashcards />} />
+        </Route>
+      </Routes>
+    </HashRouter>
   </StrictMode>
 )

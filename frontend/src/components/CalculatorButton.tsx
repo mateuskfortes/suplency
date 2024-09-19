@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { CalculatorContext } from "../pages/study/Calculator";
+import { CalculatorContext } from "./Calculator";
 
 interface ArithmeticButtonProps {
     children?: React.ReactNode;

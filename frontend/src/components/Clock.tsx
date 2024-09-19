@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { PomodoroContext } from "../pages/study/Pomodoro";
+import { PomodoroContext } from "./Pomodoro";
 import TimerState from "./TimerState";
 import ClockButtons from "./ClockButtons";
 

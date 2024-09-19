@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { PomodoroContext } from "../pages/study/Pomodoro"
+import { PomodoroContext } from "./Pomodoro"
 
 const PomodoroInput = ({id, onChange, type='number', min=0, max=99, defaultValue=1, ...props}: any) => {
     const { isRunning } = useContext(PomodoroContext)

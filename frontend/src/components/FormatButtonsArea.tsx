@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { NotebookContext } from "../pages/study/Notebook"
+import { NotebookContext } from "./Notebook"
 import CustomSlate, { fontSizes } from "../assets/CustomSlate"
 import FormatInput from "./FormatInput"
 import ColorInput from "./ColorInput";

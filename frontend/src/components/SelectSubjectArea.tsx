@@ -1,6 +1,6 @@
 import { useContext, useRef, useEffect } from "react";
 import Subject from "./Subject";
-import { NotebookContext } from "../pages/study/Notebook";
+import { NotebookContext } from "./Notebook";
 import NewSubjectButton from "./NewSubjectButton";
 
 const SelectSubjectArea = () => {

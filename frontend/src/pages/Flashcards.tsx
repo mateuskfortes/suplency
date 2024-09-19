@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
-import Flashcard from "../../components/Flashcard"
+import Flashcard from "../components/Flashcard"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import '../assets/Flashcards.scss'
 
 const content = [
 	{
@@ -49,14 +52,18 @@ const Flashcards = () => {
 
 	return (
 		<>
-			{ isRunning && fc &&
-				<div>
-					<Flashcard key={fc.id} question={fc.question} answer={fc.answer} />
-				
-					<button onClick={nextFlashcard}>next</button>
-				</div>
-			}
-			<button onClick={toggleIsRunning}>vai</button>
+			<Header />
+			<div className="flashcards">
+				{ isRunning && fc &&
+					<div>
+						<Flashcard key={fc.id} question={fc.question} answer={fc.answer} />
+					
+						<button className="white_button" onClick={nextFlashcard}>next</button>
+					</div>
+				}
+				<button className="white_button" onClick={toggleIsRunning}>vai</button>
+			</div>
+			<Footer />
 		</>
 	)
 }

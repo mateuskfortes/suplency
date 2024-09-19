@@ -1,9 +1,9 @@
 import { createContext, useState } from "react";
 import { evaluate } from "mathjs";
 
-import ButtonsLayout from "../../components/ButtonsLayout";
-import Display from "../../components/Display";
-import '../../assets/calculator.scss';
+import ButtonsLayout from "./ButtonsLayout";
+import Display from "./Display";
+import '../assets/calculator.scss';
 
 export const CalculatorContext = createContext({
     currentExpression: '',

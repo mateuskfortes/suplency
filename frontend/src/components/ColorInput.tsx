@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import CustomSlate, { colors } from "../assets/CustomSlate";
-import { NotebookContext } from "../pages/study/Notebook";
+import { NotebookContext } from "./Notebook";
 
 function ColorInput({ children }: any) {
     const [isPaletteVisible, setIsPaletteVisible] = useState(false)

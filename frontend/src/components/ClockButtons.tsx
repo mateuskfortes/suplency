@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { ClockContext } from "./Clock"
-import { PomodoroContext } from "../pages/study/Pomodoro"
+import { PomodoroContext } from "./Pomodoro"
 import { GoGear } from "react-icons/go";
 
 const ClockButtons = () => {
