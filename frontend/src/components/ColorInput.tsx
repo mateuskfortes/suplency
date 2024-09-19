@@ -1,55 +1,60 @@
-import { useContext, useState } from "react";
-import CustomSlate, { grayScale, colors } from "../assets/CustomSlate";
+import { useContext, useEffect, useRef, useState } from "react";
+import CustomSlate, { colors } from "../assets/CustomSlate";
 import { NotebookContext } from "../pages/study/Notebook";
 
 function ColorInput({ children }: any) {
     const [isPaletteVisible, setIsPaletteVisible] = useState(false)
     const { editor, editable } = useContext(NotebookContext)
+    const paletteRef = useRef<HTMLButtonElement>(null)
 
     const handlerColor = (color: any) => {
         CustomSlate.setColor(editor, color)
         if (editable.current) editable.current.focus()
     }
-    const toggleIsPaletteVisible = () => {
-        setIsPaletteVisible(!isPaletteVisible)
+    const showPalette = () => {
+        setIsPaletteVisible(true)
     }
 
+    useEffect (() => {
+        if (isPaletteVisible) paletteRef.current?.focus()
+    }, [isPaletteVisible])
+
     return (
-        <div className="conteiner_color format_input">
-            <div className="color_icon" onClick={toggleIsPaletteVisible}>
+        <button className="conteiner_color format_input">
+            <div className="color_icon" onClick={showPalette}>
                 {children}
             </div>
             { isPaletteVisible && (
-                <table className="color_palette">
-                    <tbody>
-                        <tr>
-                            {grayScale.map((color, index) => (
-                                <td>
-                                    <div
-                                        className="color_input"
-                                        key={index} 
-                                        style={{backgroundColor: color }}
-                                        onClick={() => handlerColor(color)}>
-                                    </div>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            {colors.map((color, index) => (
-                                <td>
-                                    <div  
-                                        className="color_input"
-                                        key={index} 
-                                        style={{ backgroundColor: color }}
-                                        onClick={() => handlerColor(color)}>
-                                    </div> 
-                                </td>
-                            ))}
-                        </tr> 
-                    </tbody>
-                </table>
+                <button className="color_palette" ref={paletteRef} onBlur={() => setIsPaletteVisible(false)}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                {colors.grayScale.map((color, index) => (
+                                    <td key={index} >
+                                        <div
+                                            className="color_input"
+                                            style={{backgroundColor: color }}
+                                            onClick={() => handlerColor(color)}>
+                                        </div>
+                                    </td>
+                                ))}
+                            </tr>
+                            <tr>
+                                {colors.default.map((color, index) => (
+                                    <td key={index}>
+                                        <div  
+                                            className="color_input"
+                                            style={{ backgroundColor: color }}
+                                            onClick={() => handlerColor(color)}>
+                                        </div> 
+                                    </td>
+                                ))}
+                            </tr> 
+                        </tbody>
+                    </table>
+                </button>
             )}
-        </div>
+        </button>
     );
 }
 

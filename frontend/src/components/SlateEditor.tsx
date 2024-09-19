@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext } from 'react'
 import { Slate, Editable } from 'slate-react'
 import FormatButtonsArea from './FormatButtonsArea';
 import SlateLeaf from './SlateLeaf';
@@ -6,7 +6,7 @@ import SlateElement from './SlateElement';
 import { NotebookContext } from '../pages/study/Notebook';
 
 const SlateEditor = () => {
-    const { editor, editable, currentContent } = useContext(NotebookContext)
+    const { editor, editable, notebookObj } = useContext(NotebookContext)
 
     const renderElement = (props: any) => {
         return <SlateElement {...props} />
@@ -17,16 +17,17 @@ const SlateEditor = () => {
     }
 
     return (
-        <Slate 
-            editor={editor} 
-            initialValue={currentContent}>
-            <FormatButtonsArea />
-            <Editable 
-                ref={editable}
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-            />
-        </Slate>
+        <div className="slate_editor">
+            <Slate editor={editor} initialValue={notebookObj.getContent()}>
+                <FormatButtonsArea />
+                <Editable 
+                    className="editable"
+                    ref={editable}
+                    renderElement={renderElement}
+                    renderLeaf={renderLeaf}
+                    />
+            </Slate>
+        </div>
     )
 }
 

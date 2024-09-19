@@ -1,0 +1,8 @@
+.study_content {
+    overflow-x: hidden;
+
+    &>section {
+        margin-left: auto;
+        width: 22rem;
+    }
+}

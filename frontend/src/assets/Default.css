@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
+
+:root {
+  --tamanho_header: 7rem;
+  --tamanho_cantos_header: 15rem;
+}
+
+a, .poppins, .black_button, .white_button {
+  font-family: "Poppins", "Source Sans 3", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.04rem;
+}
+
+.button, .black_button, .white_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #000000;
+  border-radius: 2rem;
+  font-size: 1rem;
+}
+
+.white_button {
+  color: black;
+  font-size: 1.2rem;
+  display: inline-flex;
+  margin: 0 0 0 2rem;
+  padding: 0.8rem 1rem;
+}
+
+.black_button {
+  color: white;
+  font-size: 1.2rem;
+  background-color: black;
+  display: inline-flex;
+  padding: 0.8rem 1rem;
+}/*# sourceMappingURL=Default.css.map */

@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { NotebookContext } from "../pages/study/Notebook"
-import CustomSlate, { fontSizes, defaultFontSize } from "../assets/CustomSlate"
+import CustomSlate, { fontSizes } from "../assets/CustomSlate"
 import FormatInput from "./FormatInput"
 import ColorInput from "./ColorInput";
 import SelectInput from "./SelectInput";
@@ -9,7 +9,7 @@ import SelectInput from "./SelectInput";
 import { FaBold } from "react-icons/fa6";
 import { FiUnderline, FiItalic } from "react-icons/fi";
 import { IoListOutline } from "react-icons/io5";
-import { MdOutlineFormatListNumbered } from "react-icons/md"
+import { MdOutlineFormatListNumbered, MdFormatColorText } from "react-icons/md"
 import { RiSuperscript2, RiSubscript2 } from "react-icons/ri";
 
 const FormatButtonsArea = () => {
@@ -33,8 +33,8 @@ const FormatButtonsArea = () => {
             <FormatInput children={<MdOutlineFormatListNumbered />} onClick={toggleNumberedList} />
             <FormatInput children={<RiSuperscript2 />} onClick={toggleSuperscript} />
             <FormatInput children={<RiSubscript2 />} onClick={toggleSubscript} />
-            <ColorInput children="text color" />
-            <SelectInput options={fontSizes} onChange={setFontSize} defaultValue={defaultFontSize} />
+            <ColorInput children={<MdFormatColorText />} />
+            <SelectInput options={fontSizes.sizes} onChange={setFontSize} defaultValue={fontSizes.default} />
         </div>
     )
 }

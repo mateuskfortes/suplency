@@ -14,13 +14,17 @@ $calculator_width: 20rem;
     flex-direction: column;
     height: $calculator_height;
     width: $calculator_width;
-    margin-left: 1rem;
+    margin-left: auto;
+    margin-right: 1rem;
     .display {
         display: flex;
         flex-direction: column;
         font-size: 1.5rem;
         align-items: end;
         justify-content: center;
+        box-shadow: 0 1px 3px 1px rgba(60, 64, 67, .15);
+        border-radius: 15px;
+        margin-bottom: .5rem;
 
         * {
             display: flex;
@@ -39,6 +43,7 @@ $calculator_width: 20rem;
     }
     .buttons_layout {
         height: 100%;
+        
         display: grid;
         gap: .3rem;
         grid-template-columns: 3fr 1fr;

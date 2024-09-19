@@ -1,0 +1,93 @@
+.pomodoro {
+  font-family: "poppins";
+  font-weight: bold;
+  display: flex;
+  position: relative;
+}
+.pomodoro .conteiner_watch {
+  background-color: #7F2AD4;
+  width: 20rem;
+  border-radius: 1.3rem;
+  margin: 1rem;
+}
+.pomodoro .conteiner_watch .timer_state {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.pomodoro .conteiner_watch .timer_state .state {
+  text-align: center;
+}
+.pomodoro .conteiner_watch .timer_state .state hr {
+  margin-top: 5px;
+  background-color: gray;
+  height: 3px;
+}
+.pomodoro .conteiner_watch .timer_state .state .activated {
+  background-color: white;
+}
+.pomodoro .conteiner_watch .clock {
+  margin: 10px auto;
+  background-color: black;
+  display: flex;
+  width: 12rem;
+  height: 5rem;
+  border-radius: 1rem;
+}
+.pomodoro .conteiner_watch .clock div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pomodoro .conteiner_watch .clock #minutes, .pomodoro .conteiner_watch .clock #seconds {
+  font-size: 2rem;
+  color: white;
+}
+.pomodoro .conteiner_watch .buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.pomodoro .conteiner_watch .buttons .black_button {
+  font-size: 0.9rem;
+  margin: 0 5px;
+}
+.pomodoro .conteiner_watch .buttons .show_config {
+  display: flex;
+  background-color: transparent;
+  padding: 0.5rem 0.5rem;
+  margin: 0 5px;
+  font-size: 1.5rem;
+}
+.pomodoro .input_area {
+  display: grid;
+  grid-template-columns: auto 5rem;
+  grid-template-rows: repeat(3, 2rem);
+  row-gap: 1rem;
+  width: 30rem;
+  padding: 1.5rem;
+  margin: 1rem;
+  font-size: 1.5rem;
+  border-radius: 1.3rem;
+  background-color: #7F2AD4;
+  position: absolute;
+  transform: translate(-100%, 0);
+  right: 0;
+  left: -2rem;
+  z-index: 2;
+}
+.pomodoro .input_area label {
+  margin: auto;
+  text-align: center;
+  font-size: 1.2rem;
+}
+.pomodoro .input_area .pomodoro_input {
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background-color: #505050;
+}/*# sourceMappingURL=Pomodoro.css.map */

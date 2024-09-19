@@ -1,7 +1,9 @@
+import { fontSizes } from "../assets/CustomSlate";
+
 const SlateLeaf = ({ attributes, children, leaf }: any) => {
     const style = { 
         color: leaf.color || 'inherit',
-        fontSize: leaf.fontSize || '12px',
+        fontSize: leaf.fontSize + fontSizes.metric || fontSizes.default + fontSizes.metric,
     }
     attributes = {
         ...attributes,

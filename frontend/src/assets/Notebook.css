@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
+
+:root {
+  --tamanho_header: 7rem;
+  --tamanho_cantos_header: 15rem;
+}
+
+a, .poppins, .notebook .notebook_header .container_subject .subject_area .subject, .notebook .notebook_header .set_page_area .button_area button, .notebook .notebook_header .set_page_area .page_index, .black_button, .white_button {
+  font-family: "Poppins", "Source Sans 3", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.04rem;
+}
+
+.button, .black_button, .white_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #000000;
+  border-radius: 2rem;
+  font-size: 1rem;
+}
+
+.white_button {
+  color: black;
+  font-size: 1.2rem;
+  display: inline-flex;
+  margin: 0 0 0 2rem;
+  padding: 0.8rem 1rem;
+}
+
+.black_button {
+  color: white;
+  font-size: 1.2rem;
+  background-color: black;
+  display: inline-flex;
+  padding: 0.8rem 1rem;
+}
+
+.notebook {
+  width: 100%;
+}
+.notebook .notebook_header {
+  display: flex;
+}
+.notebook .notebook_header .set_page_area {
+  position: relative;
+  width: 7rem;
+}
+.notebook .notebook_header .set_page_area .page_index {
+  position: absolute;
+  transform: translate(-100%, 0);
+  left: 100%;
+  top: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom-left-radius: 20%;
+  z-index: 1;
+}
+.notebook .notebook_header .set_page_area .button_area button {
+  width: 33.3333333333%;
+  background-color: transparent;
+}
+.notebook .notebook_header .set_page_area::before {
+  content: "";
+  display: block;
+  height: 1.2rem;
+  width: 1px;
+  background-color: black;
+  position: absolute;
+  transform: translate(0, -50%);
+  left: 0;
+  top: 50%;
+}
+.notebook .notebook_header .container_subject {
+  display: flex;
+  height: 2rem;
+  width: 100%;
+}
+.notebook .notebook_header .container_subject .subject_area {
+  display: flex;
+}
+.notebook .notebook_header .container_subject .subject_area .subject {
+  font-weight: 400;
+  letter-spacing: -1px;
+  font-size: 0.9rem;
+  display: flex;
+  padding: 4px 6px 0 6px;
+  box-shadow: 0px -2px 3px 0px rgba(60, 64, 67, 0.3);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.notebook .notebook_header .container_subject .new_subject_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  width: 2.4rem;
+  background-color: transparent;
+}
+.notebook .notebook_header .container_subject .new_subject_form {
+  padding: 1rem;
+  position: absolute;
+  transform: translate(-50%, 0);
+  left: 50vw;
+  z-index: 1;
+  box-shadow: 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+  background-color: white;
+}
+.notebook .notebook_header .container_subject .new_subject_form .inputs input {
+  border: 1px solid black;
+}
+.notebook .notebook_header .container_subject .new_subject_form .create_subject {
+  display: block;
+  margin: 1rem auto;
+}
+.notebook .slate_editor {
+  display: flex;
+}
+.notebook .slate_editor .conteiner_format_buttons {
+  display: flex;
+  flex-direction: column;
+  width: 2.4rem;
+}
+.notebook .slate_editor .conteiner_format_buttons .conteiner_color {
+  position: relative;
+}
+.notebook .slate_editor .conteiner_format_buttons .conteiner_color .color_palette {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(0, -50%);
+  padding: 0.5rem;
+  background-color: white;
+  box-shadow: 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+  z-index: 1;
+}
+.notebook .slate_editor .conteiner_format_buttons .conteiner_color .color_palette .color_input {
+  height: 20px;
+  width: 20px;
+  border: 1px solid #dadce0;
+  border-radius: 50%;
+}
+.notebook .slate_editor .conteiner_format_buttons .format_input {
+  font-size: 1.5rem;
+  margin: 5px;
+  background-color: white;
+}
+.notebook .slate_editor .editable {
+  width: 100%;
+  aspect-ratio: 3/3.5;
+  border: 1px solid black;
+  background-color: white;
+  padding: 2rem 1rem;
+}
+.notebook .slate_editor .editable ul {
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+  unicode-bidi: isolate;
+}
+.notebook .slate_editor .editable ol {
+  margin: 1em 0;
+  padding-left: 40px;
+  list-style-type: decimal;
+}
+.notebook .slate_editor .editable li {
+  margin: 0.5em 0;
+}/*# sourceMappingURL=Notebook.css.map */
