@@ -1,7 +1,6 @@
 import { createContext, useReducer, useState } from "react"
 import InputArea from "./InputArea";
 import Clock from "./Clock";
-import '../assets/Pomodoro.scss'
 
 export const PomodoroContext = createContext({
     toggleIsInputVisible: () => {},

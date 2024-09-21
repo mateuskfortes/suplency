@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react';
 import { Descendant, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { Notebook } from './Notebook';
+import { Notebook } from './NotebookClass';
 
 interface ParagraphElement {
     type: 'paragraph';

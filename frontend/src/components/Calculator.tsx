@@ -3,7 +3,6 @@ import { evaluate } from "mathjs";
 
 import ButtonsLayout from "./ButtonsLayout";
 import Display from "./Display";
-import '../assets/calculator.scss';
 
 export const CalculatorContext = createContext({
     currentExpression: '',

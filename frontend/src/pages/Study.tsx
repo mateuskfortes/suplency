@@ -10,7 +10,7 @@ export default function Study() {
         <>
             <Header/>
             <main className="study_content">
-                <section>
+                <section className="top">
                     <Pomodoro/>
                     <Calculator />
                 </section>

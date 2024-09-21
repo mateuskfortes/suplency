@@ -41,7 +41,7 @@ const InputArea = () => {
                 id="break_time"
             />
             <label htmlFor="rest_time">
-                Digite o tempo da pausa longa:
+                Digite o tempo de descanso:
             </label>
             <PomodoroInput
                 onChange={setRestTime}

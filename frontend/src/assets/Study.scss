@@ -1,8 +1,410 @@
-.study_content {
-    overflow-x: hidden;
+@import './Default.scss';
 
-    &>section {
+/* -------- NOTEBOOK --------*/
+$format-area-width: 2.4rem;
+$editable-width: 60vw;
+$set-page-width: 7rem;
+
+/* -------- CALCULATOR ------ */
+$gray:#D2D3DA;
+$purple: #7F2AD4;
+$white: white;
+$calculator-width: 20rem;
+
+$display-padding: 1rem;
+$display-height: 8rem;
+$previous-operation-font-size: 1.2rem;
+$current-operation-font-size: 3.5rem;
+$display-border-radius: 15px;
+
+$buttons-layout-height: 14rem;
+$buttons-layout-gap: .3rem;
+
+/* -------- POMODORO -----------*/
+$watch-height: 24rem;
+$watch-width: 40rem;
+$watch-margin: 1rem;
+$watch-color: #7F2AD4;
+$watch-border-radius: 1.9rem;
+
+$state-font-size: 1.2rem;
+$state-text-padding: .2rem;
+
+$clock-height: 9rem;
+$clock-width: 22rem;
+$clock-times-font-size: 5rem;
+
+$watch-buttons-margin: 0 0 2rem 0;
+$watch-buttons-font-size: 1.7rem;
+$show-config-font-size: 2.5rem;
+
+$input-area-width: 40rem;
+$input-area-margin: 1rem;
+$input-area-padding: 1.5rem 2rem;
+$input-area-row-gap: 1rem;
+$input-area-border-radius: 1.9rem;
+$input-left-distance: -2rem;
+
+$input-label-font-size: 1.9rem;
+$input-number-font-size: 2rem;
+$input-number-padding: .2rem;
+
+.study_content {
+    .top {
         margin-left: auto;
-        width: 22rem;
+        width: 50vw;
+        .pomodoro {
+            font-family: 'poppins';
+            font-weight: bold;
+            display: flex;
+            position: relative;
+            .container_watch {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: $watch-height;
+                width: $watch-width;
+                margin: $watch-margin;
+                background-color: $watch-color;
+                border-radius: $watch-border-radius;
+                .timer_state {
+                    margin-top: .8rem;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    .state {
+                        color: rgb(156, 156, 156);
+                        font-size: $state-font-size;
+                        font-weight: 500;
+                        text-align: center;
+                        p {
+                            padding: $state-text-padding;
+                        }
+                        hr {
+                            margin-top: 5px;
+                            background-color: rgb(73, 73, 73);
+                            height: 3px;
+                        }
+                        .text_activated {
+                            color: white;
+                        }
+                        .activated {
+                            background-color: white;
+                        }
+                    }
+                }
+                .clock {
+                    display: flex;
+                    height: $clock-height;
+                    width: $clock-width;
+                    margin: auto;
+                    background-color: black;
+                    border-radius: 1rem;
+                    box-shadow: 1px 1px 1px black;
+                    div {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    }
+                    #minutes, #seconds {
+                        font-size: $clock-times-font-size;
+                        color: white;
+                    }
+                }
+                .buttons {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    margin: $watch-buttons-margin;
+                    .black_button {
+                        font-size: $watch-buttons-font-size;
+                        margin: 0 5px;
+                    }
+                    .show_config {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 5px;
+                        background-color: transparent;
+                        font-size: $show-config-font-size;
+                    }
+                }
+            }
+            .input_area {
+                display: grid;
+                grid-template-columns: auto 5rem;
+                grid-template-rows: repeat(3, 1fr);
+                row-gap: $input-area-row-gap;
+                width: $input-area-width;
+                padding: $input-area-padding;
+                margin: $input-area-margin;
+                border-radius: $input-area-border-radius;
+                background-color: $watch-color;
+                position: absolute;
+                transform: translate(-100%, 0);
+                right: 0;
+                left: $input-left-distance;
+                z-index: 2;
+                label {
+                    margin: auto;
+                    text-align: center;
+                    font-size: $input-label-font-size;
+                }
+                .pomodoro_input {
+                    padding: $input-number-padding;
+                    color: white;
+                    background-color: #505050;
+                    border: 1px solid white;
+                    border-radius: 8px;
+                    font-size: $input-number-font-size;
+                    text-align: center;
+                }
+
+            }
+        }
+        .calculator {
+            @extend.poppins;
+            font-weight: 300;
+            display: flex;
+            flex-direction: column;
+            width: $calculator-width;
+            margin-left: auto;
+            margin-right: 1rem;
+            .display {
+                height: $display-height;
+                padding: $display-padding;
+                margin-bottom: .5rem;
+                display: flex;
+                flex-direction: column;
+                font-size: 1.5rem;
+                align-items: end;
+                justify-content: center;
+                box-shadow: 0 1px 3px 1px rgba(60, 64, 67, .15);
+                border-radius: $display-border-radius;
+                p {
+                    display: flex;
+                    align-items: center;
+                }
+                .previous_operation {
+                    height: 30%;
+                    color: $gray;
+                    font-size: $previous-operation-font-size;
+                }
+                .current_operation {
+                    height: 70%;
+                    font-size: $current-operation-font-size;
+                }
+            }
+            .buttons_layout {
+                height: $buttons-layout-height;
+                display: grid;
+                gap: $buttons-layout-gap;
+                grid-template-columns: 3fr 1fr;
+                grid-template-rows: 1fr;
+                .left {
+                    display: grid;
+                    grid-template-rows: calc(20% - ($buttons-layout-gap * 4 / 5)) calc(80% - ($buttons-layout-gap * 4 / 5));
+                    gap: $buttons-layout-gap;
+                    .gray_buttons {
+                        display: grid;
+                        gap: $buttons-layout-gap;
+                        grid-template-columns: repeat(3, 1fr);
+                        button {
+                            background-color: $gray;
+                        }
+                    }
+                    .white_buttons {
+                        display: grid;
+                        gap: $buttons-layout-gap;
+                        grid-template-columns: repeat(3, 1fr);
+                        grid-template-rows: repeat(4, 1fr);
+                        button {
+                            background-color: $white;
+                        }
+                    }
+                }
+                .right {
+                    display: grid;
+                    gap: $buttons-layout-gap;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: repeat(5, 1fr);
+                    button {
+                        background-color: $purple;
+                    }
+                }
+                .arithmetic_button{
+                    border-radius: .7rem;
+                    @extend.poppins;
+                    font-weight: 450;
+                }
+            }
+        }
+        
+    }
+    .notebook {
+        margin: auto;
+        .notebook_header {
+            display: flex;
+            width: calc($editable-width + $format-area-width);        
+            .set_page_area{
+                position: relative;
+                width: $set-page-width;
+                padding-left: calc($set-page-width / 10);
+                .page_index {
+                    @extend .poppins;
+                    position: absolute;
+                    transform: translate(-100%, 0);
+                    left: 100%;
+                    top: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    border-bottom: 1px solid black;
+                    border-left: 1px solid black;
+                    border-bottom-left-radius: 20%;
+                    z-index: 1;
+                }
+                .button_area {
+                    button {
+                        @extend .poppins;
+                        width: calc(100% / 3);
+                        height: 2rem;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: transparent;
+                    }
+                }
+    
+                &::before {
+                    content: '';
+                    display: block;
+                    height: 1rem;
+                    width: 1px;
+                    background-color: black;
+                    position: absolute;
+                    transform: translate(0, -50%);
+                    top: 50%;
+                }
+            }
+            .container_subject {
+                display: flex;
+                height: 2rem;
+                
+                .subject_area {
+                    width: calc($editable-width - $set-page-width);
+                    display: flex;
+                    overflow-y: hidden;
+                    overflow-x: hidden;
+                    &::-webkit-scrollbar-track {
+                        background: transparent;
+                    }
+                    &::-webkit-scrollbar {
+                        height: 3px;
+                    }
+                    .subject {
+                        @extend.poppins;
+                        font-weight: 400;
+                        letter-spacing: -1px;
+                        font-size: .9rem;
+                        margin-top: 4px;
+                        display: inline;
+                        padding: 4px 6px 0 6px;
+                        box-shadow: 0px -2px 3px 0px rgba(60, 64, 67, 0.3);
+                        border-top-left-radius: 10px; 
+                        border-top-right-radius: 10px;
+                        white-space: nowrap;
+                    }
+                }
+                .new_subject_button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1.4rem;
+                    width: $format-area-width;
+                    background-color: transparent;
+                }
+                .new_subject_form {
+                    padding: 1rem;
+                    position: absolute;
+                    transform: translate(-50%, 0);
+                    left: 50vw;
+                    z-index: 1;
+                    box-shadow: 0 2px 6px 2px rgba(60, 64, 67, .15);
+                    background-color: white;
+    
+                    .inputs {
+                        input {
+                            border: 1px solid black;
+                        }
+                    }
+    
+                    .create_subject {
+                        display: block;
+                        margin: 1rem auto;
+                    }
+                }
+                
+            }
+        }
+        .slate_editor {
+            display: flex;
+            .conteiner_format_buttons {
+                display: flex;
+                flex-direction: column;
+                width: 2.4rem;
+                .conteiner_color {
+                    position: relative;
+                    
+                    .color_palette {
+                        position: absolute;
+                        top: 50%;
+                        left: 100%;
+                        transform: translate(0, -50%);
+                        padding: .5rem;
+                        background-color: white;
+                        box-shadow: 0 2px 6px 2px rgba(60, 64, 67, .15);
+                        z-index: 1;
+        
+                        .color_input {
+                            height: 20px;
+                            width: 20px;
+                            border: 1px solid #dadce0;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+                .format_input {
+                    font-size: 1.5rem;
+                    margin: 5px;
+                    background-color: white;
+                }
+            }
+            .editable {
+                width: $editable-width;
+                aspect-ratio: 3 / 3;
+                border: 1px solid black;
+                background-color: white;
+                padding: 2rem 1rem;
+                ul {
+                    list-style-type: disc;
+                    margin-block-start: 1em;
+                    margin-block-end: 1em;
+                    padding-inline-start: 40px;
+                    unicode-bidi: isolate;
+                }
+                ol {
+                    margin: 1em 0;
+                    padding-left: 40px; 
+                    list-style-type: decimal; 
+                }
+                li {
+                    margin: 0.5em 0;
+                }
+            }
+        }
     }
 }

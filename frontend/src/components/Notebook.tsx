@@ -5,9 +5,8 @@ import { withHistory } from 'slate-history';
 import SlateEditor from './SlateEditor';
 import SelectSubjectArea from './SelectSubjectArea';
 import { NotebookContent, NotebookContextType } from '../assets/NotebookTemplate';
-import {Notebook as NotebookClass} from '../assets/Notebook';
+import {Notebook as NotebookClass} from '../assets/NotebookClass';
 import SetPage from './SetPage';
-import '../assets/Notebook.scss';
 
 export const NotebookContext = createContext<NotebookContextType>({
     editor: {} as ReactEditor,

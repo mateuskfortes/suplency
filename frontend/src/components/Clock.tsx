@@ -67,6 +67,7 @@ const Clock = () => {
     function resetTimer() {
         setCurrentSequenceIndex(0)
         setIsStarted(false)
+        setTimerState('')
         fillSequence()
         setFormattedTime(new Time(times.focus).formatTime())
     }
@@ -107,7 +108,7 @@ const Clock = () => {
             pauseTimer,
             resetTimer,
         }}>
-            <div className="conteiner_watch">
+            <div className="container_watch">
                 <TimerState />
                 <div className="clock">
                     <div>
