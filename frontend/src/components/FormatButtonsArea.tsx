@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { NotebookContext } from "./Notebook"
-import CustomSlate, { fontSizes } from "../assets/CustomSlate"
+import CustomSlate, { fontSizes, fontFamilies } from "../assets/CustomSlate"
 import FormatInput from "./FormatInput"
 import ColorInput from "./ColorInput";
 import SelectInput from "./SelectInput";
@@ -23,6 +23,7 @@ const FormatButtonsArea = () => {
     const toggleSuperscript = () => CustomSlate.toggleScriptType(editor, 'superscript')
     const toggleSubscript = () => CustomSlate.toggleScriptType(editor, 'subscript')
     const setFontSize = (fontSize: string) => CustomSlate.setFontSize(editor, fontSize)
+    const setFontFamily = (fontFamily: string) => CustomSlate.setFontFamily(editor, fontFamily)
 
     return (
         <div className="conteiner_format_buttons">
@@ -35,6 +36,7 @@ const FormatButtonsArea = () => {
             <FormatInput children={<RiSubscript2 />} onClick={toggleSubscript} />
             <ColorInput children={<MdFormatColorText />} />
             <SelectInput options={fontSizes.sizes} onChange={setFontSize} defaultValue={fontSizes.default} />
+            <SelectInput options={fontFamilies.fonts} onChange={setFontFamily} defaultValue={fontFamilies.default} />
         </div>
     )
 }

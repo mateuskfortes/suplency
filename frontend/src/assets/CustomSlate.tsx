@@ -11,13 +11,19 @@ export const colors = {
     ],
 };
 
-// Definir os tipos para o texto e os elementos customizados
+export const fontFamilies = {
+    fonts: ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana'],
+    default: 'Arial',
+};
+
+
 interface CustomText {
     text: string;
     bold?: boolean;
     italic?: boolean;
     color?: string;
     fontSize?: string;
+    fontFamily?: string;
     superscript?: boolean;
     subscript?: boolean;
     underline?: boolean
@@ -111,7 +117,12 @@ const CustomSlate = {
     setFontSize(editor: Editor, fontSize: string) {
         if (fontSize === fontSizes.default) Editor.removeMark(editor, 'fontSize');
         else Editor.addMark(editor, 'fontSize', fontSize);
-    }
+    },
+
+    setFontFamily(editor: Editor, fontFamily: string) {
+        if (fontFamily === fontFamilies.default) Editor.removeMark(editor, 'fontFamily');
+        else Editor.addMark(editor, 'fontFamily', fontFamily);
+    },
 };
 
 export default CustomSlate;
