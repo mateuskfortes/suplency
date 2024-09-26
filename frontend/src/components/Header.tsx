@@ -10,7 +10,7 @@ export default function Header() {
                 <div className="interface">
                     <span className="logo">
                         <Link to='/'>
-                            <img src={"/icons/suplency.png"}  alt="Suplency logo"/>
+                            <img src={"/static/icons/suplency.png"}  alt="Suplency logo"/>
                         </Link>
                     </span>
 
@@ -19,13 +19,13 @@ export default function Header() {
                             <li><Link to='#'>Suporte</Link></li>
                             <li><Link to='#'>Como usar?</Link></li>
                             <li><Link to='#'>Quem somos?</Link></li>
-                            <li><Link to='/account/login/'>Login</Link></li>
+                            <li><a href='/account/sing-in/'>Login</a></li>
                         </ul>
                     </nav>
 
-                    <Link to="/account/singup/" className="registration_space">
+                    <a href="/account/sing-up/" className="registration_space">
                         <span className="button register_button">Cadastre-se</span>
-                    </Link>
+                    </a>
                 </div>
             </header>
         </>

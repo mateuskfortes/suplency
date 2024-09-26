@@ -8,7 +8,7 @@ export default function Footer() {
             <section className="attachments">
                 <div className="navigate">
                     <div className="social_media">
-                        <img className="logo" src={'/icons/suplency.png'} alt="Suplency logo"/>
+                        <img className="logo" src={'/static/icons/suplency.png'} alt="Suplency logo"/>
                         <div className="content">   
                             <p>Encontre a Suplency nas redes sociais</p>
                             <ul className="links_social_media">
