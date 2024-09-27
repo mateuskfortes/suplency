@@ -386,6 +386,7 @@ const Notebook = () => {
                 <div className="notebook_header">
                     <SelectSubjectArea />
                     <SetPage />
+                    <SetPage />
                 </div>
                 <SlateEditor  />
             </div>

@@ -3,7 +3,7 @@ import { NotebookContext } from "./Notebook"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi";
 import { RiPagesLine } from "react-icons/ri";
 
-const SetPage = ({save}: any) => {
+const SetPage = () => {
     const { notebookObj, currentPageIndex } = useContext(NotebookContext)
 
     const previousPage = () => notebookObj?.setCurrentPage(currentPageIndex-1)
@@ -17,7 +17,6 @@ const SetPage = ({save}: any) => {
                 <button onClick={previousPage}><PiArrowLeftBold /></button>
                 <button onClick={nextPage}><PiArrowRightBold /></button>
                 <button onClick={addPage}><RiPagesLine /></button>
-                <button onClick={save}>Salvar</button>
             </div>
         </div>
     )
