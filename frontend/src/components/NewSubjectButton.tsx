@@ -13,7 +13,7 @@ const NewSubjectButton = () => {
 
     const handlerCreateSubject = (e: any) => {
         e.preventDefault();
-        notebookObj.addSubject(newName);
+        notebookObj?.addSubject(newName);
         setNewName(defaultName);
         setIsFormVisible(false);
     };

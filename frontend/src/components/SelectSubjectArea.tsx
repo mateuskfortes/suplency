@@ -23,7 +23,7 @@ const SelectSubjectArea = () => {
             <NewSubjectButton />
             <div className="subject_area" ref={subjArea} >
                 {
-                    notebookObj.getSubjectsContentArray().map(
+                    notebookObj?.getSubjectsContentArray().map(
                         ({id, name}) => <Subject key={id} id={id} subjectName={name} start={true} />
                     )
                 }

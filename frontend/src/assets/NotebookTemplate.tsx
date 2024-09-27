@@ -39,7 +39,7 @@ export interface NotebookContent {
 export interface NotebookContextType {
     editor: ReactEditor;
     editable: MutableRefObject<HTMLDivElement | null>;
-    notebookObj: Notebook
+    notebookObj: Notebook | null
     currentPageIndex: number;
     currentSubjectId: string;
 }

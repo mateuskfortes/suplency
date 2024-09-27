@@ -163,4 +163,25 @@ export class Notebook {
         this.setCurrentSubject(String(this.currentNegativeSubjectId))
         this.updateEditorContent()
     }
+
+    getNotebookContent() {
+        let subjectsContent: Record<string, SubjectContent> = {}
+
+        Object.keys(this.subjects).forEach((subjectId: string) => {
+            const subject = this.subjects[subjectId]
+            subjectsContent[subjectId] = {
+                name: subject.name,
+                currentPageIndex: subject.currentPageIndex,
+                pages: subject.pages.map((page) => ({
+                    id: page.id,
+                    content: page.content,
+                })),
+            }
+        })
+
+        return {
+            currentSubjectId: this.currentSubjectId,
+            subjects: subjectsContent,
+        }
+    }
 }
