@@ -78,7 +78,6 @@ $input-number-font-size: 1.7rem;
 $input-number-padding: .2rem;
 
 .study_content {
-    @extend.poppins;
     .top {
         display: flex;
         width: $content-width;
@@ -480,6 +479,9 @@ $input-number-padding: .2rem;
                 }
                 li {
                     margin: 0.5em 0;
+                }
+                u {
+                    text-decoration: underline;
                 }
             }
         }

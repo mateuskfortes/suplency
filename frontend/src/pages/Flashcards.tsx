@@ -6,27 +6,32 @@ import '../assets/Flashcards.scss'
 import NewFlashcard from "../components/NewFlashcard"
 
 const flashcardsCont = [
-	{
-		id: '1',
-		question: "Quem é viado?",
-		answer: "José",
-	},
-	{
-		id: '2',
-		question: "Quantos anus você tem?",
-		answer: "1 e ele é grande",
-	},
-	{
-		id: '3',
-		question: 'Nenê?',
-		answer: 'Buaaaaaaaaaaaaaa',
-	},
-	{
-		id: '4',
-		question: 'O que o arthur falou da professora?',
-		answer:'Vagabunda',
-	}
-]
+    {
+        id: '1',
+        question: "Qual é a capital do Brasil?",
+        answer: "Brasília",
+    },
+    {
+        id: '2',
+        question: "Quantos continentes existem no mundo?",
+        answer: "7",
+    },
+    {
+        id: '3',
+        question: "Quem escreveu 'Dom Quixote'?",
+        answer: "Miguel de Cervantes",
+    },
+    {
+        id: '4',
+        question: "O que é fotossíntese?",
+        answer: "Processo pelo qual as plantas produzem seu alimento utilizando luz solar, água e dióxido de carbono.",
+    },
+    {
+        id: '5',
+        question: "Qual o maior planeta do sistema solar?",
+        answer: "Júpiter",
+    }
+];
 
 export const FlashcardsContext = createContext({
 	flashcards: [{id: '', question: '', answer: ''}],

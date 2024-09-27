@@ -18,7 +18,7 @@ const SlateEditor = () => {
 
     return (
         <div className="slate_editor">
-            <Slate editor={editor} initialValue={notebookObj?.getContent() || []}>
+            <Slate editor={editor} initialValue={notebookObj.getContent()} onChange={r => console.log(notebookObj.getNotebookContent())}>
                 <FormatButtonsArea />
                 <Editable 
                     className="editable"
