@@ -28,7 +28,7 @@ const jsonData: NotebookContent = {
                     content: [
                         {
                             type: 'paragraph', 
-                            children: [{ text: 'faaaaaaaaaaaaaaaaaaaalassssssss',  }],
+                            children: [{ text: 'Página 1',  }],
                         },
                     ],
                 },
@@ -37,7 +37,7 @@ const jsonData: NotebookContent = {
                     content: [
                         {
                             type: 'paragraph', 
-                            children: [{ text: 'segunda né pae  kkkkkkkkkkkk' }],
+                            children: [{ text: 'Página 2' }],
                         },
                     ]
                 },
