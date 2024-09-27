@@ -5,28 +5,33 @@ import Footer from "../components/Footer"
 import '../assets/Flashcards.scss'
 import NewFlashcard from "../components/NewFlashcard"
 
-const flashcardsCont = [
-	{
-		id: '1',
-		question: "Quem é viado?",
-		answer: "José",
-	},
-	{
-		id: '2',
-		question: "Quantos anus você tem?",
-		answer: "1 e ele é grande",
-	},
-	{
-		id: '3',
-		question: 'Nenê?',
-		answer: 'Buaaaaaaaaaaaaaa',
-	},
-	{
-		id: '4',
-		question: 'O que o arthur falou da professora?',
-		answer:'Vagabunda',
-	}
-]
+const flashcardsC = [
+    {
+        id: '1',
+        question: "Qual é a capital do Brasil?",
+        answer: "Brasília",
+    },
+    {
+        id: '2',
+        question: "Quantos continentes existem no mundo?",
+        answer: "7",
+    },
+    {
+        id: '3',
+        question: "Quem escreveu 'Dom Quixote'?",
+        answer: "Miguel de Cervantes",
+    },
+    {
+        id: '4',
+        question: "O que é fotossíntese?",
+        answer: "Processo pelo qual as plantas produzem seu alimento utilizando luz solar, água e dióxido de carbono.",
+    },
+    {
+        id: '5',
+        question: "Qual o maior planeta do sistema solar?",
+        answer: "Júpiter",
+    }
+];
 
 export const FlashcardsContext = createContext({
 	flashcards: [{id: '', question: '', answer: ''}],
@@ -37,7 +42,7 @@ export const FlashcardsContext = createContext({
 
 const Flashcards = () => {
 	const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(NaN)
-	const [flashcards, setFlashcards] = useState(flashcardsCont)
+	const [flashcards, setFlashcards] = useState(flashcardsC)
 	const [isRunning, setIsRunning] = useState(false)
 	const [isNewFlashcardVisible, setIsNewFlashcardVisible] = useState(false)
 	const [currentNewId, setCurrentNewId] = useState(-1)
@@ -70,7 +75,7 @@ const Flashcards = () => {
 		  });
 	}
 
-	const deleteFlashcard = (id: string) => setFlashcards(flashcards.filter(fc => fc.id !== id))
+	const deleteFlashcard = (id: string) => setFlashcards(flashcards.filter((fc: any) => fc.id !== id))
 
 	const deleteAll = () => {
 		if(window.confirm('Tem certeza que deseja excluir todos os flashcards?')) {
@@ -101,7 +106,7 @@ const Flashcards = () => {
 							</div>
 							:
 							<div className="flashcard_container">
-								{flashcards.map(fc => <Flashcard key={fc.id} id={fc.id} question={fc.question} answer={fc.answer} show />)}
+								{flashcards.map((fc: any) => <Flashcard key={fc.id} id={fc.id} question={fc.question} answer={fc.answer} show />)}
 							</div>
 						}
 						{flashcards.length == 0 && <div className="warning"><p>Nenhum flashcard aqui</p></div>}

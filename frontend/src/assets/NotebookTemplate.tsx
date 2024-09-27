@@ -4,12 +4,20 @@ import { ReactEditor } from 'slate-react';
 import { Notebook } from './NotebookClass';
 
 interface ParagraphElement {
-    type: 'paragraph';
+    type: 'paragraph' | 'numbered-list';
     children: CustomText[];
 }
 
 type CustomElement = ParagraphElement;
-type CustomText = { text: string };
+type CustomText = { 
+    children?: CustomText[], 
+    italic?: boolean, 
+    color?: string, 
+    type?: string, 
+    text?: string, 
+    bold?: boolean, 
+    fontFamily?: string, 
+    fontSize?: string };
 
 declare module 'slate' {
     interface CustomTypes {
@@ -39,7 +47,7 @@ export interface NotebookContent {
 export interface NotebookContextType {
     editor: ReactEditor;
     editable: MutableRefObject<HTMLDivElement | null>;
-    notebookObj: Notebook | null
+    notebookObj: Notebook
     currentPageIndex: number;
     currentSubjectId: string;
 }

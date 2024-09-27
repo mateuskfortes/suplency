@@ -9,7 +9,7 @@ const Subject = ({ id, subjectName, start=false }: any) => {
     const setEditable = () => setIsEditable(true)
     const setNotEditable = () =>{
         setIsEditable(false)
-        if (subjectContainer.current) notebookObj.setSubjectName(id, subjectContainer.current.textContent)
+        if (subjectContainer.current) notebookObj?.setSubjectName(id, subjectContainer.current.textContent)
     }
 
     useEffect(() => { if (subjectContainer.current) subjectContainer.current.focus() } , [])
