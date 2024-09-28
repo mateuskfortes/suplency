@@ -8,6 +8,7 @@ export const CalculatorContext = createContext({
     currentExpression: '',
     previousExpression: '',
     appendToExpression: (input: string) => {console.log(input)},
+    revertExpression: () => {},
     deleteLastCharacter: () => {},
     clearExpression: () => {},
     evaluateExpression: () => {},
@@ -22,7 +23,8 @@ function Calculator() {
             ',': '.',
             'x': '*',
             '%': '/100',
-            '÷': '/'
+            '÷': '/',
+            'revert': '-',
         } : {
             '.': ',',
         };
@@ -36,6 +38,10 @@ function Calculator() {
 
     function appendToExpression(input: string) {
         setCurrentExpression(prev => prev + input);
+    }
+
+    function revertExpression() {
+        setCurrentExpression(prev => 'revert(' + prev + ')')
     }
 
     function deleteLastCharacter() {
@@ -67,6 +73,7 @@ function Calculator() {
             currentExpression,
             previousExpression,
             appendToExpression,
+            revertExpression,
             deleteLastCharacter,
             clearExpression,
             evaluateExpression

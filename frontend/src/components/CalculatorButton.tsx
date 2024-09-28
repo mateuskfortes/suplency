@@ -9,10 +9,11 @@ interface ArithmeticButtonProps {
 }
 
 const CalculatorButton = ({ children, value, func }: ArithmeticButtonProps) => {
-    const { appendToExpression } = useContext(CalculatorContext)
+    const { appendToExpression, revertExpression } = useContext(CalculatorContext)
 
     function handleCLick() {
-        if (value) appendToExpression(value)
+        if (value === '+/-') revertExpression()
+        else if(value) appendToExpression(value)
     }
 
     return (

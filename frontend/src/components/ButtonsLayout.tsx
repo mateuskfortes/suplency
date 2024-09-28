@@ -12,7 +12,7 @@ const ButtonsLayout = memo(() => {
             <section className="left">
                 <div className="gray_buttons">
                     <CalculatorButton func={clearExpression} value="AC" />
-                    <CalculatorButton value="none" children="+/-" />
+                    <CalculatorButton value="+/-" children="+/-" />
                     <CalculatorButton value="%" />
                 </div>
                 <div className="white_buttons">
