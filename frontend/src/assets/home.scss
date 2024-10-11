@@ -1,3 +1,5 @@
+@import './default.scss';
+
 .section_top {
     display: flex;
     height: calc(100vh - var(--tamanho_header));
@@ -26,11 +28,12 @@
     }
 
     .introduction_text {
-    text-indent: 1rem;
-    font-size: 1.5rem;
+        @extend .poppins;
+        text-indent: 1rem;
+        font-size: 1.4rem;
         padding: 1.5rem 0;
-        font-family: 'Source Sans Pro';
         line-height: 150%;
+        font-weight: 400;
         letter-spacing: -0.03em;
     }
 

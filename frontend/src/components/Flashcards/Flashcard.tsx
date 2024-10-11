@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { MdDeleteForever } from "react-icons/md";
-import { FlashcardsContext } from "../pages/Flashcards";
+import { FlashcardsContext } from "../../pages/Flashcards";
 
 interface types {
 	id: string,

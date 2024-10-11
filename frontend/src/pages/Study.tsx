@@ -1,8 +1,8 @@
 import Header from "../components/Header.tsx"
 import Footer from "../components/Footer.tsx"
-import Pomodoro from "../components/Pomodoro.tsx"
-import Calculator from "../components/Calculator.tsx"
-import Notebook from "../components/Notebook.tsx"
+import Pomodoro from "../components/Pomodoro/Pomodoro.tsx"
+import Calculator from "../components/Calculator/Calculator.tsx"
+import Notebook from "../components/Notebook/Notebook.tsx"
 import { Link } from "react-router-dom"
 import '../assets/Study.scss'
 

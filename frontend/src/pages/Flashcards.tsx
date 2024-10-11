@@ -1,9 +1,9 @@
 import { createContext, useEffect, useState } from "react"
-import Flashcard from "../components/Flashcard"
+import Flashcard from "../components/Flashcards/Flashcard"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import '../assets/Flashcards.scss'
-import NewFlashcard from "../components/NewFlashcard"
+import NewFlashcard from "../components/Flashcards/NewFlashcard"
 
 const flashcardsC = [
     {

@@ -4,8 +4,8 @@ import { ReactEditor, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import SlateEditor from './SlateEditor';
 import SelectSubjectArea from './SelectSubjectArea';
-import { NotebookContent, NotebookContextType } from '../assets/NotebookTemplate';
-import {Notebook as NotebookClass} from '../assets/NotebookClass';
+import { NotebookContent, NotebookContextType } from '../../assets/NotebookTemplate';
+import {Notebook as NotebookClass} from '../../assets/NotebookClass';
 import SetPage from './SetPage';
 
 export const NotebookContext = createContext<NotebookContextType>({

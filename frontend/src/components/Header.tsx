@@ -19,13 +19,13 @@ export default function Header() {
                             <li><Link to='#'>Suporte</Link></li>
                             <li><Link to='#'>Como usar?</Link></li>
                             <li><Link to='#'>Quem somos?</Link></li>
-                            <li><a href='/account/sing-in/'>Login</a></li>
+                            <li><Link to='/account/login/'>Login</Link></li>
                         </ul>
                     </nav>
 
-                    <a href="/account/sing-up/" className="registration_space">
+                    <Link to="/account/sing-up/" className="registration_space">
                         <span className="button register_button">Cadastre-se</span>
-                    </a>
+                    </Link>
                 </div>
             </header>
         </>

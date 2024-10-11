@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { FlashcardsContext } from "../pages/Flashcards"
+import { FlashcardsContext } from "../../pages/Flashcards"
 
 const NewFlashcard = () => {
     const {addFlashcard, toggleIsNewFlashcardVisible} = useContext(FlashcardsContext)

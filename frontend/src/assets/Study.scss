@@ -42,7 +42,7 @@ $calculator-width: 25rem;
 $display-padding: 1rem;
 $display-height: 8rem;
 $previous-operation-font-size: 1.2rem;
-$current-operation-font-size: 3.5rem;
+$current-operation-font-size: 50px; // Put in px or it won't work
 $display-border-radius: 15px;
 
 $buttons-layout-height: 14rem;
@@ -244,11 +244,9 @@ $input-number-padding: .2rem;
                 overflow-x: hidden;
                 .display {
                     height: $display-height;
-                    padding: $display-padding;
                     margin-bottom: .5rem;
                     display: flex;
                     flex-direction: column;
-                    font-size: 1.5rem;
                     align-items: end;
                     justify-content: center;
                     box-shadow: 0 1px 3px 1px rgba(60, 64, 67, .15);
@@ -256,6 +254,7 @@ $input-number-padding: .2rem;
                     p {
                         display: flex;
                         align-items: center;
+                        padding: $display-padding;
                     }
                     .previous_operation {
                         height: 30%;
