@@ -1,0 +1,71 @@
+$default-font-weight: 400;
+
+$section-margin: 2rem 0;
+$section-width: 30rem;
+
+$label-color: #8A92A6;
+$h2-font-size: 1.1rem;
+$h2-margin: 1rem 0;
+
+$input-height: 2rem;
+$input-padding: 0 1rem;
+$input-margin: 0 0 .5rem 0;
+$input-border-radius: calc($input-height / 2);
+$input-font-size: 1.1rem;
+
+$submit-margin: 2rem auto;
+
+$subtext-margin: 1rem 0;
+$subtext-font-size: .9rem;
+
+@import './default.scss';
+
+.account_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    section {
+        @extend.poppins;
+        width: $section-width;
+        margin: $section-margin;
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            color: $label-color;
+            font-weight: $default-font-weight;
+            font-size: $h2-font-size;
+            text-align: center;
+            margin: $h2-margin;
+        }
+        .input_container {
+            color: $label-color;
+            font-weight: $default-font-weight;
+            input {
+                @extend.poppins;
+                display: flex;
+                width: 100%;
+                height: $input-height;
+                margin: $input-margin;
+                padding: $input-padding;
+                border: 1px solid black;
+                border-radius: $input-border-radius;
+                align-items: center;
+                font-size: $input-font-size;
+                letter-spacing: 0;
+            }
+        }
+        button {
+            @extend.black_button;
+            display: flex;
+            margin: $submit-margin;
+        }
+        p {
+            margin: $subtext-margin;
+            color: $label-color;
+            font-weight: $default-font-weight;
+            font-size: $subtext-font-size;
+            text-align: center;
+        }
+    }
+}

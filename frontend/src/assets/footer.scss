@@ -1,0 +1,81 @@
+.attachments {
+    font-family: 'Rubik';
+    display: flex;
+    margin: 7vh 0 20vh 0;
+    width: 100%;
+    font-size: 1.4rem;
+
+}
+
+/* NAVIGATE */
+
+.navigate {
+    display: flex;
+    width: 40rem;
+}
+
+.suplency_navigate {
+    width: 10rem;
+    margin: auto;
+    margin-top: 20vh;
+}
+
+.suplency_navigate li {
+    line-height: 2rem;
+}
+
+.social_media {
+    width: 27vw;
+    padding: 3vw;
+}
+
+.social_media .logo {
+    width: 20vw;
+}
+
+.social_media .content {
+    padding: 0 2.5vw;
+}
+
+.links_social_media {
+    display: flex;
+}
+
+.links_social_media .link img{
+    width: 3rem;
+}
+
+/* SUPPORT */
+
+.support {
+    margin: auto;
+}
+
+.support_tittle {
+    font-size: 2.6rem;
+}
+
+.input_box {
+    all: unset;
+    border: 3px solid black;
+    border-radius: 40px;
+    width: 20rem;
+    padding: 1rem 1.5rem;
+}
+
+/*------*/
+
+footer {
+    hr {
+        background: black;
+        height: 3px;
+        margin-bottom: 8vh;
+    }
+    ol, ul {
+        list-style-type: none;
+    }
+
+    a{
+        color: black;
+    }
+}

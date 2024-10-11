@@ -1,0 +1,168 @@
+@import './default.scss';
+
+$main-min-height: 100vh;
+
+$button-area-width: 18rem;
+$button-area-padding: 40vh 0 0 0;
+$button-area-button-width: 13rem;
+$button-area-button-margin: .5rem 0;
+
+$flashcard-container-gap: 1.8rem;
+
+$flashcard-height: 14rem;
+$flashcard-width: 30rem;
+$flashcard-background-color: #212225;
+$flashcard-border-radius: 14px;
+
+$flashcard-shadow-color: #FFDC58;
+$flashcard-shadow-height: 95%;
+$flashcard-shadow-width: 95%;
+$flashcard-shadow-top: calc($flashcard-height - $flashcard-shadow-height + 1rem);
+$flashcard-shadow-left: calc($flashcard-width - $flashcard-shadow-width + 1rem);
+
+$flashcard-delete-font-size: 1.5rem;
+$flashcard-delete-padding: 0 1rem;
+
+$flashcard-question-font-size: 2rem;
+$flashcard-question-font-weight: 600;
+$flashcard-answer-font-size: 1rem;
+$flashcard-answer-font-weight: 400;
+
+$flashcard-button-font-size: 1.2rem;
+$flashcard-button-height: 3rem;
+
+$new-flashcard-container-background-color: rgb(0, 0, 0, 0.7);
+$new-flashcard-button-area-margin: 2rem 0;
+
+$warning-no-flashcards-font-size: 1.4rem;
+
+.flashcards {
+	@extend.poppins;
+	display: flex;
+	min-height: $main-min-height;
+	&>.button_area {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: $button-area-padding;
+		width: $button-area-width;
+		button {
+			@extend.white_button;
+			width: $button-area-button-width;
+			margin: $button-area-button-margin;
+		}
+	}
+	.flashcard_area {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		.flashcard {
+			position: relative;
+			width: $flashcard-width;
+			height: $flashcard-height;
+			border-radius: $flashcard-border-radius;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			background-color: $flashcard-background-color;
+			.delete {
+				position: absolute;
+				transform: translate(-100%, 0);
+				left: 100%;
+				top: 0;
+				padding: $flashcard-delete-padding;
+				font-size: $flashcard-delete-font-size;
+				cursor: pointer;
+			}	
+			.content {
+				margin: auto auto;
+				color: white;
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+				.question {
+					display: block;
+					text-align: center;
+					background: none;
+					font-size: $flashcard-question-font-size;
+					font-weight: $flashcard-question-font-weight;
+					color: inherit;
+					width: 100%;
+					word-wrap: break-word;
+					overflow-wrap: break-word;
+				}
+				.answer {
+					display: block;
+					text-align: center;
+					background: none;
+					font-size: $flashcard-answer-font-size;
+					font-weight: $flashcard-answer-font-weight;
+					color: inherit;
+					width: 100%;
+				}
+			}
+			hr {
+				height: 1px;
+				width: 100%;
+				background-color: gray;
+			}
+			button {
+				color: white;
+				height: $flashcard-button-height;
+				font-size: $flashcard-button-font-size;
+				background-color: transparent;
+			}
+			&::before {
+				content: '';
+				position: absolute;
+				height: $flashcard-shadow-height;
+				width: $flashcard-shadow-width;
+				top: $flashcard-shadow-top;
+				left: $flashcard-shadow-left;
+				background-color: $flashcard-shadow-color;
+				z-index: -1;
+			}
+		}
+		.flashcard_container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: $flashcard-container-gap;
+			justify-content: center;
+		}
+		.new_flashcard_container {
+			position: fixed;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			left: 0;
+			background-color: $new-flashcard-container-background-color;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			z-index: 2;
+			.button_area {
+				margin: $new-flashcard-button-area-margin;
+				button {
+					@extend.black_button;
+					background-color: transparent;
+					border-color: white;
+				}
+			}
+		}
+		.warning {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: gray;
+			font-size: $warning-no-flashcards-font-size;
+		}
+	}
+}
