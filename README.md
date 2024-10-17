@@ -3,7 +3,7 @@ Uma plataforma de estudos com foco em otimizar o tempo do estudante.
 
 ## Como executar o projeto
 Já tendo o python instalado no computador.
-1. No terminal, clone o repositorio:
+1. No terminal, clone o repositório:
 ```
 git clone https://github.com/mateuskfortes/suplency.git
 ```
