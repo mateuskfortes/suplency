@@ -5,7 +5,7 @@ Uma plataforma de estudos com foco em otimizar o tempo do estudante.
 
 No terminal execute:
 ```
-pip install requeriments.txt
+pip install -r requeriments.txt
 ```
 
 Em seguida navegue para a pasta backend:
