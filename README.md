@@ -3,22 +3,27 @@ Uma plataforma de estudos com foco em otimizar o tempo do estudante.
 
 ## Como executar o projeto
 Já tendo o python instalado no computador.
-No terminal clone o repositorio:
+1. No terminal, clone o repositorio:
 ```
 git clone https://github.com/mateuskfortes/suplency.git
 ```
 
-Baixe os requerimentos:
+2. Navegue para a pasta base:
+```
+cd suplency
+```
+
+3. Baixe os requerimentos:
 ```
 pip install -r requeriments
 ```
 
-Em seguida navegue para a pasta backend:
+4. Navegue para a pasta backend:
 ```
 cd backend
 ```
 
-E execute:
+5. Execute o servidor:
 ```
 python manage.py runserver
 ```
