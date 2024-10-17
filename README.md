@@ -3,13 +3,16 @@
 ## Como executar o projeto
 
 No terminal execute:
-
 ```
 pip install requeriments.txt
 ```
 
-Em seguida navegue para a pasta backend e execute:
+Em seguida navegue para a pasta backend:
+```
+cd backend
+```
 
+E execute:
 ```
 python manage.py runserver
 ```
