@@ -1,4 +1,5 @@
 # suplency
+Uma plataforma de estudos com foco em otimizar o tempo do estudante.
 
 ## Como executar o projeto
 
