@@ -1,8 +1,8 @@
-const AccountInput = ({id, label}: any) => {
+const AccountInput = ({id, label, onChange }: any) => {
     return (
         <div className="input_container">
             <label htmlFor={id}>{label}</label>
-            <input id={id} type="text" />
+            <input id={id} onChange={onChange} type="text" />
         </div>
     )
 }

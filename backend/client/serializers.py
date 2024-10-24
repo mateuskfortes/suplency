@@ -21,7 +21,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
+    nameOrEmail = serializers.CharField(max_length=255)
     password = serializers.CharField(
         label=_("Password"),
         trim_whitespace=False,
@@ -30,18 +30,18 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, data):
-        username = data.get('email')
+        nameOrEmail = data.get('nameOrEmail')
         password = data.get('password')
-
-        if username and password:
+        print(nameOrEmail, password)
+        if nameOrEmail and password:
             user = authenticate(request=self.context.get('request'),
-                                username=username, password=password)
+                                username=nameOrEmail, 
+                                password=password)
             if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
         else:
             msg = _('Must include "username" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
-
         data['user'] = user
         return data

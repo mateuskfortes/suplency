@@ -46,7 +46,7 @@ class Subject(models.Model):
 class Page(models.Model):
     number = models.PositiveIntegerField(null=False)
     color = models.CharField(max_length=32, default='white')
-    content = models.TextField(default='<p></p>')
+    content = models.JSONField(null=True)
 
     subject = models.ForeignKey('Subject', null=False, on_delete=models.CASCADE, related_name='page')
 
