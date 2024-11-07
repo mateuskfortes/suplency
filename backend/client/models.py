@@ -33,21 +33,21 @@ class Notebook(models.Model):
     user = models.OneToOneField('User', null=False, on_delete=models.CASCADE, related_name='notebook')
 
 class Subject(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=32, default='New subject')
     color = models.CharField(max_length=32, default='white')
-
     last_page = models.ForeignKey(
         'Page',
         null=True,
         on_delete=models.SET_NULL,
         related_name='last_subject')
-    notebook = models.ForeignKey('Notebook', null=False, on_delete=models.CASCADE, related_name='subject')
+    notebook = models.ForeignKey('Notebook', null=True, on_delete=models.CASCADE, related_name='subject')
 
 class Page(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     number = models.PositiveIntegerField(null=False)
     color = models.CharField(max_length=32, default='white')
     content = models.JSONField(null=True)
-
     subject = models.ForeignKey('Subject', null=False, on_delete=models.CASCADE, related_name='page')
 
     class Meta:

@@ -2,10 +2,13 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from .models import Notebook, Subject
+import uuid
 
 UserModel = get_user_model()
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    # recebe os parametros no modelo {username:user, email:email, password:password}
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -18,6 +21,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
         )
+        Notebook.objects.create(user=user)
         return user
 
 class LoginSerializer(serializers.Serializer):
@@ -32,7 +36,6 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         nameOrEmail = data.get('nameOrEmail')
         password = data.get('password')
-        print(nameOrEmail, password)
         if nameOrEmail and password:
             user = authenticate(request=self.context.get('request'),
                                 username=nameOrEmail, 
@@ -45,3 +48,24 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg, code='authorization')
         data['user'] = user
         return data
+
+
+class SubjectSerializer(serializers.Serializer):
+    class Meta:
+        model = Subject
+        fields = ('name', 'color', 'notebook')
+
+    def create(self, validated_data):
+        subject = Subject.objects.create(
+            name=validated_data.get('name', 'New Subject'),
+            color=validated_data.get('color', 'white'),
+            notebook=validated_data.get('notebook')
+        )
+        return subject
+    
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.color = validated_data.get('color', instance.color)
+        instance.notebook = validated_data.get('notebook', instance.notebook)
+        instance.save()
+        return instance
