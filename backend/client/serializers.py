@@ -1,14 +1,14 @@
+import uuid
+from django.db.models import F
 from rest_framework import serializers
+from .models import Notebook, Subject, Page
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from .models import Notebook, Subject
-import uuid
 
 UserModel = get_user_model()
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    # recebe os parametros no modelo {username:user, email:email, password:password}
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -48,24 +48,72 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg, code='authorization')
         data['user'] = user
         return data
+    
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = ('number', 'color', 'content', 'subject')
+        
+    def create(self, validated_data):
+        validated_data['id'] = uuid.uuid4()
+        
+        # update the page number of pages in front of the new page
+        Page.objects.filter(subject=validated_data['subject'], number__gte=validated_data['number']).update(number=F('number') + 1)
+        
+        page = Page.objects.create(**validated_data)
+        return page
+    
+    def update(self, instance, validated_data):
+        # Update the page number
+        new_number = validated_data.get('number', instance.number)
+        if new_number > instance.number:
+            Page.objects.filter(subject=instance.subject, number__gt=instance.number, number__lte=new_number).update(number=F('number') - 1)
+        elif new_number < instance.number:
+            Page.objects.filter(subject=instance.subject, number__lt=instance.number, number__gte=new_number).update(number=F('number') + 1)
+        instance.number = new_number
+        
+        instance.color = validated_data.get('color', instance.color)
+        instance.content = validated_data.get('content', instance.content)
+        instance.save()
+        return instance
 
-
-class SubjectSerializer(serializers.Serializer):
+class SubjectSerializer(serializers.ModelSerializer):
+    page = PageSerializer(many=True, read_only=True)
+    notebook = serializers.PrimaryKeyRelatedField(queryset=Notebook.objects.all(), write_only=True)
+    
     class Meta:
         model = Subject
-        fields = ('name', 'color', 'notebook')
+        fields = ('name', 'color', 'last_page', 'notebook', 'page')
 
+    # return the subject and its first page
+    
     def create(self, validated_data):
-        subject = Subject.objects.create(
-            name=validated_data.get('name', 'New Subject'),
-            color=validated_data.get('color', 'white'),
-            notebook=validated_data.get('notebook')
-        )
-        return subject
+        validated_data['id'] = uuid.uuid4()
+        subject = Subject.objects.create(**validated_data)
+        
+        page = Page.objects.create(number=0, subject=subject)
+        subject.last_page = page
+        subject.save()
+        
+        notebook = subject.notebook
+        notebook.last_subject = subject
+        notebook.save()
+        
+        return subject, page
     
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
         instance.color = validated_data.get('color', instance.color)
         instance.notebook = validated_data.get('notebook', instance.notebook)
+        instance.last_page = validated_data.get('last_page', instance.last_page)
         instance.save()
         return instance
+
+class NotebookSerializer(serializers.ModelSerializer):
+    subject = SubjectSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Notebook
+        fields = ('last_subject', 'subject')
+    
+    

@@ -10,7 +10,7 @@ class RegistrationSerializerTest(TestCase):
     def setUp(self):
         self.data = {'username': 'testuser', 'email': 'testuser@example.com', 'password': 'password123'}
 
-    def test_registration_serializer_creates_user(self):
+    def test_registration_serializer_creates_user_and_notebook(self):
         # Test that RegistrationSerializer creates a user with the provided data
         serializer = RegistrationSerializer(data=self.data)
         self.assertTrue(serializer.is_valid())
@@ -18,6 +18,9 @@ class RegistrationSerializerTest(TestCase):
         self.assertEqual(user.username, self.data['username'])
         self.assertEqual(user.email, self.data['email'])
         self.assertTrue(user.check_password(self.data['password']))
+        notebook = user.notebook
+        self.assertIsNotNone(notebook)
+        self.assertEqual(notebook.user, user)
 
     def test_registration_serializer_duplicate_user(self):
         # Test that creating a user with duplicate information raises an error
