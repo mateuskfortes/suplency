@@ -4,8 +4,8 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from .models import Notebook, Subject, Page
-from .serializers import LoginSerializer, RegistrationSerializer, NotebookSerializer, SubjectSerializer, PageSerializer
+from .models import Notebook, Subject, Page, Flashcard, Pomodoro
+from .serializers import LoginSerializer, RegistrationSerializer, NotebookSerializer, SubjectSerializer, PageSerializer, FlashcardSerializer, PomodoroSerializer
 
 class Main(TemplateView):
     template_name = 'index.html'
@@ -169,4 +169,90 @@ class PageView(APIView):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
             
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+class FlashcardView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     
+    def get(self, request):
+        flashcards = Flashcard.objects.filter(user=request.user)
+        return Response(FlashcardSerializer(flashcards, many=True).data, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        '''
+        template: {
+            question: string,    ->    required
+            answer: string,      ->    required
+            subjects: [uuid, uuid...]
+        }
+        '''
+        flashcard_serializer = FlashcardSerializer(data={'user': request.user.id, **request.data})
+        
+        if flashcard_serializer.is_valid():
+            flashcard = flashcard_serializer.save()
+            return Response({'id': flashcard.id}, status=status.HTTP_201_CREATED)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request):
+        '''
+        template: {
+            id: uuid         ->      required
+            question: string,
+            answer: string,
+            subjects: [uuid, uuid...]
+        }
+        '''
+        flashcard_id = request.data.get('id')
+        if not flashcard_id:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        
+        flashcard = Flashcard.objects.filter(id=flashcard_id).first()
+        if not flashcard:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+        
+        flashcard_serializer = FlashcardSerializer(instance=flashcard, data=request.data, partial=True)
+        
+        if flashcard_serializer.is_valid():
+            flashcard = flashcard_serializer.save()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    def delete(self, request, *args, **kwargs):
+        '''
+        template: {
+            id: uuid,  ->  required
+        }
+        '''
+        flashcard_id = request.data.get('id')
+        if not flashcard_id:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        
+        deleted_count, _ = Flashcard.objects.filter(id=flashcard_id).delete()
+        if deleted_count == 0:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+class PomodoroView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        pomodoro = Pomodoro.objects.get(user=request.user)
+        return Response(PomodoroSerializer(pomodoro).data, status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        '''
+        template: {   
+            focus_time: mm:ss
+            break_time: mm:ss
+            long_break_time: mm:ss
+            focus_sessions: int'
+        }
+        '''
+        pomodoro = Pomodoro.objects.get(user=request.user)
+        pomodoro_serializer = PomodoroSerializer(instance=pomodoro, data=request.data)
+        
+        if pomodoro_serializer.is_valid():
+            pomodoro_serializer.save()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)

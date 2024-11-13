@@ -1,10 +1,10 @@
 import uuid
 from django.db.models import F
 from rest_framework import serializers
-from .models import Notebook, Subject, Page
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from .models import Notebook, Subject, Page, Flashcard, Pomodoro
 
 UserModel = get_user_model()
 
@@ -22,6 +22,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
         )
         Notebook.objects.create(user=user)
+        Pomodoro.objects.create(user=user)
         return user
 
 class LoginSerializer(serializers.Serializer):
@@ -50,9 +51,11 @@ class LoginSerializer(serializers.Serializer):
         return data
     
 class PageSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
+    
     class Meta:
         model = Page
-        fields = ('number', 'color', 'content', 'subject')
+        fields = ('id', 'number', 'color', 'content', 'subject')
         
     def create(self, validated_data):
         validated_data['id'] = uuid.uuid4()
@@ -78,12 +81,13 @@ class PageSerializer(serializers.ModelSerializer):
         return instance
 
 class SubjectSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
     page = PageSerializer(many=True, read_only=True)
     notebook = serializers.PrimaryKeyRelatedField(queryset=Notebook.objects.all(), write_only=True)
     
     class Meta:
         model = Subject
-        fields = ('name', 'color', 'last_page', 'notebook', 'page')
+        fields = ('id', 'name', 'color', 'last_page', 'notebook', 'page')
 
     # return the subject and its first page
     
@@ -102,12 +106,8 @@ class SubjectSerializer(serializers.ModelSerializer):
         return subject, page
     
     def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.color = validated_data.get('color', instance.color)
-        instance.notebook = validated_data.get('notebook', instance.notebook)
-        instance.last_page = validated_data.get('last_page', instance.last_page)
-        instance.save()
-        return instance
+        validated_data.pop('notebook', None)
+        return super().update(instance, validated_data)
 
 class NotebookSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer(many=True, read_only=True)
@@ -116,4 +116,23 @@ class NotebookSerializer(serializers.ModelSerializer):
         model = Notebook
         fields = ('last_subject', 'subject')
     
+class FlashcardSerializer(serializers.ModelSerializer):
+    subjects = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), many=True)
     
+    class Meta:
+        model = Flashcard
+        fields = ('question', 'answer', 'user', 'subjects')
+        
+    def create(self, validated_data):
+        subjects_list = validated_data.pop('subjects', [])
+        
+        validated_data['id'] = uuid.uuid4()
+        flashcard = Flashcard.objects.create(**validated_data)
+        
+        flashcard.subjects.set(subjects_list)
+        return flashcard
+
+class PomodoroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pomodoro
+        fields = ('focus_time', 'break_time', 'rest_time', 'focus_sessions')       

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import timedelta
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 import uuid
@@ -21,10 +22,10 @@ class User(AbstractUser):
     )
 
 class Pomodoro(models.Model):
-    focus_time = models.DurationField()
-    break_time = models.DurationField()
-    long_break_time = models.DurationField()
-    focus_sessions_before_long_break = models.PositiveSmallIntegerField()
+    focus_time = models.DurationField(default=timedelta(minutes=1))
+    break_time = models.DurationField(default=timedelta(minutes=1))
+    rest_time = models.DurationField(default=timedelta(minutes=1))
+    focus_sessions = models.PositiveSmallIntegerField(default=1)
 
     user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='pomodoro')
 
@@ -42,7 +43,7 @@ class Subject(models.Model):
         on_delete=models.SET_NULL,
         related_name='last_subject')
     notebook = models.ForeignKey('Notebook', on_delete=models.CASCADE, related_name='subject')
-
+    
 class Page(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     number = models.PositiveIntegerField(null=False)
@@ -53,15 +54,15 @@ class Page(models.Model):
     class Meta:
         ordering = ['number']
 
-class FlashCard(models.Model):
+class Flashcard(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
     question = models.CharField(max_length=200)
     answer = models.CharField(max_length=200)
 
-    subjects = models.ManyToManyField('Subject', through='FlashCardSubject')
+    subjects = models.ManyToManyField('Subject', through='FlashcardSubject')
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='flashcard')
 
-class FlashCardSubject(models.Model):
+class FlashcardSubject(models.Model):
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, related_name='flashcard_subject')
-    flash_card = models.ForeignKey('FlashCard', on_delete=models.CASCADE, related_name='flashcard_subject')
+    flashcard = models.ForeignKey('FlashCard', on_delete=models.CASCADE, related_name='flashcard_subject')

@@ -1,11 +1,10 @@
-from django.test import TestCase, Client
-from rest_framework.test import APITestCase
-from django.urls import reverse
-from rest_framework import status
-from client.models import Subject, Page, Notebook
-from client.serializers import SubjectSerializer
-from django.contrib.auth import get_user_model
 import uuid
+from django.urls import reverse
+from django.test import TestCase
+from rest_framework import status
+from rest_framework.test import APITestCase
+from django.contrib.auth import get_user_model
+from client.models import Subject, Page, Notebook
 
 User = get_user_model()
 
@@ -33,11 +32,13 @@ class NotebookViewTest(APITestCase):
             'last_subject': self.subject.id,
             'subject': [
                 {
+                    'id': str(self.subject.id),
                     'name': 'Subject test',
                     'color': 'red',
                     'last_page': self.page.id,
                     'page': [
                         {
+                            'id': str(self.page.id),
                             'number': 0,
                             'color': 'green',
                             'content': {'text': 'test'},
