@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import AccountInput from "../components/AccountInput"
 import Header from "../components/Header"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import '../assets/Account.scss'
 
 const Login = () => {
@@ -9,7 +9,11 @@ const Login = () => {
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate()
-    
+
+    useEffect(() => {
+        if (localStorage.getItem('isLoggedIn') === 'true') navigate('/study') // Go to study page if the user is logged in
+    })
+
     const handlerSubmit = async (e: any) => {
         e.preventDefault()
         const userData = {
@@ -17,15 +21,18 @@ const Login = () => {
             'password': password,
         }
         try {
-            const response = await fetch(`${window.location.origin}/login`, {
+            const response = await fetch(`http://127.0.0.1:80/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userData),
             });
-            if (response.ok) navigate('/study')
-            else alert('Erro ao efetuar o login.')
+            if (response.ok) {
+                localStorage.setItem('isLoggedIn', 'true');
+                navigate('/study')
+            }
+            else alert('Credenciais inválidas')
         }
         catch (error) {
             alert('Ocorreu um erro ao tentar se conectar ao servidor.');
