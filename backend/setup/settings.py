@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'client.apps.ClientConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -52,8 +53,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = config('ALLOW_CORS', cast=bool, default=False)
+CORS_ALLOW_CREDENTIALS = config('ALLOW_CORS', cast=bool, default=False)
 
 ROOT_URLCONF = 'setup.urls'
 
