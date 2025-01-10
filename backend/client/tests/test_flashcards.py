@@ -37,6 +37,18 @@ class FlashcardSerializerTest(APITestCase):
         self.assertEqual(flashcard.question, 'q')
         self.assertEqual(flashcard.answer, 'a')
         self.assertCountEqual(flashcard.subjects.all(), [self.subject1, self.subject2] )
+    
+    def test_create_flashcard_without_subject(self):
+        data = {
+            'user': self.user.id,
+            'question': 'q',
+            'answer': 'a',
+        }
+        flashcard_serializer = FlashcardSerializer(data=data)
+        self.assertTrue(flashcard_serializer.is_valid(), flashcard_serializer.errors)
+        flashcard = flashcard_serializer.save()
+        self.assertEqual(flashcard.question, 'q')
+        self.assertEqual(flashcard.answer, 'a')
         
     def test_update_flashcard_valid_data(self):
         updated_data = {
@@ -97,7 +109,7 @@ class FlashcardViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         expected_data = FlashcardSerializer([self.flashcard, flashcard1, flashcard2], many=True).data
-        self.assertListEqual(list(response.data), list(expected_data))
+        self.assertListEqual(list(response.data['flashcards']), list(expected_data))
     
     def test_create_flashcard_valid_data(self):
         data = {

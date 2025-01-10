@@ -2,6 +2,7 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import {Link} from 'react-router-dom'
 import "../assets/Home.scss"
+import logoutHandler from "../assets/logoutHandler"
 
 export default function Home() {
     return (
@@ -19,9 +20,15 @@ export default function Home() {
                             <Link to='/study/' className="button black_button">
                                 <span>Comece Agora!</span>
                             </Link>
-                            <a href='/account/sing-in/' className="button white_button">
-                                <span>Login</span>
-                            </a>
+                            {localStorage.getItem('isLoggedIn') === 'true' ?
+                                <button onClick={logoutHandler} className="button white_button">
+                                    <span>Logout</span>
+                                </button>
+                                :
+                                <Link to='/account/login/' className="button white_button">
+                                    <span>Login</span>
+                                </Link>
+                            }
                         </div>
                     </section>
                     

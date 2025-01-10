@@ -60,7 +60,7 @@ class Flashcard(models.Model):
     question = models.CharField(max_length=200)
     answer = models.CharField(max_length=200)
 
-    subjects = models.ManyToManyField('Subject', through='FlashcardSubject')
+    subjects = models.ManyToManyField('Subject', through='FlashcardSubject', blank=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='flashcard')
 
 class FlashcardSubject(models.Model):

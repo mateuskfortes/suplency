@@ -56,8 +56,25 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
 CORS_ALLOW_ALL_ORIGINS = config('ALLOW_CORS', cast=bool, default=False)
 CORS_ALLOW_CREDENTIALS = config('ALLOW_CORS', cast=bool, default=False)
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://localhost'
+]
+
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+
 
 ROOT_URLCONF = 'setup.urls'
 
@@ -76,6 +93,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'setup.wsgi.application'
 

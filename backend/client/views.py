@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, login, logout
 from django.views.generic import TemplateView
+from django.middleware.csrf import get_token
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
@@ -22,7 +23,7 @@ class LoginUserView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data.get('user')
             login(request, user)
-            return Response({}, status=status.HTTP_200_OK)
+            return Response({'csrftoken': get_token(request)}, status=status.HTTP_200_OK)
         return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
 class CreateUserView(CreateAPIView):
@@ -39,7 +40,17 @@ class CreateUserView(CreateAPIView):
     
     def perform_create(self, serializer):
         user = serializer.save()
-        login(self.request, user)   
+        login(self.request, user) 
+        
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        data = serializer.data
+        data['csrftoken'] = get_token(request)
+        return Response(data, status=status.HTTP_201_CREATED, headers=headers)  
+
 
 class LogoutUserView(APIView):
     def post(self, request, *args, **kwargs):
@@ -172,10 +183,10 @@ class PageView(APIView):
 
 class FlashcardView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    
+
     def get(self, request):
         flashcards = Flashcard.objects.filter(user=request.user)
-        return Response(FlashcardSerializer(flashcards, many=True).data, status=status.HTTP_200_OK)
+        return Response({'token': get_token(request), 'flashcards': FlashcardSerializer(flashcards, many=True).data}, status=status.HTTP_200_OK)
     
     def post(self, request):
         '''
@@ -214,18 +225,22 @@ class FlashcardView(APIView):
         if flashcard_serializer.is_valid():
             flashcard = flashcard_serializer.save()
             return Response({}, status=status.HTTP_204_NO_CONTENT)
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)   
     
     def delete(self, request, *args, **kwargs):
         '''
         template: {
-            id: uuid,  ->  required
+            id: uuid | "all",  ->  required
         }
         '''
         flashcard_id = request.data.get('id')
+        
         if not flashcard_id:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if flashcard_id == 'all':
+            Flashcard.objects.filter(user=request.user).delete()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)   
         
         deleted_count, _ = Flashcard.objects.filter(id=flashcard_id).delete()
         if deleted_count == 0:

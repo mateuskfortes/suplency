@@ -18,17 +18,15 @@ export default function Display() {
 
     const getInitialFontSize = () => {
         if (displayCalc.current) {
-            // Obtém o tamanho da fonte aplicado no CSS
             return parseFloat(window.getComputedStyle(displayCalc.current).fontSize);
         }
-        return 50; // Retorna um valor padrão caso não consiga obter do CSS
+        return 50; 
     };
 
     const CalcBiggerDisplay = () => {
         if (display.current && displayCalc.current) {
             const parentWidth = display.current.offsetWidth;
             const contentWidth = displayCalc.current.offsetWidth
-            console.log(contentWidth, parentWidth)
             return contentWidth > parentWidth
         }
     }

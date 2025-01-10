@@ -3,6 +3,7 @@ import AccountInput from "../components/AccountInput"
 import Header from "../components/Header"
 import { useEffect, useState } from "react"
 import '../assets/Account.scss'
+import fetchHandler from "../assets/fetchHandler"
 
 const SignUp = () => {
     const [username, setUsername] = useState('')
@@ -28,27 +29,14 @@ const SignUp = () => {
             email,
             password,
         };
-        try {
-            const response = await fetch(`http://127.0.0.1:80/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-                credentials: 'include',
-            });
-            
-            if (response.ok) {
-                localStorage.setItem('isLoggedIn', 'true');
-                navigate('/study');
-            }else {
-                const data = await response.json()
-                setResponse(data)
-            }
-        } 
-        catch (error) {
-            alert('Ocorreu um erro ao tentar se conectar ao servidor.');
-        }
+        fetchHandler('register', 
+                    'POST', 
+                    ({}) => {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        navigate('/study');
+                    },
+                    ({data}) => setResponse(data),
+                    JSON.stringify(userData))
     }
 
     return(

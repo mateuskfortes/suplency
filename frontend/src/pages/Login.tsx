@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import AccountInput from "../components/AccountInput"
 import Header from "../components/Header"
 import { useEffect, useState } from "react"
+import fetchHandler from "../assets/fetchHandler"
 import '../assets/Account.scss'
 
 const Login = () => {
@@ -20,23 +21,15 @@ const Login = () => {
             'nameOrEmail': nameOrEmail,
             'password': password,
         }
-        try {
-            const response = await fetch(`http://127.0.0.1:80/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+        fetchHandler('login', 
+                'POST', 
+                ({}) => {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    navigate('/study')
                 },
-                body: JSON.stringify(userData),
-            });
-            if (response.ok) {
-                localStorage.setItem('isLoggedIn', 'true');
-                navigate('/study')
-            }
-            else alert('Credenciais inválidas')
-        }
-        catch (error) {
-            alert('Ocorreu um erro ao tentar se conectar ao servidor.');
-        }
+                ({}) => alert('Credenciais inválidas'),
+                JSON.stringify(userData))
+            
     }
 
     return (
@@ -44,7 +37,7 @@ const Login = () => {
             <Header />
             <main className="account_container">
                 <section>
-                    <h1>CADASTRO</h1>
+                    <h1>LOGIN</h1>
                     <h2>Fique conectado!</h2>
                     <form onSubmit={handlerSubmit}>
                         <AccountInput id='i1' onChange={(e: any) => setNameOrEmail(e.target.value)} label='Nome de usuário ou Email' />

@@ -17,11 +17,7 @@ const Flashcard = ({id, question, answer, show}: types) => {
 		setIsAnswerVisible(!isAnswerVisible)
 	}
 	
-	const deleteFc = () => {
-		if(window.confirm('Tem certeza que deseja excluir esse flashcard?')) {
-			deleteFlashcard(id)
-		}
-	}
+	const deleteFc = () => deleteFlashcard(id)
 
 	return (
 		<div className="flashcard">

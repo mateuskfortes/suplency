@@ -4,34 +4,7 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import '../assets/Flashcards.scss'
 import NewFlashcard from "../components/Flashcards/NewFlashcard"
-
-const flashcardsC = [
-    {
-        id: '1',
-        question: "Qual é a capital do Brasil?",
-        answer: "Brasília",
-    },
-    {
-        id: '2',
-        question: "Quantos continentes existem no mundo?",
-        answer: "7",
-    },
-    {
-        id: '3',
-        question: "Quem escreveu 'Dom Quixote'?",
-        answer: "Miguel de Cervantes",
-    },
-    {
-        id: '4',
-        question: "O que é fotossíntese?",
-        answer: "Processo pelo qual as plantas produzem seu alimento utilizando luz solar, água e dióxido de carbono.",
-    },
-    {
-        id: '5',
-        question: "Qual o maior planeta do sistema solar?",
-        answer: "Júpiter",
-    }
-];
+import fetchHandler from "../assets/fetchHandler"
 
 export const FlashcardsContext = createContext({
 	flashcards: [{id: '', question: '', answer: ''}],
@@ -42,31 +15,42 @@ export const FlashcardsContext = createContext({
 
 const Flashcards = () => {
 	const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(NaN)
-	const [flashcards, setFlashcards] = useState(flashcardsC)
+	const [flashcards, setFlashcards] = useState<any>([])
 	const [isRunning, setIsRunning] = useState(false)
 	const [isNewFlashcardVisible, setIsNewFlashcardVisible] = useState(false)
-	const [currentNewId, setCurrentNewId] = useState(-1)
+
+	useEffect(() => {
+		fetchHandler(`flashcard`, 'GET', ({data}) => setFlashcards(data.flashcards))
+	}, [])
 
 	useEffect(() => {
 		if (isRunning) setCurrentFlashcardIndex(0); 
 	}, [isRunning]);
 
-	const addFlashcard = (question: string, answer: string) => {
-		setFlashcards([
-			...flashcards,
-			{
-			id: currentNewId.toString(),
-			question: question,
-			answer: answer,
-		}])
-		setCurrentNewId(currentNewId-1)
+	const addFlashcard = async (question: string, answer: string) => {
+		fetchHandler(`flashcard`, 
+					 'POST', 
+					 ({data}) => {
+						setFlashcards([
+							...flashcards,
+							{
+								id: data.id,
+								question: question,
+								answer: answer,
+							}
+						])
+					}, 
+					() => {},
+					JSON.stringify({
+						'question': question,
+						'answer': answer,
+					}),)
 		setIsRunning(false)
 	}
+
 	const toggleIsNewFlashcardVisible = () => setIsNewFlashcardVisible(!isNewFlashcardVisible)
 
-	function toggleIsRunning() {
-		setIsRunning(!isRunning)
-	}
+	const  toggleIsRunning = () => setIsRunning(!isRunning)
 
 	function nextFlashcard() {
 		setCurrentFlashcardIndex(prevIndex => {
@@ -75,10 +59,23 @@ const Flashcards = () => {
 		  });
 	}
 
-	const deleteFlashcard = (id: string) => setFlashcards(flashcards.filter((fc: any) => fc.id !== id))
+	const deleteFlashcard = (id: string) => {
+		if(window.confirm('Tem certeza que deseja excluir esse flashcard?')) {
+			fetchHandler('flashcard', 
+						'DELETE', 
+						({}) => setFlashcards(flashcards.filter((fc: any) => fc.id != id)),
+						({}) => alert('Erro ao deletar flashcard'),
+						JSON.stringify({'id': id}))
+		}
+	}
 
 	const deleteAll = () => {
 		if(window.confirm('Tem certeza que deseja excluir todos os flashcards?')) {
+			fetchHandler('flashcard', 
+						'DELETE', 
+						({}) => setFlashcards([]),
+						({}) => alert('Erro ao deletar flashcards'),
+						JSON.stringify({'id': 'all'}))
 			setFlashcards([])
 		}
 		setIsRunning(false)
@@ -101,12 +98,11 @@ const Flashcards = () => {
 						{ isRunning && fc ?
 							<div className="flashcard_container">
 								<Flashcard key={fc.id} id={fc.id} question={fc.question} answer={fc.answer} />
-							
 								<button className="white_button" onClick={nextFlashcard}>next</button>
 							</div>
 							:
 							<div className="flashcard_container">
-								{flashcards.map((fc: any) => <Flashcard key={fc.id} id={fc.id} question={fc.question} answer={fc.answer} show />)}
+								{flashcards.map((fc: any, index: number) => <Flashcard key={index} id={fc.id} question={fc.question} answer={fc.answer} show />)}
 							</div>
 						}
 						{flashcards.length == 0 && <div className="warning"><p>Nenhum flashcard aqui</p></div>}

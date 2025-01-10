@@ -2,28 +2,14 @@ import { Link } from 'react-router-dom'
 import grid_background from '../assets/grid_background.svg'
 import '../assets/Header.scss'
 import { useState } from 'react'
+import logoutHandler from '../assets/logoutHandler';
  
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
 
     const handlerLogout = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:80/logout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
-            
-            if (response.ok) {
-                setIsLoggedIn(false)
-                localStorage.setItem('isLoggedIn', 'false');
-            }
-        } 
-        catch (error) {
-            alert('Ocorreu um erro ao tentar se conectar ao servidor.');
-        }
+        setIsLoggedIn(false)
+        logoutHandler()
     }
 
     return (

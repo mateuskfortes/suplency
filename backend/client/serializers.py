@@ -117,11 +117,12 @@ class NotebookSerializer(serializers.ModelSerializer):
         fields = ('last_subject', 'subject')
     
 class FlashcardSerializer(serializers.ModelSerializer):
-    subjects = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), many=True)
+    subjects = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), many=True, required=False)
+    id = serializers.UUIDField(read_only=True)
     
     class Meta:
         model = Flashcard
-        fields = ('question', 'answer', 'user', 'subjects')
+        fields = ('id', 'question', 'answer', 'user', 'subjects')
         
     def create(self, validated_data):
         subjects_list = validated_data.pop('subjects', [])
