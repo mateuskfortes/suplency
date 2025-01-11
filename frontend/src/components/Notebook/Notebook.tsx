@@ -367,22 +367,24 @@ const init: NotebookContent =  {
     }
 }
 
-
 const Notebook = () => {
     const [editor] = useState(() => withHistory(withReact(createEditor())));
     const editable = useRef<HTMLDivElement | null>(null);
     const [currentPageIndex, setCurrentPageIndex] = useState(0)
     const [currentSubjectId, setCurrentSubjectId] = useState('')
+    const [updateId, setUpdateId] = useState('')
     const [notebookObj] = useState(new NotebookClass(
         init, 
         editor, 
         setCurrentPageIndex as (newIndex: Number) => void, 
-        setCurrentSubjectId as (newId: string) => void)
-    )
+        setCurrentSubjectId as (newId: string) => void,
+        setUpdateId as (newId: string) => void
+    ));
 
     return (
         <NotebookContext.Provider value={{ editor, editable, notebookObj, currentPageIndex, currentSubjectId }} >
             <div className="notebook">
+                <input type="hidden" value={updateId} />
                 <div className="notebook_header">
                     <SelectSubjectArea />
                     <SetPage />

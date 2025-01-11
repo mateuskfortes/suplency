@@ -1,5 +1,6 @@
 import { Descendant, Editor } from 'slate'
 import { PageContent, SubjectContent, NotebookContent } from './NotebookTemplate'
+import fetchHandler from './fetchHandler'
 
 class Page {
     id: string
@@ -30,13 +31,39 @@ class Subject {
     }
 
     getData() {
-        return { name: this.name, currentPageIndex: this.currentPageIndex, pages: this.pages }
+        return { 
+            name: this.name, 
+            currentPageIndex: this.currentPageIndex, 
+            pages: this.pages 
+        }
     }
 
     addNegativeId() {
         return String(this.currentNegativePageId--)
     }
-
+    
+    addPage(update: (newId: string) => void, subjectId: string) {
+        const newPageIndex = ++this.currentPageIndex
+        const newPageId = this.addNegativeId()
+        this.pages.splice(newPageIndex, 0, new Page({ 
+                id: newPageId, 
+                content: [
+                    {
+                        type: 'paragraph', 
+                        children: [{ text: '' }],
+                    },
+                ],
+            }))
+        fetchHandler('page', 
+                    'POST', 
+                    ({ data }) => {
+                        this.pages[newPageIndex].id = data.id
+                        update(data.id)
+                    }, 
+                    ({}) => {}, 
+                    JSON.stringify({ number: newPageIndex, subject: subjectId }))
+    }
+    
     setCurrentPage(newPage: number) {
         if (newPage >= 0 && newPage < this.pages.length) {
             this.currentPageIndex = newPage
@@ -45,17 +72,10 @@ class Subject {
         return false
     }
 
-    addPage() {
-        this.pages.splice(++this.currentPageIndex, 0, new Page({ 
-                id:this.addNegativeId(), 
-                content: [
-                    {
-                        type: 'paragraph', 
-                        children: [{ text: '' }],
-                    },
-                ],
-            }))
+    setName(newName: string) {
+        this.name = newName
     }
+    
 }
 
 export class Notebook {
@@ -64,13 +84,15 @@ export class Notebook {
     editor: Editor
     setPageIndex: (newIndex: Number) => void
     setCurrentSubjectId: (newId: string) => void
+    setUpdateId: (newId: string) => void
     currentNegativeSubjectId: number
 
-    constructor({ currentSubjectId, subjects }: NotebookContent, editor: Editor, setPageIndex: (newIndex: Number) => void, setCurrentSubjectId: (newId: string) => void) {
+    constructor({ currentSubjectId, subjects }: NotebookContent, editor: Editor, setPageIndex: (newIndex: Number) => void, setCurrentSubjectId: (newId: string) => void, setUpdateId: (newId: string) => void) {
         this.currentSubjectId = currentSubjectId
         this.editor = editor
         this.setPageIndex = setPageIndex
         this.setCurrentSubjectId = setCurrentSubjectId
+        this.setUpdateId = setUpdateId
         this.subjects = {}
         this.currentNegativeSubjectId = 0
         Object.keys(subjects).map(sbKey => {
@@ -139,18 +161,20 @@ export class Notebook {
 
     addPage() {
         this.updateContent(this.editor.children)
-        this.getCurrentSubject().addPage()
+        this.getCurrentSubject().addPage(this.setUpdateId, this.currentSubjectId)
         this.updateEditorContent()
     }
 
     addSubject(subjectName: string) {
         this.updateContent(this.editor.children)
-        this.subjects[--this.currentNegativeSubjectId] = new Subject({
+        const newSubjectId = --this.currentNegativeSubjectId
+        const newPageId = '-1'
+        const newSubject = new Subject({
             name: subjectName, 
             currentPageIndex: 0, 
             pages: [
                 {
-                    id: '-1',
+                    id: newPageId,
                     content: [
                         {
                             type: 'paragraph', 
@@ -160,28 +184,26 @@ export class Notebook {
                 },
             ],
         })
+        this.subjects[newSubjectId] = newSubject
+
         this.setCurrentSubject(String(this.currentNegativeSubjectId))
         this.updateEditorContent()
+
+        fetchHandler('subject', 
+                    'POST', 
+                    ({ data }) => {
+                        if (this.currentSubjectId == newSubjectId.toString()) this.currentSubjectId = data.subject_id
+                        delete this.subjects[newSubjectId]
+                        this.subjects[data.subject_id] = newSubject
+
+                        newSubject.pages[0].id = data.page_id
+                        this.setUpdateId(data.subject_id)
+                    }, 
+                    ({}) => {}, 
+                    JSON.stringify({ name: subjectName }))
     }
 
-    getNotebookContent() {
-        let subjectsContent: Record<string, SubjectContent> = {}
-
-        Object.keys(this.subjects).forEach((subjectId: string) => {
-            const subject = this.subjects[subjectId]
-            subjectsContent[subjectId] = {
-                name: subject.name,
-                currentPageIndex: subject.currentPageIndex,
-                pages: subject.pages.map((page) => ({
-                    id: page.id,
-                    content: page.content,
-                })),
-            }
-        })
-
-        return {
-            currentSubjectId: this.currentSubjectId,
-            subjects: subjectsContent,
-        }
+    saveSubject() {
+        
     }
 }

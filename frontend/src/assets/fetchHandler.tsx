@@ -1,7 +1,8 @@
 const CSRFTOKENINPUT = document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
 let CSRFTOKEN = CSRFTOKENINPUT?.value
 
-const URL = window.location.origin
+//const URL = window.location.origin
+const URL = 'http://localhost:80'
 
 const fetchHandler = async (url: string, 
                             method: 'GET' | 'POST' | 'PUT' | 'DELETE', 
