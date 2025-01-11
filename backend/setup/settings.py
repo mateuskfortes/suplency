@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -58,16 +58,13 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication', # Enable CSRF. Use this in production.
+        'client.middleware.SessionAuthenticationWithoutCSRF.SessionAuthenticationWithoutCSRF', # Disable CSRF. Don't use this in production.
     ],
 }
 
-CORS_ALLOW_ALL_ORIGINS = config('ALLOW_CORS', cast=bool, default=False)
-CORS_ALLOW_CREDENTIALS = config('ALLOW_CORS', cast=bool, default=False)
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8000',
-    'http://localhost'
-]
+CORS_ALLOW_CREDENTIALS = config('ALLOW_CORS', cast=bool, default=False) # If you want to allow credentials (cookies, authorization headers, etc) to be sent to the client, set this to True.
+CORS_ALLOW_ALL_ORIGINS = config('ALLOW_CORS', cast=bool, default=False) 
 
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True

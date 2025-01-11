@@ -26,7 +26,7 @@ class LoginUserView(APIView):
             return Response({'csrftoken': get_token(request)}, status=status.HTTP_200_OK)
         return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
-class CreateUserView(CreateAPIView):
+class CreateUserView(CreateAPIView): 
     model = get_user_model()
     permission_classes = [permissions.AllowAny]
     serializer_class = RegistrationSerializer
@@ -50,7 +50,6 @@ class CreateUserView(CreateAPIView):
         data = serializer.data
         data['csrftoken'] = get_token(request)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)  
-
 
 class LogoutUserView(APIView):
     def post(self, request, *args, **kwargs):
