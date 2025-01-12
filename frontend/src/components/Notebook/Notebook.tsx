@@ -4,7 +4,7 @@ import { ReactEditor, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import SlateEditor from './SlateEditor';
 import SelectSubjectArea from './SelectSubjectArea';
-import { NotebookContent, NotebookContextType } from '../../assets/NotebookTemplate';
+import {  NotebookContextType } from '../../assets/NotebookTemplate';
 import {Notebook as NotebookClass} from '../../assets/NotebookClass';
 import SetPage from './SetPage';
 
@@ -15,7 +15,7 @@ export const NotebookContext = createContext<NotebookContextType>({
     currentPageIndex: 0,
     currentSubjectId: '',
 });
-
+/*
 const init: NotebookContent =  {
     "currentSubjectId": "-1",
     "subjects": {
@@ -365,16 +365,17 @@ const init: NotebookContent =  {
             ]
         }
     }
-}
+}*/
 
-const Notebook = () => {
+const Notebook = ({content}: any) => {
+    console.log(content)
     const [editor] = useState(() => withHistory(withReact(createEditor())));
     const editable = useRef<HTMLDivElement | null>(null);
     const [currentPageIndex, setCurrentPageIndex] = useState(0)
     const [currentSubjectId, setCurrentSubjectId] = useState('')
     const [updateId, setUpdateId] = useState('')
     const [notebookObj] = useState(new NotebookClass(
-        init, 
+        content, 
         editor, 
         setCurrentPageIndex as (newIndex: Number) => void, 
         setCurrentSubjectId as (newId: string) => void,

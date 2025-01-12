@@ -5,8 +5,17 @@ import Calculator from "../components/Calculator/Calculator.tsx"
 import Notebook from "../components/Notebook/Notebook.tsx"
 import { Link } from "react-router-dom"
 import '../assets/Study.scss'
+import fetchHandler from "../assets/fetchHandler.tsx"
+import { useEffect, useState } from "react"
 
 export default function Study() {
+    const [notebookContent, setNotebookContent] = useState<any>(null)
+    useEffect(() => {
+        fetchHandler('notebook',
+                'GET',
+                ({ data }) => setNotebookContent(data))
+            }, [])
+
     return (
         <>
             <Header/>
@@ -30,7 +39,7 @@ export default function Study() {
                         <Calculator />
                     </section>
                 </section>
-                <Notebook />
+                { notebookContent && <Notebook content={notebookContent}/> }
             </main>
             <Footer/>
         </>

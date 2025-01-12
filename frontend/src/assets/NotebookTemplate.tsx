@@ -29,19 +29,24 @@ declare module 'slate' {
 
 export interface PageContent {
     id: string;
+    number?: number;
+    color?: string;
     content: Descendant[];
+    subject?: string;
 }
 
 export interface SubjectContent {
     id?: string;
     name: string | null;
-    currentPageIndex: number;
-    pages: PageContent[];
+    color?: string;
+    last_page?: string;
+    currentPageIndex?: number;
+    page: PageContent[];
 }
 
 export interface NotebookContent {
-    currentSubjectId: string;
-    subjects: Record<string, SubjectContent>;
+    last_subject: string;
+    subject: SubjectContent[];
 }
 
 export interface NotebookContextType {

@@ -18,16 +18,14 @@ class Subject {
     currentPageIndex: number;
     currentNegativePageId: number
 
-    constructor({ name, currentPageIndex, pages }: SubjectContent) {
+    constructor({ name, last_page, page, currentPageIndex }: SubjectContent) {
         this.name = name;
-        this.currentPageIndex = currentPageIndex;
-        let lowestPageId = 0
-        this.pages = pages.map(pg => {
-            const id = parseInt(pg.id)
-            if (id < lowestPageId) lowestPageId = id 
+        this.pages = page.map(pg => {
             return new Page(pg)
         });
-        this.currentNegativePageId = lowestPageId
+        if (currentPageIndex != undefined) this.currentPageIndex = currentPageIndex
+        else  this.currentPageIndex = page.findIndex(page => page.id === last_page);
+        this.currentNegativePageId = -1
     }
 
     getData() {
@@ -39,21 +37,24 @@ class Subject {
     }
 
     addNegativeId() {
-        return String(this.currentNegativePageId--)
+        return String(--this.currentNegativePageId)
     }
     
     addPage(update: (newId: string) => void, subjectId: string) {
         const newPageIndex = ++this.currentPageIndex
         const newPageId = this.addNegativeId()
-        this.pages.splice(newPageIndex, 0, new Page({ 
+        const newPageContent = [
+                                    {
+                                        type: 'paragraph', 
+                                        children: [{ text: '' }],
+                                    },
+                                ]
+        const newPage = new Page({ 
                 id: newPageId, 
-                content: [
-                    {
-                        type: 'paragraph', 
-                        children: [{ text: '' }],
-                    },
-                ],
-            }))
+                content: newPageContent,
+            })
+        this.pages.splice(newPageIndex, 0, newPage)
+        this.setCurrentPage(newPageIndex)
         fetchHandler('page', 
                     'POST', 
                     ({ data }) => {
@@ -61,7 +62,7 @@ class Subject {
                         update(data.id)
                     }, 
                     ({}) => {}, 
-                    JSON.stringify({ number: newPageIndex, subject: subjectId }))
+                    JSON.stringify({ number: newPageIndex, subject: subjectId, content: newPageContent}))
     }
     
     setCurrentPage(newPage: number) {
@@ -87,17 +88,16 @@ export class Notebook {
     setUpdateId: (newId: string) => void
     currentNegativeSubjectId: number
 
-    constructor({ currentSubjectId, subjects }: NotebookContent, editor: Editor, setPageIndex: (newIndex: Number) => void, setCurrentSubjectId: (newId: string) => void, setUpdateId: (newId: string) => void) {
-        this.currentSubjectId = currentSubjectId
+    constructor({ last_subject, subject }: NotebookContent, editor: Editor, setPageIndex: (newIndex: Number) => void, setCurrentSubjectId: (newId: string) => void, setUpdateId: (newId: string) => void) {
+        this.currentSubjectId = last_subject
         this.editor = editor
         this.setPageIndex = setPageIndex
         this.setCurrentSubjectId = setCurrentSubjectId
         this.setUpdateId = setUpdateId
         this.subjects = {}
         this.currentNegativeSubjectId = 0
-        Object.keys(subjects).map(sbKey => {
-            if (parseInt(sbKey) < this.currentNegativeSubjectId) this.currentNegativeSubjectId = parseInt(sbKey)
-            return this.subjects[sbKey] = new Subject(subjects[sbKey])
+        subject.map((sb: SubjectContent) => {
+            if (sb.id) return this.subjects[sb.id] = new Subject(sb)
         })
     }
 
@@ -138,10 +138,23 @@ export class Notebook {
 
     setSubjectName(subjectId: string, newName: string | null) {
         this.subjects[subjectId].name = newName
+        fetchHandler('subject',
+                    'PUT',
+                    ({}) => {},
+                    ({}) => {},
+                    JSON.stringify({ id: subjectId, name: newName }))
     }
 
     updateContent(content: Descendant[]) {
-        this.getCurrentPage().content = content
+        if (content !== this.getCurrentPage().content) {
+            this.getCurrentPage().content = content
+            fetchHandler('page', 
+                        'PUT', 
+                        ({}) => {}, 
+                        ({}) => {},
+                        JSON.stringify({ id: this.getCurrentPage().id, content: content }))
+        }
+        
     }
 
     setCurrentSubject(subjectId: string) {
@@ -154,6 +167,11 @@ export class Notebook {
         this.updateContent(this.editor.children)
         if (this.getCurrentSubject().setCurrentPage(newPage)) {
             this.updateEditorContent()
+            fetchHandler('subject',
+                        'PUT',
+                        ({}) => {},
+                        ({}) => {},
+                        JSON.stringify({ id: this.currentSubjectId, last_page: this.getCurrentPage().id }))
             return true
         }
         return false
@@ -163,6 +181,11 @@ export class Notebook {
         this.updateContent(this.editor.children)
         this.getCurrentSubject().addPage(this.setUpdateId, this.currentSubjectId)
         this.updateEditorContent()
+        fetchHandler('subject',
+                    'PUT',
+                    ({}) => {},
+                    ({}) => {},
+                    JSON.stringify({ id: this.currentSubjectId, last_page: this.getCurrentPage().id }))
     }
 
     addSubject(subjectName: string) {
@@ -172,7 +195,7 @@ export class Notebook {
         const newSubject = new Subject({
             name: subjectName, 
             currentPageIndex: 0, 
-            pages: [
+            page: [
                 {
                     id: newPageId,
                     content: [
