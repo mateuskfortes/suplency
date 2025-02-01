@@ -1,7 +1,5 @@
-import { MutableRefObject } from 'react';
 import { Descendant, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { Notebook } from './NotebookClass';
 
 interface ParagraphElement {
     type: 'paragraph' | 'numbered-list';
@@ -29,7 +27,7 @@ declare module 'slate' {
 
 export interface PageContent {
     id: string;
-    number?: number;
+    number: number;
     color?: string;
     content: Descendant[];
     subject?: string;
@@ -40,7 +38,6 @@ export interface SubjectContent {
     name: string | null;
     color?: string;
     last_page?: string;
-    currentPageIndex?: number;
     page: PageContent[];
 }
 
@@ -51,8 +48,13 @@ export interface NotebookContent {
 
 export interface NotebookContextType {
     editor: ReactEditor;
-    editable: MutableRefObject<HTMLDivElement | null>;
-    notebookObj: Notebook;
-    currentPageIndex: number;
-    currentSubjectId: string;
+    save: NotebookContent;
+    currentSubject: SubjectContent;
+    currentPage: PageContent;
+    changeSubject: (id: string) => void;
+    changePage: (id: string) => void;
+    changePageByNumber: (number: number) => void;
+    addPage: () => void;
+    addSubject: (name: string) => void;
+    setSubjectName: (newName: string) => void;
 }

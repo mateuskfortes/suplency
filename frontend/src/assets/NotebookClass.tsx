@@ -89,7 +89,7 @@ export class Notebook {
     currentNegativeSubjectId: number
 
     constructor({ last_subject, subject }: NotebookContent, editor: Editor, setPageIndex: (newIndex: Number) => void, setCurrentSubjectId: (newId: string) => void, setUpdateId: (newId: string) => void) {
-        this.currentSubjectId = last_subject
+        this.currentSubjectId = last_subject ? last_subject : subject[0].id as string
         this.editor = editor
         this.setPageIndex = setPageIndex
         this.setCurrentSubjectId = setCurrentSubjectId
@@ -226,7 +226,16 @@ export class Notebook {
                     JSON.stringify({ name: subjectName }))
     }
 
-    saveSubject() {
-        
+    deleteSubject(id: string) {
+        delete this.subjects[id]
+        fetchHandler('subject', 
+                    'DELETE', 
+                    ({}) => {}, 
+                    ({}) => {}, 
+                    JSON.stringify({ id: id }))
+        if (this.currentSubjectId == id) {
+            this.currentSubjectId = Object.keys(this.subjects)[0]
+            this.updateEditorContent()
+        }
     }
 }

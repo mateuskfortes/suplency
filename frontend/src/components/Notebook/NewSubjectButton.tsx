@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 const defaultName = 'New subject';
 
 const NewSubjectButton = () => {
-    const { notebookObj } = useContext(NotebookContext);
+    const { addSubject } = useContext(NotebookContext);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [newName, setNewName] = useState(defaultName);
     const formRef = useRef<HTMLDivElement>(null);
@@ -13,7 +13,7 @@ const NewSubjectButton = () => {
 
     const handlerCreateSubject = (e: any) => {
         e.preventDefault();
-        notebookObj?.addSubject(newName);
+        addSubject(newName);
         setNewName(defaultName);
         setIsFormVisible(false);
     };

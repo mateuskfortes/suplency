@@ -15,7 +15,7 @@ export default function Study() {
                 'GET',
                 ({ data }) => setNotebookContent(data))
             }, [])
-
+    console.log(notebookContent)
     return (
         <>
             <Header/>

@@ -51,7 +51,6 @@ class LoginSerializer(serializers.Serializer):
         return data
     
 class PageSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True)
     
     class Meta:
         model = Page
@@ -81,7 +80,6 @@ class PageSerializer(serializers.ModelSerializer):
         return instance
 
 class SubjectSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True)
     page = PageSerializer(many=True, read_only=True)
     notebook = serializers.PrimaryKeyRelatedField(queryset=Notebook.objects.all(), write_only=True)
     
@@ -118,7 +116,6 @@ class NotebookSerializer(serializers.ModelSerializer):
     
 class FlashcardSerializer(serializers.ModelSerializer):
     subjects = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), many=True, required=False)
-    id = serializers.UUIDField(read_only=True)
     
     class Meta:
         model = Flashcard
