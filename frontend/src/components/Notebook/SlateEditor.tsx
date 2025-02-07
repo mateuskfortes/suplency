@@ -16,9 +16,11 @@ const SlateEditor = () => {
         return <SlateLeaf {...props} />
     }
 
+    const content = currentPage.content
+
     return (
         <div className="slate_editor">
-            <Slate editor={editor} initialValue={currentPage.content} >
+            <Slate editor={editor} initialValue={content} >
                 <FormatButtonsArea />
                 <Editable 
                     className="editable"

@@ -57,4 +57,6 @@ export interface NotebookContextType {
     addPage: () => void;
     addSubject: (name: string) => void;
     setSubjectName: (newName: string) => void;
+    deleteSubject: (id: string) => void;
+    deletePage: () => void;
 }

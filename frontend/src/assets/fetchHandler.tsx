@@ -36,7 +36,7 @@ const fetchHandler = async (url: string,
             }
         }
         else if (notOkFunc) notOkFunc({response, data})
-    }, (error: any) => alert('Ocorreu um erro ao tentar se conectar ao servidor.' + error))
+    })
 }
 
 export default fetchHandler

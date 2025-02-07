@@ -18,31 +18,10 @@ export const NotebookContext = createContext<NotebookContextType>({
     changePageByNumber: () => {},
     addPage: () => {},
     addSubject: () => {},
-    setSubjectName: () => {}
+    setSubjectName: () => {},
+    deleteSubject: () => {},
+    deletePage: () => {},
 });
-
-/*
-{
-    'last_subject': self.subject.id,
-    'subject': [
-        {
-            'id': str(self.subject.id),
-            'name': 'Subject test',
-            'color': 'red',
-            'last_page': self.page.id,
-            'page': [
-                {
-                    'id': str(self.page.id),
-                    'number': 0,
-                    'color': 'green',
-                    'content': {'text': 'test'},
-                    'subject': self.subject.id,
-                }
-            ]
-        }
-    ]
-}
-*/
 
 const findObj = (list: any, id: string) => {
     return list.find((obj: any) => obj.id === id) || list[0]
@@ -140,7 +119,20 @@ const Notebook = ({content}: any) => {
     }
 
     const deleteSubject = (id: string) => {
-        
+        if (save.subject.length > 1) {
+            save.subject = save.subject.filter((sb: any) => sb.id != id)
+            changeSubject(save.subject[0].id)
+        }
+    }
+
+    const deletePage = () => {
+        if (currentSubject.page.length > 1) {
+            currentSubject.page.forEach((pg: any) => {
+                if (pg.number > currentPage.number) pg.number--
+            })
+            currentSubject.page = currentSubject.page.filter((pg: any) => pg.id != currentPage.id)
+            changePage(currentSubject.page[0].id)
+        }
     }
 
     return (
@@ -154,7 +146,9 @@ const Notebook = ({content}: any) => {
             changePageByNumber, 
             addPage, 
             addSubject,
-            setSubjectName }} >
+            setSubjectName,
+            deleteSubject,
+            deletePage, }} >
             <div className="notebook">
                 <div className="notebook_header">
                     <SelectSubjectArea />

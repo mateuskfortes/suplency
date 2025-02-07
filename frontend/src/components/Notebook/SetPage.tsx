@@ -2,9 +2,10 @@ import { useContext } from "react"
 import { NotebookContext } from "./Notebook"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi";
 import { RiPagesLine } from "react-icons/ri";
+import { MdDeleteForever } from "react-icons/md";
 
 const SetPage = () => {
-    const { changePageByNumber, currentPage, addPage } = useContext(NotebookContext)
+    const { changePageByNumber, currentPage, addPage, deletePage } = useContext(NotebookContext)
 
     const previousPage = () => changePageByNumber(currentPage.number-1)
     const nextPage = () => changePageByNumber(currentPage.number+1)
@@ -16,6 +17,7 @@ const SetPage = () => {
                 <button onClick={previousPage}><PiArrowLeftBold /></button>
                 <button onClick={nextPage}><PiArrowRightBold /></button>
                 <button onClick={addPage}><RiPagesLine /></button>
+                <button onClick={deletePage}><MdDeleteForever/></button>
             </div>
         </div>
     )

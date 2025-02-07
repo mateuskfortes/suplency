@@ -7,15 +7,43 @@ import { Link } from "react-router-dom"
 import '../assets/Study.scss'
 import fetchHandler from "../assets/fetchHandler.tsx"
 import { useEffect, useState } from "react"
+import { v4 as uuid } from 'uuid'
+
+const sbId = uuid()
+const pgId = uuid()
+const defaultContent = {
+    'last_subject': sbId,
+    'subject': [
+        {
+            'id': sbId,
+            'name': 'subject',
+            'color': 'red',
+            'last_page': pgId,
+            'page': [
+                {
+                    'id': pgId,
+                    'number': 0,
+                    'color': 'green',
+                    'content': [
+                        {
+                            type: 'paragraph', 
+                            children: [{ text: '' }],
+                        },
+                    ],
+                    'subject': sbId,
+                }
+            ]
+        }
+    ]
+}
 
 export default function Study() {
-    const [notebookContent, setNotebookContent] = useState<any>(null)
+    const [notebookContent, setNotebookContent] = useState<any>(defaultContent)
     useEffect(() => {
         fetchHandler('notebook',
                 'GET',
                 ({ data }) => setNotebookContent(data))
             }, [])
-    console.log(notebookContent)
     return (
         <>
             <Header/>
@@ -39,7 +67,7 @@ export default function Study() {
                         <Calculator />
                     </section>
                 </section>
-                { notebookContent && <Notebook content={notebookContent}/> }
+                <Notebook content={notebookContent}/>
             </main>
             <Footer/>
         </>

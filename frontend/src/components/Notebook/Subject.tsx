@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { NotebookContext } from "./Notebook"
-//import { TbX } from "react-icons/tb";
+import { TbX } from "react-icons/tb";
 
 const Subject = ({ id, subjectName, start=false }: any) => {
-    const { setSubjectName, changeSubject } = useContext(NotebookContext)
+    const { setSubjectName, changeSubject, deleteSubject } = useContext(NotebookContext)
 
     const [ isEditable, setIsEditable ] = useState(!start)
     const subjectContainer = useRef<HTMLSpanElement | null>(null)
@@ -31,12 +31,11 @@ const Subject = ({ id, subjectName, start=false }: any) => {
             suppressContentEditableWarning={true}>
                 {subjectName}
             </span>
-            
+            <span>
+                <TbX onClick={() => deleteSubject(id)} />
+            </span>
         </div>
     )
-}/*
-            <span>
-                <TbX onClick={() => notebookObj?.deleteSubject(id)} />
-            </span>*/
+}
 
 export default Subject
