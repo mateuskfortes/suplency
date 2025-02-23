@@ -69,8 +69,10 @@ class SubjectView(APIView):
     def post(self, request, *args, **kwargs):
         '''
         template: {
+            id: uuid,
             name: string,
             color: string,
+            page_id: uuid,
         }
         '''
         request.data['notebook'] = Notebook.objects.get(user=request.user).id

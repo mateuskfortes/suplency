@@ -81,19 +81,28 @@ class PageSerializer(serializers.ModelSerializer):
 
 class SubjectSerializer(serializers.ModelSerializer):
     page = PageSerializer(many=True, read_only=True)
+    page_id = serializers.UUIDField(write_only=True, required=False)
     notebook = serializers.PrimaryKeyRelatedField(queryset=Notebook.objects.all(), write_only=True)
     
     class Meta:
         model = Subject
-        fields = ('id', 'name', 'color', 'last_page', 'notebook', 'page')
+        fields = ('id', 'name', 'color', 'last_page', 'notebook', 'page', 'page_id')
 
     # return the subject and its first page
     
     def create(self, validated_data):
-        validated_data['id'] = uuid.uuid4()
-        subject = Subject.objects.create(**validated_data)
+        if validated_data.get('id'): validated_data['id'] = uuid.uuid4()
+        subject_data = validated_data
+        subject_data.pop('page_id')
+        subject = Subject.objects.create(**subject_data)
+
+        page_data = {
+            'number': 0, 
+            'subject': subject
+        }
+        if validated_data.get('page_id'): page_data['id'] = validated_data['page_id']
         
-        page = Page.objects.create(number=0, subject=subject)
+        page = Page.objects.create(**page_data)
         subject.last_page = page
         subject.save()
         
