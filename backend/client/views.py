@@ -127,6 +127,7 @@ class PageView(APIView):
     def post(self, request, *args, **kwargs):
         '''
         template: {
+            id: uuid,
             number: string,  ->  required
             color: string,
             content: json,

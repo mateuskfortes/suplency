@@ -1,6 +1,7 @@
 from django.test import TestCase
 from client.models import User, Notebook, Subject, Page
 from client.serializers import NotebookSerializer, SubjectSerializer, PageSerializer
+from uuid import uuid4 as uuid
 
 class NotebookSerializerTest(TestCase):
     
@@ -39,7 +40,9 @@ class SubjectSerializerTest(TestCase):
 
     def test_create_subject_with_valid_data(self):
         # Dados válidos para criar um Subject
+        id = uuid()
         subject_data = {
+            'id': id,
             'name': 'Math',
             'color': 'Blue',
             'notebook': self.notebook.id,
@@ -47,6 +50,7 @@ class SubjectSerializerTest(TestCase):
         serializer = SubjectSerializer(data=subject_data)
         self.assertTrue(serializer.is_valid())
         subject, _ = serializer.save()
+        self.assertEqual(subject.id, id)
         self.assertEqual(subject.name, 'Math')
         self.assertEqual(subject.color, 'Blue')
         self.assertEqual(subject.notebook, self.notebook)
@@ -108,7 +112,9 @@ class PageSerializerTest(TestCase):
 
     def test_create_page_and_reorder(self):
         # Data to create a new page
+        id = uuid()
         new_page_data = {
+            'id': id,
             "number": 1,
             "color": "yellow",
             "content": {"text": "New Page 2"},
@@ -119,6 +125,12 @@ class PageSerializerTest(TestCase):
         serializer = PageSerializer(data=new_page_data)
         self.assertTrue(serializer.is_valid())
         new_page = serializer.save()
+
+        # Check page information 
+        self.assertEqual(new_page.id, id)
+        self.assertEqual(new_page.color, 'yellow')
+        self.assertEqual(new_page.content, {"text": "New Page 2"})
+        self.assertEqual(new_page.subject, self.subject)
 
         # check the pages position
         self.assertEqual(Page.objects.get(id=self.page0.id).number, 0)
@@ -147,7 +159,7 @@ class PageSerializerTest(TestCase):
         new_page_data = {
             "number": 5,
             "color": "black",
-            "content": {"text": "Page 4"},
+            "content": {"text": "Page 6"},
             "subject": self.subject.id
         }
         
