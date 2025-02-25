@@ -28,7 +28,7 @@ const Login = () => {
                     navigate('/study')
                 },
                 ({}) => alert('Credenciais inválidas'),
-                JSON.stringify(userData))
+                userData)
             
     }
 

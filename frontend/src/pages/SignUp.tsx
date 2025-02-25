@@ -36,7 +36,7 @@ const SignUp = () => {
                         navigate('/study');
                     },
                     ({data}) => setResponse(data),
-                    JSON.stringify(userData))
+                    userData)
     }
 
     return(

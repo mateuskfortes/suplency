@@ -48,7 +48,7 @@ export interface NotebookContent {
 
 export interface NotebookContextType {
     editor: ReactEditor;
-    save: NotebookContent;
+    content: NotebookContent;
     currentSubject: SubjectContent;
     currentPage: PageContent;
     changeSubject: (id: string) => void;
@@ -56,7 +56,7 @@ export interface NotebookContextType {
     changePageByNumber: (number: number) => void;
     addPage: () => void;
     addSubject: (name: string) => void;
-    setSubjectName: (newName: string) => void;
+    setSubjectName: (newName: string) => Promise<boolean>;
     deleteSubject: (id: string) => void;
     deletePage: () => void;
 }

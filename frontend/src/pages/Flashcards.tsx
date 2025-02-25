@@ -41,10 +41,10 @@ const Flashcards = () => {
 						])
 					}, 
 					() => {},
-					JSON.stringify({
+					{
 						'question': question,
 						'answer': answer,
-					}),)
+					},)
 		setIsRunning(false)
 	}
 
@@ -65,7 +65,7 @@ const Flashcards = () => {
 						'DELETE', 
 						({}) => setFlashcards(flashcards.filter((fc: any) => fc.id != id)),
 						({}) => alert('Erro ao deletar flashcard'),
-						JSON.stringify({'id': id}))
+						{'id': id})
 		}
 	}
 
@@ -75,7 +75,7 @@ const Flashcards = () => {
 						'DELETE', 
 						({}) => setFlashcards([]),
 						({}) => alert('Erro ao deletar flashcards'),
-						JSON.stringify({'id': 'all'}))
+						{'id': 'all'})
 			setFlashcards([])
 		}
 		setIsRunning(false)

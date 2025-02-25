@@ -15,10 +15,10 @@ const fetchHandler = async (url: string,
 
     if (body) headers['Content-Type'] = contentType
     if (method != 'GET') headers['X-CSRFTOKEN'] = CSRFTOKEN
-    fetch(`${URL}/${url}`, {
+    await fetch(`${URL}/${url}`, {
         method: method,
         headers: headers,
-        body: body,
+        body: contentType == 'application/json' ? JSON.stringify(body) : body,
         credentials: 'include',
     })
     .then(async (response: any) => {

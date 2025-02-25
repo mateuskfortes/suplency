@@ -7,12 +7,19 @@ const Subject = ({ id, subjectName, start=false }: any) => {
 
     const [ isEditable, setIsEditable ] = useState(!start)
     const subjectContainer = useRef<HTMLSpanElement | null>(null)
+    
+    const [ nameBackup, setNameBackup ] = useState('')
+    useEffect(() => {
+        if (isEditable && subjectContainer.current) setNameBackup(subjectContainer.current.innerText) 
+    }, [isEditable])
 
     // Set the subject name to be editable
     const setEditable = () => setIsEditable(true)
-    const setNotEditable = () =>{
+    const setNotEditable = async () =>{
         setIsEditable(false)
-        if (subjectContainer.current) setSubjectName(subjectContainer.current.innerText)
+        if (subjectContainer.current) if (! await setSubjectName(subjectContainer.current.innerText)) {
+            subjectContainer.current.innerText = nameBackup
+        }
     }
 
     useEffect(() => { if (subjectContainer.current) subjectContainer.current.focus() } , [])

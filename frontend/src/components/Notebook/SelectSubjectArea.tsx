@@ -4,7 +4,7 @@ import { NotebookContext } from "./Notebook";
 import NewSubjectButton from "./NewSubjectButton";
 
 const SelectSubjectArea = () => {
-    const { save } = useContext(NotebookContext);
+    const { content } = useContext(NotebookContext);
     const subjArea = useRef<HTMLDivElement>(null);
 
 
@@ -21,10 +21,10 @@ const SelectSubjectArea = () => {
 
     return (
         <div className="container_subject">
-            <div className="subject_area" ref={subjArea} >
             <NewSubjectButton />
+            <div className="subject_area" ref={subjArea} >
                 {
-                    save.subject.map(
+                    content.subject.map(
                         (sb) => <Subject key={sb.id} id={sb.id} subjectName={sb.name} start={true} />
                     )
                 }

@@ -41,8 +41,8 @@ export default function Study() {
     const [notebookContent, setNotebookContent] = useState<any>(defaultContent)
     useEffect(() => {
         fetchHandler('notebook',
-                'GET',
-                ({ data }) => setNotebookContent(data))
+                    'GET',
+                    ({ data }) => setNotebookContent(data))
             }, [])
     return (
         <>

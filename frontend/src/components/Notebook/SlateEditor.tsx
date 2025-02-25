@@ -3,7 +3,7 @@ import { Slate, Editable } from 'slate-react'
 import FormatButtonsArea from './FormatButtonsArea';
 import SlateLeaf from './SlateLeaf';
 import SlateElement from './SlateElement';
-import { NotebookContext } from './Notebook';
+import { emptyPage, NotebookContext } from './Notebook';
 
 const SlateEditor = () => {
     const { editor, currentPage } = useContext(NotebookContext)
@@ -16,7 +16,7 @@ const SlateEditor = () => {
         return <SlateLeaf {...props} />
     }
 
-    const content = currentPage.content
+    const content = currentPage.content || emptyPage
 
     return (
         <div className="slate_editor">
