@@ -62,6 +62,21 @@ class NotebookView(APIView):
     def get(self, request, *args, **kwargs):
         notebook = Notebook.objects.get(user=request.user)
         return Response(NotebookSerializer(notebook).data, status=status.HTTP_200_OK)
+    
+    def put(self, request, *args, **kwargs):
+        """
+        template: {
+            last_subject, -> required
+        }
+        """
+        notebook = Notebook.objects.get(user=request.user)
+        notebook_serializer = NotebookSerializer(instance=notebook, data=request.data)
+        
+        if notebook_serializer.is_valid():
+            notebook_serializer.save()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
   
 class SubjectView(APIView):
     permission_classes = [permissions.IsAuthenticated]

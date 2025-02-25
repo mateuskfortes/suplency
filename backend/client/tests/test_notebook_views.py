@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 from client.models import Subject, Page, Notebook
+import json
 
 User = get_user_model()
 
@@ -49,6 +50,15 @@ class NotebookViewTest(APITestCase):
             ]
         }
         self.assertEqual(response.data, expected_data)
+    
+    def test_update_notebook_last_subject(self):
+        subject2 = Subject.objects.create(notebook=self.notebook, color='red', name='Subject test')
+        
+        response = self.client.put(self.url, data=json.dumps({'last_subject': str(subject2.id)}), content_type='application/json')
+        
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.notebook.refresh_from_db()
+        self.assertEqual(self.notebook.last_subject, subject2)
     
 
 class SubjectViewTest(TestCase):
