@@ -75,9 +75,8 @@ class NotebookView(APIView):
         if notebook_serializer.is_valid():
             notebook_serializer.save()
             return Response({}, status=status.HTTP_204_NO_CONTENT)
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': notebook_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-  
 class SubjectView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
@@ -97,7 +96,7 @@ class SubjectView(APIView):
             subject, page = subject_serializer.save()
             return Response({'subject_id': subject.id, 'page_id': page.id}, status=status.HTTP_201_CREATED)
         
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': subject_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, *args, **kwargs):
         '''
@@ -118,7 +117,7 @@ class SubjectView(APIView):
             subject_serializer.save()
             return Response({}, status=status.HTTP_204_NO_CONTENT)
         
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': subject_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, *args, **kwargs):
         '''
@@ -155,7 +154,7 @@ class PageView(APIView):
             page = page_serializer.save()
             return Response({'id': page.id}, status=status.HTTP_201_CREATED)
         
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': page_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, *args, **kwargs):
         '''
@@ -180,7 +179,7 @@ class PageView(APIView):
             page_serializer.save()
             return Response({}, status=status.HTTP_204_NO_CONTENT)
         
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': page_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, *args, **kwargs):
         '''

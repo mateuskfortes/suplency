@@ -92,18 +92,21 @@ class SubjectSerializer(serializers.ModelSerializer):
 
     # return the subject and its first page
     def create(self, validated_data):
-        if not validated_data.get('id'): validated_data['id'] = uuid.uuid4()
-        subject_data = validated_data
-        if subject_data.get('page_id'): subject_data.pop('page_id')
-        subject = Subject.objects.create(**subject_data)
-
+        subject_data = validated_data.copy()
         page_data = {
             'number': 0, 
-            'subject': subject
+            'subject': None
         }
-        if validated_data.get('page_id'): page_data['id'] = validated_data['page_id']
-        
+
+        if not validated_data.get('id'): validated_data['id'] = uuid.uuid4()
+        if subject_data.get('page_id'): 
+            subject_data.pop('page_id')
+            page_data['id'] = validated_data['page_id']
+
+        subject = Subject.objects.create(**subject_data)
+        page_data['subject'] = subject
         page = Page.objects.create(**page_data)
+
         subject.last_page = page
         subject.save()
         
