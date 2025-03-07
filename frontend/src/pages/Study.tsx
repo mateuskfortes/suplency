@@ -5,9 +5,9 @@ import Calculator from "../components/Calculator/Calculator.tsx"
 import Notebook from "../components/Notebook/Notebook.tsx"
 import { Link } from "react-router-dom"
 import '../assets/Study.scss'
-import fetchHandler from "../assets/fetchHandler.tsx"
 import { useEffect, useState } from "react"
 import { v4 as uuid } from 'uuid'
+import NotebookConection, { GetNotebookRequest } from "../assets/notebookConection.ts"
 
 const sbId = uuid()
 const pgId = uuid()
@@ -40,9 +40,13 @@ const defaultContent = {
 export default function Study() {
     const [notebookContent, setNotebookContent] = useState<any>(defaultContent)
     useEffect(() => {
-        fetchHandler('notebook',
-                    'GET',
-                    ({ data }) => setNotebookContent(data))
+        const okFunction = ({response, data}: any) => {
+            const contentType = response.headers.get('content-type')
+            if (contentType.includes('application/json')) {
+                setNotebookContent(data)
+            }
+        }
+        NotebookConection.add({requestClass: GetNotebookRequest, okFunction: okFunction})
             }, [])
     return (
         <>

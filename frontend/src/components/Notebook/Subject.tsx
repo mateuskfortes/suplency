@@ -7,20 +7,21 @@ const Subject = ({ id, subjectName, start=false }: any) => {
 
     const [ isEditable, setIsEditable ] = useState(!start)
     const subjectContainer = useRef<HTMLSpanElement | null>(null)
-    
-    const [ nameBackup, setNameBackup ] = useState('')
-    useEffect(() => {
-        if (isEditable && subjectContainer.current) setNameBackup(subjectContainer.current.innerText) 
-    }, [isEditable])
 
     // Set the subject name to be editable
     const setEditable = () => setIsEditable(true)
     const setNotEditable = async () =>{
         setIsEditable(false)
-        if (subjectContainer.current) if (! await setSubjectName(subjectContainer.current.innerText)) {
-            subjectContainer.current.innerText = nameBackup
+        if (subjectContainer.current) {
+            setSubjectName(subjectContainer.current.innerText) 
         }
     }
+
+    const deleteSubjectHandler = (e: any) => {
+        e.stopPropagation()
+        deleteSubject(id)
+    }
+
 
     useEffect(() => { if (subjectContainer.current) subjectContainer.current.focus() } , [])
 
@@ -39,7 +40,7 @@ const Subject = ({ id, subjectName, start=false }: any) => {
                 {subjectName}
             </span>
             <span>
-                <TbX onClick={() => deleteSubject(id)} />
+                <TbX onClick={deleteSubjectHandler} />
             </span>
         </div>
     )

@@ -1,3 +1,5 @@
+import { RequestMethod, ResponseFunctionTemplate } from "./RequestTemplate"
+
 const CSRFTOKENINPUT = document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
 let CSRFTOKEN = CSRFTOKENINPUT?.value
 
@@ -5,9 +7,9 @@ let CSRFTOKEN = CSRFTOKENINPUT?.value
 const URL = 'http://localhost:80'
 
 const fetchHandler = async (url: string, 
-                            method: 'GET' | 'POST' | 'PUT' | 'DELETE', 
-                            okFunc: (response: any) => void = () => {},
-                            notOkFunc?: (error: any) => void,
+                            method: RequestMethod, 
+                            okFunc: ResponseFunctionTemplate = ({}) => {},
+                            notOkFunc?: ResponseFunctionTemplate,
                             body?: any,
                             contentType: string = 'application/json',) => {
 
@@ -15,28 +17,28 @@ const fetchHandler = async (url: string,
 
     if (body) headers['Content-Type'] = contentType
     if (method != 'GET') headers['X-CSRFTOKEN'] = CSRFTOKEN
-    await fetch(`${URL}/${url}`, {
+    const response = await fetch(`${URL}/${url}`, {
         method: method,
         headers: headers,
         body: contentType == 'application/json' ? JSON.stringify(body) : body,
         credentials: 'include',
     })
-    .then(async (response: any) => {
-        let data;
-        try {
-            data = await response.json();
-        } catch (error) {
-            data = {};
+    let data;  
+    try {
+        data = await response.json();
+    } catch (error) {
+        data = {};
+    }
+    if (response.ok) {
+        if ('csrftoken' in data) {
+            CSRFTOKENINPUT.value = data.csrftoken
+            CSRFTOKEN = data.csrftoken
         }
-        if (response.ok) {
-            okFunc({response, data})
-            if ('csrftoken' in data) {
-                CSRFTOKENINPUT.value = data.csrftoken
-                CSRFTOKEN = data.csrftoken
-            }
-        }
-        else if (notOkFunc) notOkFunc({response, data})
-    })
+        okFunc({response, data})
+        return true
+    }
+    if (notOkFunc) notOkFunc({response, data})
+    return false
 }
 
 export default fetchHandler

@@ -6,7 +6,7 @@ import SlateElement from './SlateElement';
 import { emptyPage, NotebookContext } from './Notebook';
 
 const SlateEditor = () => {
-    const { editor, currentPage } = useContext(NotebookContext)
+    const { editor, currentPage, editable } = useContext(NotebookContext)
 
     const renderElement = (props: any) => {
         return <SlateElement {...props} />
@@ -22,7 +22,8 @@ const SlateEditor = () => {
         <div className="slate_editor">
             <Slate editor={editor} initialValue={content} >
                 <FormatButtonsArea />
-                <Editable 
+                <Editable
+                    ref={editable}
                     className="editable"
                     renderElement={renderElement}
                     renderLeaf={renderLeaf}

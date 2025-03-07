@@ -33,7 +33,7 @@ export interface PageContent {
     subject?: string;
 }
 
-export interface SubjectContent {
+export interface SubjectContent { 
     id?: string;
     name: string | null;
     color?: string;
@@ -48,15 +48,16 @@ export interface NotebookContent {
 
 export interface NotebookContextType {
     editor: ReactEditor;
+    editable: any;
     content: NotebookContent;
     currentSubject: SubjectContent;
     currentPage: PageContent;
-    changeSubject: (id: string) => void;
+    changeSubject: (id: string, savePage?: boolean) => void;
     changePage: (id: string) => void;
     changePageByNumber: (number: number) => void;
     addPage: () => void;
     addSubject: (name: string) => void;
-    setSubjectName: (newName: string) => Promise<boolean>;
+    setSubjectName: (newName: string) => void;
     deleteSubject: (id: string) => void;
     deletePage: () => void;
 }
