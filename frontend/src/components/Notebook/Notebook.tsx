@@ -77,7 +77,7 @@ const Notebook = ({ content }: any) => {
             content: emptyPage,
             subject: state.currentSubject.id
         }
-        NotebookConection.add({requestClass: PostPageRequest, data:data})
+        NotebookConection.add({requestClass: PostPageRequest, data})
         dispatch({type: 'ADD_PAGE', payload: data})
     };
 
@@ -114,18 +114,12 @@ const Notebook = ({ content }: any) => {
 
     // Deletes the currently selected page if there is more than one, reassigning page numbers accordingly
     const deletePage = () => {
-        if (currentSubject.page.length > 1) {
+        if (state.currentSubject.page.length > 1) {
             const data = {
-                id: currentPage.id
+                id: state.currentPage.id
             }
-            NotebookConection.add({requestClass: DeletePageRequest, data: data})
-            
-            const pgNumber = currentPage.number
-            currentSubject.page.forEach((pg: any) => {
-                if (pg.number > currentPage.number) pg.number--;
-            });
-            currentSubject.page = currentSubject.page.filter((pg: any) => pg.id !== currentPage.id);
-            changePage(pgNumber > 0 ? currentSubject.page[pgNumber - 1].id : currentSubject.page[0].id, false);
+            NotebookConection.add({requestClass: DeletePageRequest, data})
+            dispatch({type: 'DELETE_PAGE'})
         }
     };
     
@@ -180,13 +174,8 @@ const Notebook = ({ content }: any) => {
     // Deletes a subject if there is more than one, and switches focus to the first remaining subject
     const deleteSubject = (id: string) => {
         if (content.subject.length > 1) {
-            const data = {
-                id: id
-            }
-            NotebookConection.add({requestClass: DeleteSubjectRequest, data: data})
-            
-            content.subject = content.subject.filter((sb: any) => sb.id !== id);
-            changeSubject(content.subject[0].id, false);
+            NotebookConection.add({requestClass: DeleteSubjectRequest, data: {id}})
+            dispatch({type: 'DELETE_SUBJECT', payload: id})
         }
     };
 
