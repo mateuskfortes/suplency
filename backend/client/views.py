@@ -5,6 +5,7 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
+from django.db.models import F
 from .models import Notebook, Subject, Page, Flashcard, Pomodoro
 from .serializers import LoginSerializer, RegistrationSerializer, NotebookSerializer, SubjectSerializer, PageSerializer, FlashcardSerializer, PomodoroSerializer
 
@@ -191,9 +192,12 @@ class PageView(APIView):
         if not page_id:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         
-        deleted_count, _ = Page.objects.filter(id=page_id).delete()
-        if deleted_count == 0:
+        page = Page.objects.filter(id=page_id).first()
+        if not page:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
+        
+        Page.objects.filter(subject=page.subject, number__gt=page.number).update(number=F('number') - 1)
+        deleted_count, _ = page.delete()
             
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
