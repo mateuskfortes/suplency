@@ -146,11 +146,20 @@ class PageViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_page_valid(self):
-        page = Page.objects.create(number=0, color="white", content={"text": "To be deleted"}, subject=self.subject)
-        response = self.client.delete(self.url, {'id': page.id})
+        page1 = Page.objects.create(number=0, color="white", content={"text": ""}, subject=self.subject)
+        page2 = Page.objects.create(number=1, color="white", content={"text": "To be deleted"}, subject=self.subject)
+        page3 = Page.objects.create(number=2, color="white", content={"text": ""}, subject=self.subject)
+        response = self.client.delete(self.url, {'id': page2.id})
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         
-        self.assertFalse(Page.objects.filter(id=page.id).exists())
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Page.objects.filter(id=page2.id).exists())
+
+        page1.refresh_from_db()
+        page3.refresh_from_db()
+
+        self.assertEqual(page1.number, 0)
+        self.assertEqual(page3.number, 1)
 
     def test_delete_page_invalid(self):
         data = {
