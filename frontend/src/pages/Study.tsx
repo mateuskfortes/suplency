@@ -11,7 +11,7 @@ import NotebookConection, { GetNotebookRequest } from "../assets/notebookConecti
 
 const sbId = uuid()
 const pgId = uuid()
-const defaultContent = {
+export const defaultContent = {
     'last_subject': sbId,
     'subject': [
         {

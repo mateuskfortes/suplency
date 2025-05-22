@@ -33,8 +33,8 @@ export const emptyPage = [
         children: [{ text: '' }],
     },
 ]
-NotebookConection.run()
-// Utility function to locate an object within a list by its ID oterwise returns the first item
+
+//NotebookConection.run()
 
 const Notebook = ({ content }: any) => {
     // Initializes the Slate editor instance 
@@ -48,13 +48,14 @@ const Notebook = ({ content }: any) => {
     const [currentPage] = useState(findObj(currentSubjectHandler.page, currentSubjectHandler.last_page));
     
     // Updates the editor's content and resets the cursor position
-    const updateEditorContent: any = (content: any = state.currentPage.content) => {
+    const updateEditorContent: () => void = (content: any = state.currentPage.content) => {
         const point = { path: [0, 0], offset: 0 };
         editor.selection = { anchor: point, focus: point };
         editor.children = content || emptyPage;
     };
     
     const initialState = {
+        editor,
         content: content,
         currentSubject: currentSubjectHandler,
         currentPage: findObj(currentSubjectHandler.page, currentSubjectHandler.last_page),
@@ -66,6 +67,8 @@ const Notebook = ({ content }: any) => {
     useEffect(() => {
         dispatch({type:'SET_CONTENT', payload: content})
     }, [content])
+
+   useEffect(() => {NotebookConection.run()}, [])
 
     // Adds a new page to the current subject and switches focus to it
     const addPage = () => {
@@ -87,8 +90,6 @@ const Notebook = ({ content }: any) => {
             content: editor.children,
         }
         NotebookConection.add({requestClass: PutPageRequest, data: savePageData})
-
-        currentPage.content = editor.children
     }
 
     // reduced

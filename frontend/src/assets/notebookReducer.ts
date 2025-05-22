@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 
-
+// Utility function to find an object in a list by its ID
 export const findObj = (list: any, id: string) => list.find((obj: any) => obj.id === id) || list[0];
 
 const updateSubject = (state: any, newSubject: any) => {
@@ -34,6 +34,7 @@ const useNotebook = (initializer: any) => {
         }
     
         const changePage = (st: any = state, id: string = action.payload) => {
+            st.currentPage.content = st.editor.children
             findObj(st.content.subject, st.currentSubject.id).last_page = id
             const currentPageHandler = findObj(st.currentSubject.page, id);
             st.updateEditorContent(currentPageHandler.content) 
