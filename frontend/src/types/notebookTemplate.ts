@@ -88,3 +88,34 @@ export type AddPageAction = {
     type: "ADD_PAGE",
     payload: PageTemplate
 }
+
+export type ChangePageAction = {
+    type: "CHANGE_PAGE",
+    payload: string // page id
+}
+
+export type DeletePageAction = {
+    type: "DELETE_PAGE"
+}
+
+export type AddSubjectAction = {
+    type: "ADD_SUBJECT",
+    payload: SubjectTemplate
+}
+
+export type ChangeSubjectAction = {
+    type: "CHANGE_SUBJECT",
+    payload: string // subject id
+}
+
+export type DeleteSubjectAction = {
+    type: "DELETE_SUBJECT",
+    payload: string // subject id
+}
+
+export type SetContentAction = {
+    type: "SET_CONTENT",
+    payload: NotebookContentTemplate
+}
+
+export type ActionTemplate = AddPageAction | ChangePageAction | DeletePageAction | AddSubjectAction | ChangeSubjectAction | DeleteSubjectAction | SetContentAction;

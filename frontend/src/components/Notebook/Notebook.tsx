@@ -68,9 +68,10 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
         dispatch({type:'SET_CONTENT', payload: content})
     }, [content])
 
-   useEffect(() => {NotebookConection.run()}, [])
+    // Runs the NotebookConection to manage the connection with the backend
+    useEffect(() => {NotebookConection.run()}, [])
 
-    // Adds a new page to the current subject and switches focus to it
+    // Adds a new page to the current subject in next position
     const addPage = () => {
         const id = uuid();
         const number = state.currentPage.number +1
@@ -92,7 +93,6 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
         NotebookConection.add({requestClass: PutPageRequest, data: savePageData})
     }
 
-    // reduced
     // Changes the currently selected page by ID
     const changePage = async (id: string, savePage: boolean = true) => {
         const data = {
@@ -104,7 +104,6 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
         if (savePage) saveCurrentPage()
     };
 
-    // reduced
     // Changes the currently selected page based on its index within the subject
     const changePageByNumber = (number: number) => {
         if (state.currentSubject.page.length > number && number >= 0) {
@@ -150,7 +149,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
         dispatch({type: 'ADD_SUBJECT', payload}) 
         
     };
-    // reduced
+
     // Changes the currently selected subject by ID
     const changeSubject = async (id: string, savePage: boolean = true) => {
         const data = {

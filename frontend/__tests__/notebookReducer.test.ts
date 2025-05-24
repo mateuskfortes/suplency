@@ -1,28 +1,32 @@
 import { useState } from "react";
 import { renderHook } from "@testing-library/react";
 import { findObj, notebookReducer } from "../src/assets/notebookReducer";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 import { withHistory } from "slate-history";
 import { withReact } from "slate-react";
 import { createEditor } from "slate";
 import { emptyPage } from "../src/components/Notebook/Notebook";
 import { v4 as uuid } from "uuid";
-import { AddPageAction } from "../src/types/notebookTemplate";
+import { AddPageAction, AddSubjectAction, ChangePageAction, ChangeSubjectAction, DeletePageAction, DeleteSubjectAction, notebookStateTemplate, SetContentAction } from "../src/types/notebookTemplate";
 
 
-const sbId = uuid()
-const pgId = uuid()
+const sbId1 = uuid()
+const sbId2 = uuid()
+const pgId1 = uuid()
+const pgId2 = uuid()
+const pgId3 = uuid()
+const pgId4 = uuid()
 const defaultContent = {
-    'last_subject': sbId,
+    'last_subject': sbId1,
     'subject': [
         {
-            'id': sbId,
+            'id': sbId1,
             'name': 'subject',
             'color': 'red',
-            'last_page': pgId,
+            'last_page': pgId1,
             'page': [
                 {
-                    'id': pgId,
+                    'id': pgId1,
                     'number': 0,
                     'color': 'green',
                     'content': [
@@ -31,10 +35,10 @@ const defaultContent = {
                             children: [{ text: 'page 1' }],
                         },
                     ],
-                    'subject': sbId,
+                    'subject': sbId1,
                 },
                 {
-                    'id': pgId,
+                    'id': pgId2,
                     'number': 1,
                     'color': 'red',
                     'content': [
@@ -43,7 +47,39 @@ const defaultContent = {
                             children: [{ text: 'page 2' }],
                         },
                     ],
-                    'subject': sbId,
+                    'subject': sbId1,
+                },
+                {
+                    'id': pgId3,
+                    'number': 2,
+                    'color': 'yellow',
+                    'content': [
+                        {
+                            type: 'paragraph',
+                            children: [{ text: 'page 3' }],
+                        },
+                    ],
+                    'subject': sbId1,
+                }
+            ]
+        },
+        {
+            'id': sbId2,
+            'name': 'subject',
+            'color': 'red',
+            'last_page': pgId4,
+            'page': [
+                {
+                    'id': pgId4,
+                    'number': 0,
+                    'color': 'green',
+                    'content': [
+                        {
+                            type: 'paragraph', 
+                            children: [{ text: 'page 1' }],
+                        },
+                    ],
+                    'subject': sbId2,
                 }
             ]
         }
@@ -54,18 +90,45 @@ describe("Notebook Reducer", () => {
     const [ editor ] = renderHook(() => useState(() => withHistory(withReact(createEditor())))).result.current
     const currentSubjectHandler = findObj(defaultContent.subject, defaultContent.last_subject);
     const currentPageHandler = findObj(currentSubjectHandler.page, currentSubjectHandler.last_page);
-    const updateEditorContent = vi.fn((content: any = prevState.currentPage.content) => {
+    const updateEditorContent = vi.fn((content: any) => {
             const point = { path: [0, 0], offset: 0 };
             editor.selection = { anchor: point, focus: point };
             editor.children = content || emptyPage;
         });
-    const prevState = {
+    let prevState: notebookStateTemplate = {
         editor,
         content: defaultContent,
         currentSubject: currentSubjectHandler,
         currentPage: currentPageHandler,
         updateEditorContent,
     }
+
+    // Reset the state before each test
+    beforeEach(() => {
+        prevState = JSON.parse(JSON.stringify(prevState))
+        prevState.updateEditorContent = updateEditorContent
+        prevState.editor = editor
+    })
+
+    it("Should change page", () => {
+        const prevContent = [
+            { text: 'different page' },
+        ]
+        editor.children = prevContent
+
+        const action: ChangePageAction = {
+            type: "CHANGE_PAGE",
+            payload: pgId2,
+        }
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the page was changed
+        expect(finalState.currentPage.id).toEqual(pgId2)
+        expect(finalState.currentSubject.last_page).toEqual(pgId2)
+
+        // Check if the previous content was saved
+        assert.deepEqual(prevState.currentPage.content, prevContent)
+    })
 
     it("Should add a page", () => {
         const action: AddPageAction = {
@@ -84,20 +147,136 @@ describe("Notebook Reducer", () => {
         const finalState = notebookReducer(prevState, action)
 
         // Check if the page was added
-        expect(finalState.currentSubject.page).toHaveLength(3)
-        expect(Object.is(finalState.currentSubject.page[1], action.payload)).toBeTruthy()
+        expect(finalState.currentSubject.page).toHaveLength(4)
+        assert.deepEqual(finalState.currentSubject.page[1], action.payload)
 
         // Check if the new page is now the current page
-        expect(Object.is(finalState.currentPage, action.payload)).toBeTruthy()
+        assert.deepEqual(finalState.currentPage, action.payload)
 
         // Check if the page 1 was not modified
-        expect(Object.is(finalState.currentSubject.page[0], finalState.currentSubject.page[0])).toBeTruthy()
+        assert.deepEqual(finalState.currentSubject.page[0], finalState.currentSubject.page[0])
 
         // Check if the old page 2 is now page 3
         const prevPg2 = prevState.currentSubject.page[1]
         const nowPg3 = finalState.currentSubject.page[2]
         expect(nowPg3.id).toEqual(prevPg2.id)
         expect(nowPg3.number).toEqual(prevPg2.number + 1)
-        expect(Object.is(prevPg2.content, nowPg3.content)).toBeTruthy()
+        assert.deepEqual(prevPg2.content, nowPg3.content)
+    })
+
+    it("Should delete page", () => {
+        const action: DeletePageAction = {
+            type: "DELETE_PAGE"
+        }
+
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the page was deleted
+        expect(finalState.currentSubject.page).toHaveLength(2)
+        expect(finalState.currentPage.id).toEqual(pgId2)
+        expect(finalState.currentSubject.last_page).toEqual(pgId2)
+    })
+
+    it("Should change subject", () => {
+        const prevContent = [
+            { text: 'different page' },
+        ]
+        editor.children = prevContent
+
+        const action: ChangeSubjectAction = {
+            type: "CHANGE_SUBJECT",
+            payload: sbId2,
+        }
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the subject was changed
+        expect(finalState.currentSubject.id).toEqual(sbId2)
+        expect(finalState.currentPage.id).toEqual(pgId4)
+        expect(finalState.content.last_subject).toEqual(sbId2)
+
+        // Check if the previous content was saved
+        assert.deepEqual(prevState.currentPage.content, prevContent)
+    })
+
+    it("Should add subject", () => {
+        const newSubject = {
+            id: uuid(),
+            name: "new subject",
+            color: "blue",
+            page: [
+                {
+                    id: uuid(),
+                    number: 0,
+                    color: "red",
+                    content: [
+                        {
+                            type: 'paragraph',
+                            children: [{ text: 'new page 1' }],
+                        },
+                    ]
+                }
+            ]
+        }
+        const action: AddSubjectAction = {
+            type: "ADD_SUBJECT",
+            payload: newSubject
+        }
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the subject was added
+        expect(finalState.content.subject).toHaveLength(3)
+
+        // Check if the new subject is now the current subject
+        assert.deepEqual(finalState.currentSubject, newSubject)
+    })
+
+    it("Should delete subject", () => {
+        const action: DeleteSubjectAction = {
+            type: "DELETE_SUBJECT",
+            payload: sbId2,
+        }
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the subject was deleted
+        expect(finalState.content.subject).toHaveLength(1)
+        expect(finalState.currentSubject.id).toEqual(sbId1)
+        expect(finalState.currentPage.id).toEqual(pgId1)
+    })
+
+    it("Should set content", () => {
+        const newContent = {
+            last_subject: sbId2,
+            subject: [
+                {
+                    id: sbId2,
+                    name: 'subject',
+                    color: 'red',
+                    last_page: pgId4,
+                    page: [
+                        {
+                            id: pgId4,
+                            number: 0,
+                            color: 'green',
+                            content: [
+                                {
+                                    type: 'paragraph', 
+                                    children: [{ text: 'page 1' }],
+                                },
+                            ],
+                            subject: sbId2,
+                        }
+                    ]
+                }
+            ]
+        };
+        const action: SetContentAction = {
+            type: "SET_CONTENT",
+            payload: newContent
+        };
+        const finalState = notebookReducer(prevState, action);
+
+        assert.deepEqual(finalState.content, newContent);
+        assert.deepEqual(finalState.currentSubject, newContent.subject[0])
+        assert.deepEqual(finalState.currentPage, newContent.subject[0].page[0])
     })
 }) 
