@@ -7,6 +7,7 @@ import { withReact } from "slate-react";
 import { createEditor } from "slate";
 import { emptyPage } from "../src/components/Notebook/Notebook";
 import { v4 as uuid } from "uuid";
+import { AddPageAction } from "../src/types/notebookTemplate";
 
 
 const sbId = uuid()
@@ -67,7 +68,7 @@ describe("Notebook Reducer", () => {
     }
 
     it("Should add a page", () => {
-        const action = {
+        const action: AddPageAction = {
             type: "ADD_PAGE",
             payload: {
                 id: uuid(),

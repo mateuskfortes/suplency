@@ -8,6 +8,7 @@ import '../assets/Study.scss'
 import { useEffect, useState } from "react"
 import { v4 as uuid } from 'uuid'
 import NotebookConection, { GetNotebookRequest } from "../assets/notebookConection.ts"
+import { NotebookContentTemplate } from "../types/notebookTemplate.ts"
 
 const sbId = uuid()
 const pgId = uuid()
@@ -38,7 +39,7 @@ export const defaultContent = {
 }
 
 export default function Study() {
-    const [notebookContent, setNotebookContent] = useState<any>(defaultContent)
+    const [notebookContent, setNotebookContent] = useState<NotebookContentTemplate>(defaultContent)
     useEffect(() => {
         const okFunction = ({response, data}: any) => {
             const contentType = response.headers.get('content-type')

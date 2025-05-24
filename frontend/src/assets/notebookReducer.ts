@@ -1,9 +1,12 @@
 import { useReducer } from "react";
+import { notebookStateTemplate } from "../types/notebookTemplate";
 
 // Utility function to find an object in a list by its ID
 export const findObj = (list: any, id: string) => list.find((obj: any) => obj.id === id) || list[0];
 
-const updateSubject = (state: any, newSubject: any) => {
+
+// Utility function to update the current subject in the state with the new subject
+const updateSubject = (state: notebookStateTemplate, newSubject: any) => {
     return {
         ...state,
         content: {
@@ -15,16 +18,20 @@ const updateSubject = (state: any, newSubject: any) => {
 }
 
 
-export const notebookReducer = (state: any, action: any) => {
+export const notebookReducer = (state: notebookStateTemplate, action: any) => {
 
-    // Inserts a new page into the current subject
+    // Inserts a new page into the current subject in the new page number position
     const addPage = (st: any, payload: any) => {
-        // Update page
+        // Update page numbers
         const pages = st.currentSubject.page.map((pg: any) => ({
             ...pg,
             number: pg.number >= payload.number ? pg.number + 1 : pg.number,
         }))
+
+        // Insert new page in the correct position
         pages.splice(payload.number, 0, payload)
+
+        // Create a new subject object with the updated pages
         const updatedSb = {
             ...findObj(st.content.subject, st.currentSubject.id),
             page: pages

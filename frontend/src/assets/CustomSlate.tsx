@@ -1,4 +1,5 @@
 import { Editor, Transforms, Element, Node } from 'slate';
+import { CustomElement, CustomText } from '../types/notebookTemplate';
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 export const fontSizes = { sizes: ['8', '9', '10', '11', '12', '14', '18'], metric: 'pt', default: '12' };
@@ -15,44 +16,6 @@ export const fontFamilies = {
     fonts: ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana'],
     default: 'Arial',
 };
-
-
-interface CustomText {
-    text: string;
-    bold?: boolean;
-    italic?: boolean;
-    color?: string;
-    fontSize?: string;
-    fontFamily?: string;
-    superscript?: boolean;
-    subscript?: boolean;
-    underline?: boolean
-}
-
-// Definir o tipo para elementos de parágrafo
-interface ParagraphElement {
-    type: 'paragraph';
-    children: CustomText[];
-}
-
-// Definir o tipo para elementos de lista
-interface ListItemElement {
-    type: 'list-item';
-    children: CustomText[];
-}
-
-interface BulletedListElement {
-    type: 'bulleted-list';
-    children: ListItemElement[];
-}
-
-interface NumberedListElement {
-    type: 'numbered-list';
-    children: ListItemElement[];
-}
-
-// União de todos os elementos customizados
-type CustomElement = ParagraphElement | ListItemElement | BulletedListElement | NumberedListElement;
 
 const CustomSlate = {
     isBlockActive(editor: Editor, format: string) {
@@ -101,7 +64,7 @@ const CustomSlate = {
         // Verifica se o tipo é 'paragraph' ou 'list-item'
         const newType: CustomElement['type'] = isActive ? 'paragraph' : 'list-item';
 
-        Transforms.setNodes(editor, { type: newType } as {type: 'paragraph'});
+        Transforms.setNodes(editor, { type: newType } as Partial<CustomElement>);
 
         if (!isActive) {
             const block = { type: format, children: []} as {type: 'paragraph', children: []};

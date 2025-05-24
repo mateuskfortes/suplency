@@ -1,5 +1,5 @@
 import fetchHandler from "./fetchHandler"
-import { DataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTemplate, RequestMethod, ResponseFunctionTemplate } from "./RequestTemplate"
+import { DataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTemplate, RequestMethod, ResponseFunctionTemplate } from "../types/RequestTemplate"
 
 const NotebookConection: NotebookConectionTemplate = {
     requests: [],

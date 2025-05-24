@@ -1,4 +1,4 @@
-import { RequestMethod, ResponseFunctionTemplate } from "./RequestTemplate"
+import { RequestMethod, ResponseFunctionTemplate } from "../types/RequestTemplate"
 
 const CSRFTOKENINPUT = document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
 let CSRFTOKEN = CSRFTOKENINPUT?.value

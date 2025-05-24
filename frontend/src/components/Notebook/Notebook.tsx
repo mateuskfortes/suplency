@@ -4,19 +4,19 @@ import { ReactEditor, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import SlateEditor from './SlateEditor';
 import SelectSubjectArea from './SelectSubjectArea';
-import { NotebookContextType, NotebookContent, SubjectContent, PageContent } from '../../assets/NotebookTemplate';
 import SetPage from './SetPage';
 import { v4 as uuid } from "uuid";
 import NotebookConection, { DeletePageRequest, DeleteSubjectRequest, PostPageRequest, PostSubjectRequest, PutNotebookRequest, PutPageRequest, PutSubjectRequest } from '../../assets/notebookConection';
 import useNotebook, { findObj } from '../../assets/notebookReducer';
+import { EditableType, NotebookContentTemplate, NotebookContextType, notebookStateTemplate, PageTemplate, SubjectTemplate } from '../../types/notebookTemplate';
 
 // Creates a context for managing notebook state
 export const NotebookContext = createContext<NotebookContextType>({
     editor: {} as ReactEditor,
-    editable: {},
-    content: {} as NotebookContent,
-    currentSubject: {} as SubjectContent,
-    currentPage: {} as PageContent,
+    editable: {} as EditableType,
+    content: {} as NotebookContentTemplate,
+    currentSubject: {} as SubjectTemplate,
+    currentPage: {} as PageTemplate,
     changeSubject: () => {},
     changePage: () => {},
     changePageByNumber: () => {},
@@ -36,7 +36,7 @@ export const emptyPage = [
 
 //NotebookConection.run()
 
-const Notebook = ({ content }: any) => {
+const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     // Initializes the Slate editor instance 
     const [editor] = useState(() => withHistory(withReact(createEditor())));
     
@@ -48,13 +48,13 @@ const Notebook = ({ content }: any) => {
     const [currentPage] = useState(findObj(currentSubjectHandler.page, currentSubjectHandler.last_page));
     
     // Updates the editor's content and resets the cursor position
-    const updateEditorContent: () => void = (content: any = state.currentPage.content) => {
+    const updateEditorContent = (content: any = state.currentPage.content) => {
         const point = { path: [0, 0], offset: 0 };
         editor.selection = { anchor: point, focus: point };
         editor.children = content || emptyPage;
     };
     
-    const initialState = {
+    const initialState: notebookStateTemplate = {
         editor,
         content: content,
         currentSubject: currentSubjectHandler,
