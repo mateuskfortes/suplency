@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { ActionTemplate, NotebookContentTemplate, notebookStateTemplate, PageTemplate, SubjectTemplate } from "../types/notebookTemplate";
+import { ActionTemplate, AddPagePayload, AddSubjectPayload, ChangePagePayload, NotebookContentTemplate, notebookStateTemplate } from "../types/notebookTemplate";
 
 // Utility function to find an object in a list by its ID
 export const findObj = (list: any, id: string) => list.find((obj: any) => obj.id === id) || list[0];
@@ -21,15 +21,15 @@ const updateSubject = (state: notebookStateTemplate, newSubject: any) => {
 export const notebookReducer = (state: notebookStateTemplate, action: ActionTemplate) => {
 
     // Inserts a new page into the current subject in the new page number position
-    const addPage = (st: notebookStateTemplate, payload: PageTemplate) => {
+    const addPage = (st: notebookStateTemplate, { newPage, currentContent }: AddPagePayload) => {
         // Update page numbers
         const pages = st.currentSubject.page.map((pg: any) => ({
             ...pg,
-            number: pg.number >= payload.number ? pg.number + 1 : pg.number,
+            number: pg.number >= newPage.number ? pg.number + 1 : pg.number,
         }))
 
         // Insert new page in the correct position
-        pages.splice(payload.number, 0, payload)
+        pages.splice(newPage.number, 0, newPage)
 
         // Create a new subject object with the updated pages
         const updatedSb = {
@@ -38,12 +38,12 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
         }
         
         const newState = updateSubject(st, updatedSb)
-        return changePage(newState, payload.id);
+        return changePage(newState, { id: newPage.id, currentContent });
     }
 
     // Changes the current page to the page with the given ID
-    const changePage = (st: notebookStateTemplate = state, id: string) => {  
-        st.currentPage.content = st.editor.children // Save the current page content
+    const changePage = (st: notebookStateTemplate = state, { id, currentContent }: ChangePagePayload) => {  
+        st.currentPage.content = currentContent // Save the current page content
       
         st.currentSubject.last_page = id  // Update the subjet's last page
 
@@ -81,11 +81,11 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
                           newState.currentSubject.page[pgN - 1].id : 
                           newState.currentSubject.page[0].id
 
-        return changePage(newState, newPageId)
+        return changePage(newState, { id: newPageId, currentContent: [] })
     }
 
     // Adds a new subject to the notebook and switches to it
-    const addSubject = (st: notebookStateTemplate, newSubject: SubjectTemplate) => {
+    const addSubject = (st: notebookStateTemplate, { newSubject, currentContent }: AddSubjectPayload) => {
         const newState = {
             ...st,
             content: {
@@ -93,12 +93,12 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
                 subject: [...st.content.subject, newSubject]
             }
         }
-        return changeSubject(newState, newSubject.id)
+        return changeSubject(newState, { id: newSubject.id, currentContent })
     }
 
     // Changes the current subject to the subject with the given ID
-    const changeSubject = (st: any, id: string) => {
-        st.currentPage.content = st.editor.children // Save the current page content
+    const changeSubject = (st: any, { id, currentContent }: ChangePagePayload) => {
+        st.currentPage.content = currentContent // Save the current page content
         
         const currentSubjectHandler = findObj(st.content.subject, id)
         const currentPageHandler = findObj(currentSubjectHandler.page, currentSubjectHandler.last_page)
@@ -123,7 +123,7 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
                 subject: st.content.subject.filter((sb: any) => sb.id !== id)
             }
         }
-        return changeSubject(newState, newState.content.subject[0].id)
+        return changeSubject(newState, { id: newState.content.subject[0].id, currentContent: [] })
     }
 
     const setContent = (st: notebookStateTemplate, content: NotebookContentTemplate) => {

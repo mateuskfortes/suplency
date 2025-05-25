@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react';
-import { BaseEditor } from 'slate'
+import { Descendant } from 'slate'
 import { ReactEditor } from 'slate-react'
 import { Editable } from 'slate-react'
 
@@ -59,7 +59,6 @@ export type NotebookContentTemplate = {
 }
 
 export type notebookStateTemplate = {
-    editor: BaseEditor & ReactEditor,
     content: NotebookContentTemplate,
     currentSubject: SubjectTemplate,
     currentPage: PageTemplate,
@@ -84,28 +83,48 @@ export interface NotebookContextType {
     deletePage: () => void;
 }
 
+export type AddPagePayload = {
+    newPage: PageTemplate,
+    currentContent: Descendant[] // current page content
+}
+
 export type AddPageAction = {
     type: "ADD_PAGE",
-    payload: PageTemplate
+    payload: AddPagePayload
+}
+
+export type ChangePagePayload = {
+    id: string, // page id
+    currentContent: Descendant[] // current page content
 }
 
 export type ChangePageAction = {
     type: "CHANGE_PAGE",
-    payload: string // page id
+    payload: ChangePagePayload
 }
 
 export type DeletePageAction = {
     type: "DELETE_PAGE"
 }
 
+export type AddSubjectPayload = {
+    newSubject: SubjectTemplate,
+    currentContent: Descendant[] // current page content
+}
+
 export type AddSubjectAction = {
     type: "ADD_SUBJECT",
-    payload: SubjectTemplate
+    payload: AddSubjectPayload
+}
+
+export type ChangeSubjectPayload = {
+    id: string, // subject id
+    currentContent: Descendant[] // current page content
 }
 
 export type ChangeSubjectAction = {
     type: "CHANGE_SUBJECT",
-    payload: string // subject id
+    payload: ChangeSubjectPayload // subject id
 }
 
 export type DeleteSubjectAction = {

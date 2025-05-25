@@ -6,17 +6,10 @@ import Study from './pages/Study';
 import Flashcards from './pages/Flashcards';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
-import './assets/Default.scss'
-
-const CustomStrictMode = ({ children }: { children: React.ReactNode }) => {
-    return  false 
-            ? <StrictMode children={children} />
-            : <>{children}</>
-}
-    
+import './assets/Default.scss'   
 
 createRoot(document.getElementById('root')!).render(
-    <CustomStrictMode>
+    <StrictMode>
         <HashRouter 
             future={{
                 v7_startTransition: true,
@@ -36,5 +29,5 @@ createRoot(document.getElementById('root')!).render(
                 </Route>
             </Routes>
         </HashRouter>
-    </CustomStrictMode>
+    </StrictMode>
 )

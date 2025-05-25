@@ -55,7 +55,6 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     };
     
     const initialState: notebookStateTemplate = {
-        editor,
         content: content,
         currentSubject: currentSubjectHandler,
         currentPage: findObj(currentSubjectHandler.page, currentSubjectHandler.last_page),
@@ -82,7 +81,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             subject: state.currentSubject.id
         }
         NotebookConection.add({requestClass: PostPageRequest, data})
-        dispatch({type: 'ADD_PAGE', payload: data})
+        dispatch({type: 'ADD_PAGE', payload: { newPage: data, currentContent: editor.children }})
     };
 
     const saveCurrentPage = () => {
@@ -100,7 +99,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             last_page: id,
         }
         NotebookConection.add({requestClass: PutSubjectRequest, data: data})
-        dispatch({type: 'CHANGE_PAGE', payload: id})
+        dispatch({type: 'CHANGE_PAGE', payload: { id, currentContent: editor.children }})
         if (savePage) saveCurrentPage()
     };
 
@@ -146,8 +145,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
                 }
             ],
         }
-        dispatch({type: 'ADD_SUBJECT', payload}) 
-        
+        dispatch({type: 'ADD_SUBJECT', payload: { newSubject: payload, currentContent: editor.children }}) 
     };
 
     // Changes the currently selected subject by ID
@@ -156,7 +154,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             last_subject: id
         }
         NotebookConection.add({requestClass: PutNotebookRequest, data: data})
-        dispatch({type: 'CHANGE_SUBJECT', payload: id})
+        dispatch({type: 'CHANGE_SUBJECT', payload: { id, currentContent: editor.children }})
         if (savePage) saveCurrentPage()
     };
 
