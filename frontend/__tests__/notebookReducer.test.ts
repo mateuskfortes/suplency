@@ -96,6 +96,8 @@ describe("Notebook Reducer", () => {
         prevState = JSON.parse(JSON.stringify(prevState))
         prevState.updateEditorContent = updateEditorContent
     })
+
+    // Simulate the content of the current page
     const prevContent = [
         { text: 'different page' },
     ]
@@ -284,5 +286,69 @@ describe("Notebook Reducer", () => {
         assert.deepEqual(finalState.content, newContent);
         assert.deepEqual(finalState.currentSubject, newContent.subject[0])
         assert.deepEqual(finalState.currentPage, newContent.subject[0].page[0])
+    })
+
+    it("Should delete last page", () => {
+        const action: DeletePageAction = {
+            type: "DELETE_PAGE"
+        }
+
+        prevState.currentSubject.page = [
+            {
+                id: pgId1,
+                number: 0,
+                color: 'red',
+                content: [
+                    {
+                        type: 'paragraph',
+                        children: [{ text: 'page 1' }],
+                    },
+                ],
+                subject: sbId1,
+            },
+        ]
+
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the page was deleted
+        expect(finalState.currentSubject.page).toHaveLength(0)
+        expect(finalState.currentSubject.last_page).toEqual(null)
+        expect(finalState.currentPage).toEqual(null)
+    })
+
+    it("Should delete last subject", () => {
+        const action: DeleteSubjectAction = {
+            type: "DELETE_SUBJECT",
+            payload: sbId1,
+        }
+        prevState.content.subject = [
+            {
+                id: sbId1,
+                name: 'subject',
+                color: 'red',
+                last_page: pgId1,
+                page: [
+                    {
+                        id: pgId1,
+                        number: 0,
+                        color: 'red',
+                        content: [
+                            {
+                                type: 'paragraph',
+                                children: [{ text: 'page 1' }],
+                            },
+                        ],
+                        subject: sbId1,
+                    },
+                ]
+            }
+        ]
+        const finalState = notebookReducer(prevState, action)
+
+        // Check if the subject was deleted
+        expect(finalState.content.subject).toHaveLength(0)
+        expect(finalState.currentSubject).toEqual(null)
+        expect(finalState.currentPage).toEqual(null)
+        expect(finalState.content.last_subject).toEqual(null)
     })
 }) 

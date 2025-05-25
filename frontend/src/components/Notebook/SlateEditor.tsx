@@ -16,18 +16,24 @@ const SlateEditor = () => {
         return <SlateLeaf {...props} />
     }
 
-    const content = currentPage.content || emptyPage
+    const content = currentPage?.content || emptyPage
 
     return (
         <div className="slate_editor">
             <Slate editor={editor} initialValue={content} >
                 <FormatButtonsArea />
-                <Editable
-                    ref={editable}
-                    className="editable"
-                    renderElement={renderElement}
-                    renderLeaf={renderLeaf}
-                    />
+                { currentPage ? 
+                    <Editable
+                        ref={editable}
+                        className="editable"
+                        renderElement={renderElement}
+                        renderLeaf={renderLeaf}
+                        />
+                    : 
+                    <div className="empty_page">
+                        <p>Page not found</p>
+                    </div>
+                }
             </Slate>
         </div>
     )

@@ -48,7 +48,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     const [currentPage] = useState(findObj(currentSubjectHandler.page, currentSubjectHandler.last_page));
     
     // Updates the editor's content and resets the cursor position
-    const updateEditorContent = (content: any = state.currentPage.content) => {
+    const updateEditorContent = (content: any) => {
         const point = { path: [0, 0], offset: 0 };
         editor.selection = { anchor: point, focus: point };
         editor.children = content || emptyPage;
@@ -73,7 +73,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     // Adds a new page to the current subject in next position
     const addPage = () => {
         const id = uuid();
-        const number = state.currentPage.number +1
+        const number = state.currentPage?.number+1 || 0
         const data = {
             id: id,
             number: number,
@@ -113,13 +113,11 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
     // Deletes the currently selected page if there is more than one, reassigning page numbers accordingly
     const deletePage = () => {
-        if (state.currentSubject.page.length > 1) {
-            const data = {
-                id: state.currentPage.id
-            }
-            NotebookConection.add({requestClass: DeletePageRequest, data})
-            dispatch({type: 'DELETE_PAGE'})
+        const data = {
+            id: state.currentPage.id
         }
+        NotebookConection.add({requestClass: DeletePageRequest, data})
+        dispatch({type: 'DELETE_PAGE'})
     };
     
     // Adds a new subject with an initial page and switches focus to it

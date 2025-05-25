@@ -15,7 +15,7 @@ const SetPage = () => {
 
     return (
         <div className="set_page_area">
-            <div className="page_index">{currentPage.number+1}</div>
+            <div className="page_index">{currentPage?.number+1 || ''}</div>
             <div className="button_area">
                 <button onClick={previousPage}><PiArrowLeftBold /></button>
                 <button onClick={nextPage}><PiArrowRightBold /></button>

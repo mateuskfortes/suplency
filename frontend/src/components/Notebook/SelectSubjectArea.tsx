@@ -23,10 +23,14 @@ const SelectSubjectArea = () => {
         <div className="container_subject">
             <NewSubjectButton />
             <div className="subject_area" ref={subjArea} >
-                {
+                { content.subject.length > 0 ?
                     content.subject.map(
                         (sb) => <Subject key={sb.id} id={sb.id} subjectName={sb.name} start={true} />
                     )
+                    :
+                    <div className="subject_area_empty">
+                        <p>There are no subjects yet</p>
+                    </div>
                 }
             </div>
         </div>

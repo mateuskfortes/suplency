@@ -394,6 +394,11 @@ $input-number-padding: .2rem;
                         white-space: nowrap;
                     }
                 }
+                .subject_area_empty {
+                    @extend .subject_area;
+                    align-items: center;
+                    justify-content: center;
+                }
                 .new_subject_button {
                     display: flex;
                     justify-content: center;
@@ -457,6 +462,13 @@ $input-number-padding: .2rem;
                     margin: $format-button-margin;
                     background-color: white;
                 }
+            }
+            .empty_page {
+                @extend.editable;
+                display: flex;
+                width: 100%;
+                height: 100%;
+                justify-content: center;
             }
             .editable {
                 width: $editable-width;

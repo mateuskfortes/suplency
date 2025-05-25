@@ -49,7 +49,7 @@ export type SubjectTemplate = {
     id: string,
     name: string,
     color?: string,
-    last_page?: string,
+    last_page?: string | null,
     page: PageTemplate[]
 }
 
