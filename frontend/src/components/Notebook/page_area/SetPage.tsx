@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { NotebookContext } from "./Notebook"
+import { NotebookContext } from "../Notebook"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi";
 import { RiPagesLine } from "react-icons/ri";
 import { MdDeleteForever } from "react-icons/md";

@@ -1,4 +1,4 @@
-import { findObj, notebookReducer } from "../src/assets/notebookReducer";
+import { findObj, notebookReducer } from "../src/hooks/notebookReducer";
 import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 import { v4 as uuid } from "uuid";
 import { AddPageAction, AddSubjectAction, ChangePageAction, ChangeSubjectAction, DeletePageAction, DeleteSubjectAction, notebookStateTemplate, SetContentAction } from "../src/types/notebookTemplate";

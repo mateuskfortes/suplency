@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router-dom"
 import AccountInput from "../components/AccountInput"
 import Header from "../components/Header"
 import { useEffect, useState } from "react"
-import fetchHandler from "../assets/fetchHandler"
-import '../assets/Account.scss'
+import fetchHandler from "../services/fetchHandler"
+import '../styles/Account.scss'
 
 const Login = () => {
     const [nameOrEmail, setNameOrEmail] = useState('')

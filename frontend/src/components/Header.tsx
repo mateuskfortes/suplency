@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import grid_background from '../assets/grid_background.svg'
-import '../assets/Header.scss'
+import '../styles/Header.scss'
 import { useState } from 'react'
-import logoutHandler from '../assets/logoutHandler';
+import logoutHandler from '../services/logoutHandler';
  
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');

@@ -2,12 +2,12 @@ import { createContext, useEffect, useRef, useState } from 'react';
 import { createEditor } from 'slate';
 import { ReactEditor, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import SlateEditor from './SlateEditor';
-import SelectSubjectArea from './SelectSubjectArea';
-import SetPage from './SetPage';
+import SlateEditor from './page_area/SlateEditor';
+import SelectSubjectArea from './subject_area/SelectSubjectArea';
+import SetPage from './page_area/SetPage';
 import { v4 as uuid } from "uuid";
-import NotebookConection, { DeletePageRequest, DeleteSubjectRequest, PostPageRequest, PostSubjectRequest, PutNotebookRequest, PutPageRequest, PutSubjectRequest } from '../../assets/notebookConection';
-import useNotebook, { findObj } from '../../assets/notebookReducer';
+import NotebookConection, { DeletePageRequest, DeleteSubjectRequest, PostPageRequest, PostSubjectRequest, PutNotebookRequest, PutPageRequest, PutSubjectRequest } from '../../services/notebookConection';
+import useNotebook, { findObj } from '../../hooks/notebookReducer';
 import { EditableType, NotebookContentTemplate, NotebookContextType, notebookStateTemplate, PageTemplate, SubjectTemplate } from '../../types/notebookTemplate';
 
 // Creates a context for managing notebook state
@@ -45,7 +45,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     // Determines the initial subject and page based on the last accessed values
     const currentSubjectHandler = findObj(content.subject, content.last_subject);
     const [currentSubject] = useState(currentSubjectHandler);
-    const [currentPage] = useState(findObj(currentSubjectHandler.page, currentSubjectHandler.last_page));
+    const [currentPage] = useState(currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null);
     
     // Updates the editor's content and resets the cursor position
     const updateEditorContent = (content: any) => {
@@ -57,7 +57,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     const initialState: notebookStateTemplate = {
         content: content,
         currentSubject: currentSubjectHandler,
-        currentPage: findObj(currentSubjectHandler.page, currentSubjectHandler.last_page),
+        currentPage: currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null,
         updateEditorContent,
     }
     
@@ -129,6 +129,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             name: name,
             page_id: pgId,
         }
+        console.log(data.id)
         NotebookConection.add({requestClass: PostSubjectRequest, data: data})
 
         const payload = {

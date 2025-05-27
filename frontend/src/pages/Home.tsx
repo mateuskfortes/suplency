@@ -1,8 +1,8 @@
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import {Link} from 'react-router-dom'
-import "../assets/Home.scss"
-import logoutHandler from "../assets/logoutHandler"
+import "../styles/Home.scss"
+import logoutHandler from "../services/logoutHandler"
 
 export default function Home() {
     return (

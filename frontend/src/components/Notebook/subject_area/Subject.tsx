@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import { NotebookContext } from "./Notebook"
+import { NotebookContext } from "../Notebook"
 import { TbX } from "react-icons/tb";
 
 const Subject = ({ id, subjectName, start=false }: any) => {

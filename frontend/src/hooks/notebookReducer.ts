@@ -128,8 +128,8 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
 
     const setContent = (st: notebookStateTemplate, content: NotebookContentTemplate) => {
         const currentSubjectHandler = findObj(content.subject, content.last_subject)
-        const currentPageHandler = findObj(currentSubjectHandler.page, currentSubjectHandler.last_page)
-        st.updateEditorContent(currentPageHandler.content)
+        const currentPageHandler = currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null
+        st.updateEditorContent(currentPageHandler?.content)
         return {
             ...st,
             content: content,

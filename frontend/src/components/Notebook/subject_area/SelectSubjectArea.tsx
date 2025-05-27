@@ -1,7 +1,8 @@
 import { useContext, useRef, useEffect } from "react";
 import Subject from "./Subject";
-import { NotebookContext } from "./Notebook";
+import { NotebookContext } from "../Notebook";
 import NewSubjectButton from "./NewSubjectButton";
+import EmptySubjectArea from "./EmptySubjectArea";
 
 const SelectSubjectArea = () => {
     const { content } = useContext(NotebookContext);
@@ -28,9 +29,7 @@ const SelectSubjectArea = () => {
                         (sb) => <Subject key={sb.id} id={sb.id} subjectName={sb.name} start={true} />
                     )
                     :
-                    <div className="subject_area_empty">
-                        <p>There are no subjects yet</p>
-                    </div>
+                    <EmptySubjectArea />
                 }
             </div>
         </div>

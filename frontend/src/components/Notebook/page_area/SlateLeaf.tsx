@@ -1,4 +1,4 @@
-import { fontSizes, fontFamilies } from "../../assets/CustomSlate";
+import { fontSizes, fontFamilies } from "../editor/CustomSlate";
 
 const SlateLeaf = ({ attributes, children, leaf }: any) => {
     const style = { 

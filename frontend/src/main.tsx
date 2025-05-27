@@ -6,7 +6,7 @@ import Study from './pages/Study';
 import Flashcards from './pages/Flashcards';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
-import './assets/Default.scss'   
+import './styles/Default.scss'   
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

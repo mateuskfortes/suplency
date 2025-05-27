@@ -4,10 +4,10 @@ import Pomodoro from "../components/Pomodoro/Pomodoro.tsx"
 import Calculator from "../components/Calculator/Calculator.tsx"
 import Notebook from "../components/Notebook/Notebook.tsx"
 import { Link } from "react-router-dom"
-import '../assets/Study.scss'
+import '../styles/Study.scss'
 import { useEffect, useState } from "react"
 import { v4 as uuid } from 'uuid'
-import NotebookConection, { GetNotebookRequest } from "../assets/notebookConection.ts"
+import NotebookConection, { GetNotebookRequest } from "../services/notebookConection.ts"
 import { NotebookContentTemplate } from "../types/notebookTemplate.ts"
 
 const sbId = uuid()

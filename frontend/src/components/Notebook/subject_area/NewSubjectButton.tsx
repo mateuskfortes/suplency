@@ -1,5 +1,5 @@
 import { useContext, useState, useRef, useEffect } from "react";
-import { NotebookContext } from "./Notebook";
+import { NotebookContext } from "../Notebook";
 import { FaPlus } from "react-icons/fa";
 
 const defaultName = 'New subject';

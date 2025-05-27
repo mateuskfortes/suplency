@@ -1,9 +1,10 @@
 import { useContext } from 'react'
 import { Slate, Editable } from 'slate-react'
-import FormatButtonsArea from './FormatButtonsArea';
+import FormatButtonsArea from '../format_area/FormatButtonsArea';
 import SlateLeaf from './SlateLeaf';
 import SlateElement from './SlateElement';
-import { emptyPage, NotebookContext } from './Notebook';
+import { emptyPage, NotebookContext } from '../Notebook';
+import EmptyPage from './EmptyPage';
 
 const SlateEditor = () => {
     const { editor, currentPage, editable } = useContext(NotebookContext)
@@ -30,9 +31,7 @@ const SlateEditor = () => {
                         renderLeaf={renderLeaf}
                         />
                     : 
-                    <div className="empty_page">
-                        <p>Page not found</p>
-                    </div>
+                    <EmptyPage />
                 }
             </Slate>
         </div>

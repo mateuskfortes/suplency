@@ -2,9 +2,9 @@ import { createContext, useEffect, useState } from "react"
 import Flashcard from "../components/Flashcards/Flashcard"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
-import '../assets/Flashcards.scss'
+import '../styles/Flashcards.scss'
 import NewFlashcard from "../components/Flashcards/NewFlashcard"
-import fetchHandler from "../assets/fetchHandler"
+import fetchHandler from "../services/fetchHandler"
 
 export const FlashcardsContext = createContext({
 	flashcards: [{id: '', question: '', answer: ''}],
