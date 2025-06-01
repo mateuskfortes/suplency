@@ -9,6 +9,7 @@ export type NotebookConectionAddArgsTemplate = {
 
 export type NotebookConectionTemplate = {
     requests: any[],
+    running: boolean,
     add: (args: NotebookConectionAddArgsTemplate) => void,
     fetch: () => Promise<undefined>,
     run: () => void,

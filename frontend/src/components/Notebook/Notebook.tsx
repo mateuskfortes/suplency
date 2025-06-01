@@ -129,7 +129,6 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             name: name,
             page_id: pgId,
         }
-        console.log(data.id)
         NotebookConection.add({requestClass: PostSubjectRequest, data: data})
 
         const payload = {

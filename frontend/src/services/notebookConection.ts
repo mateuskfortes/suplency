@@ -3,12 +3,16 @@ import { DataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTempla
 
 const NotebookConection: NotebookConectionTemplate = {
     requests: [],
+    running: false,
     add(args: NotebookConectionAddArgsTemplate) {
         if (!args.okFunction) args.okFunction = () => {}
         if (!args.notOkFunction) args.notOkFunction = () => {}
         this.requests.push(new args.requestClass(args.okFunction, args.notOkFunction, args.data))
     },
     async run() {
+        if (this.running) return
+        this.running = true // Set the running flag to true to prevent multiple runs
+        
         while(true) {
             await this.fetch()
             await new Promise(resolve => setTimeout(resolve, 1000));
