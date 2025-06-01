@@ -17,8 +17,8 @@ const SetPage = () => {
         <div className="set_page_area">
             <div className="page_index">{currentPage?.number+1 || ''}</div>
             <div className="button_area">
-                <button onClick={previousPage}><PiArrowLeftBold /></button>
-                <button onClick={nextPage}><PiArrowRightBold /></button>
+                <button data-testid='previous-page' onClick={previousPage}><PiArrowLeftBold /></button>
+                <button data-testid='next-page' onClick={nextPage}><PiArrowRightBold /></button>
                 <button onClick={addPageHandler}><RiPagesLine /></button>
                 <button onClick={deletePage}><MdDeleteForever/></button>
             </div>

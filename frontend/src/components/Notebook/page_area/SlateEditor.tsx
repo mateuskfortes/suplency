@@ -25,6 +25,7 @@ const SlateEditor = () => {
                 <FormatButtonsArea />
                 { currentPage ? 
                     <Editable
+                        data-testid="editable"
                         ref={editable}
                         className="editable"
                         renderElement={renderElement}
