@@ -44,8 +44,6 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     
     // Determines the initial subject and page based on the last accessed values
     const currentSubjectHandler = findObj(content.subject, content.last_subject);
-    const [currentSubject] = useState(currentSubjectHandler);
-    const [currentPage] = useState(currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null);
     
     // Updates the editor's content and resets the cursor position
     const updateEditorContent = (content: any) => {
@@ -86,7 +84,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
     const saveCurrentPage = () => {
         const savePageData = {
-            id: currentPage.id,
+            id: state.currentPage.id,
             content: editor.children,
         }
         NotebookConection.add({requestClass: PutPageRequest, data: savePageData})
@@ -99,8 +97,8 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             last_page: id,
         }
         NotebookConection.add({requestClass: PutSubjectRequest, data: data})
-        dispatch({type: 'CHANGE_PAGE', payload: { id, currentContent: editor.children }})
         if (savePage) saveCurrentPage()
+        dispatch({type: 'CHANGE_PAGE', payload: { id, currentContent: editor.children }})
     };
 
     // Changes the currently selected page based on its index within the subject
@@ -159,20 +157,18 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
     // Updates the name of the currently selected subject
     const setSubjectName = (newName: string) => {
         const data = {
-            id: currentSubject.id,
+            id: state.currentSubject.id,
             name: newName
         }
         NotebookConection.add({requestClass: PutSubjectRequest, data: data})
 
-        currentSubject.name = newName;
+        state.currentSubject.name = newName;
     };
 
     // Deletes a subject if there is more than one, and switches focus to the first remaining subject
     const deleteSubject = (id: string) => {
-        if (content.subject.length > 1) {
-            NotebookConection.add({requestClass: DeleteSubjectRequest, data: {id}})
-            dispatch({type: 'DELETE_SUBJECT', payload: id})
-        }
+        NotebookConection.add({requestClass: DeleteSubjectRequest, data: {id}})
+        dispatch({type: 'DELETE_SUBJECT', payload: id})
     };
 
     return (
