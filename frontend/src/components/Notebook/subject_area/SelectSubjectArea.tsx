@@ -23,7 +23,7 @@ const SelectSubjectArea = () => {
     return (
         <div className="container_subject">
             <NewSubjectButton />
-            <div className="subject_area" ref={subjArea} >
+            <div data-testid="subject-area" className="subject_area" ref={subjArea} >
                 { content.subject.length > 0 ?
                     content.subject.map(
                         (sb) => <Subject key={sb.id} id={sb.id} subjectName={sb.name} start={true} />

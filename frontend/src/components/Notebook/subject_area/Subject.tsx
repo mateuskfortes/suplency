@@ -24,14 +24,15 @@ const Subject = ({ id, subjectName, start=false }: any) => {
 
 
     useEffect(() => { if (subjectContainer.current) subjectContainer.current.focus() } , [])
-
+        
     return (
         <div 
         className="subject" 
         onKeyDown={e => e.key == 'Enter' ? setNotEditable() : null}
         onBlur={setNotEditable}
         onDoubleClick={setEditable}
-        onClick={() => changeSubject(id)}>
+        onClick={() => changeSubject(id)}
+        data-testid={id}>
             <span
             id={id}
             contentEditable={isEditable}
@@ -40,7 +41,7 @@ const Subject = ({ id, subjectName, start=false }: any) => {
                 {subjectName}
             </span>
             <span>
-                <TbX onClick={deleteSubjectHandler} />
+                <TbX data-testid={`${id}-delete`} onClick={deleteSubjectHandler} />
             </span>
         </div>
     )

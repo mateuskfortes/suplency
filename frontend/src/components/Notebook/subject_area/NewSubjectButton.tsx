@@ -40,7 +40,7 @@ const NewSubjectButton = () => {
 
     return (
         <>
-            <button className="new_subject_button" onClick={() => setIsFormVisible(true)}>
+            <button data-testid="add-subject" className="new_subject_button" onClick={() => setIsFormVisible(true)}>
                 <FaPlus />
             </button>
             {isFormVisible && (
@@ -50,13 +50,14 @@ const NewSubjectButton = () => {
                             <label htmlFor="newName">Nome da nova matéria:</label>
                             <input
                                 id="newName"
+                                data-testid="new-name-input"
                                 type="text"
                                 value={newName}
                                 ref={inputRef}
                                 onChange={e => setNewName(e.target.value)}
                             />
                         </div>
-                        <button className="black_button button create_subject" type="submit">Criar</button>
+                        <button data-testid="new-subject-submit" className="black_button button create_subject" type="submit">Criar</button>
                     </form>
                 </div>
             )}
