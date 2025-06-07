@@ -12,9 +12,13 @@ const Subject = ({ id, subjectName, start=false }: any) => {
     const setEditable = () => setIsEditable(true)
     const setNotEditable = async () =>{
         setIsEditable(false)
-        if (subjectContainer.current) {
-            setSubjectName(subjectContainer.current.innerText) 
+        if (!subjectContainer.current) return
+        if (subjectContainer.current.innerText != subjectName 
+            && subjectContainer.current.innerText?.length > 0) {
+            console.log(subjectContainer.current.innerText)
+            return setSubjectName(subjectContainer.current.innerText) 
         }
+        subjectContainer.current.innerText = subjectName // Reset to original name if no change
     }
 
     const deleteSubjectHandler = (e: any) => {
@@ -35,6 +39,7 @@ const Subject = ({ id, subjectName, start=false }: any) => {
         data-testid={id}>
             <span
             id={id}
+            data-testid={`${id}-name`}
             contentEditable={isEditable}
             ref={subjectContainer}
             suppressContentEditableWarning={true}>

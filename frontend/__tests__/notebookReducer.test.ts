@@ -1,7 +1,7 @@
 import { findObj, notebookReducer } from "../src/hooks/notebookReducer";
 import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 import { v4 as uuid } from "uuid";
-import { AddPageAction, AddSubjectAction, ChangePageAction, ChangeSubjectAction, DeletePageAction, DeleteSubjectAction, notebookStateTemplate, SetContentAction } from "../src/types/notebookTemplate";
+import { AddPageAction, AddSubjectAction, ChangePageAction, ChangeSubjectAction, DeletePageAction, DeleteSubjectAction, notebookStateTemplate, SetContentAction, SetSubjectNameAction } from "../src/types/notebookTemplate";
 
 
 const sbId1 = uuid()
@@ -198,6 +198,20 @@ describe("Notebook Reducer", () => {
 
         // Check if the previous content was saved
         assert.deepEqual(prevState.currentPage.content, prevContent)
+    })
+
+    it("Should set subject name", () => {
+        const newName = "new subject name"
+        const action: SetSubjectNameAction = {
+            type: "SET_SUBJECT_NAME",
+            payload: {
+                id: sbId1,
+                name: newName,
+            }
+        }
+        const finalState = notebookReducer(prevState, action)
+        expect(finalState.currentSubject.id).toEqual(sbId1)
+        expect(finalState.currentSubject.name).toEqual(newName)
     })
 
     it("Should add subject", () => {

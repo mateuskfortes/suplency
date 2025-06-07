@@ -161,8 +161,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
             name: newName
         }
         NotebookConection.add({requestClass: PutSubjectRequest, data: data})
-
-        state.currentSubject.name = newName;
+        dispatch({type: 'SET_SUBJECT_NAME', payload: { id: state.currentSubject.id, name: newName }})
     };
 
     // Deletes a subject if there is more than one, and switches focus to the first remaining subject

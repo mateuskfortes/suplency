@@ -141,6 +141,23 @@ describe('<Notebook />', () => {
 		expect(editable.textContent).toBe('sb 1, page 1');
 	})
 
+    it('Should change subject name', async() => {
+        const { getByTestId } = render(<Notebook content={defaultContent}/>);
+        const editable = getByTestId('editable');
+        expect(editable.textContent).toBe('sb 1, page 1');
+
+        await userEvent.dblClick(getByTestId(sbId1));
+        await userEvent.type(getByTestId(sbId1 + '-name'), ' ');
+        await userEvent.keyboard('{Control>}[KeyA]{/Control}{Backspace}');
+        await userEvent.type(getByTestId(sbId1 + '-name'), 'New name');
+
+        
+        await userEvent.keyboard('{Enter}');
+
+        expect(getByTestId(sbId1 + '-name').textContent).toBe('New name');
+    })
+
+
     it('Should add a new subject', async() => {
         const { getByTestId } = render(<Notebook content={defaultContent}/>);
         const editable = getByTestId('editable');

@@ -127,6 +127,16 @@ export type ChangeSubjectAction = {
     payload: ChangeSubjectPayload // subject id
 }
 
+export type SetSubjectNamePayload = {
+    id: string, // subject id
+    name: string // new subject name
+}
+
+export type SetSubjectNameAction = {
+    type: "SET_SUBJECT_NAME",
+    payload: SetSubjectNamePayload
+}
+
 export type DeleteSubjectAction = {
     type: "DELETE_SUBJECT",
     payload: string // subject id
@@ -137,4 +147,4 @@ export type SetContentAction = {
     payload: NotebookContentTemplate
 }
 
-export type ActionTemplate = AddPageAction | ChangePageAction | DeletePageAction | AddSubjectAction | ChangeSubjectAction | DeleteSubjectAction | SetContentAction;
+export type ActionTemplate = AddPageAction | ChangePageAction | DeletePageAction | AddSubjectAction | ChangeSubjectAction | SetSubjectNameAction | DeleteSubjectAction | SetContentAction;

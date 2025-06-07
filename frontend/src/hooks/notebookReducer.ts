@@ -113,6 +113,22 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
             currentPage: currentPageHandler
         };
     }
+
+    const setSubjectName = (st: notebookStateTemplate, id: string, name: string) => {
+        if (name.length === 0) return st; // Prevent setting an empty name
+        console.log("Setting subject name", id, name)
+        return {
+            ...st,
+            content: {
+                ...st.content,
+                subject: st.content.subject.map((sb: any) => sb.id === id ? { ...sb, name } : sb)
+            },
+            currentSubject: {
+                ...st.currentSubject,
+                name
+            }
+        }  
+    }
     
     // Deletes the subject with the given ID and switches to the first subject
     const deleteSubject = (st: notebookStateTemplate, id: string) => {
@@ -142,6 +158,7 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
         case "SET_CONTENT": return setContent(state, action.payload);   
         case "CHANGE_SUBJECT":return changeSubject(state, action.payload);
         case "CHANGE_PAGE": return changePage(state, action.payload);
+        case "SET_SUBJECT_NAME": return setSubjectName(state, action.payload.id, action.payload.name);
         case "ADD_SUBJECT": return addSubject(state, action.payload);
         case "ADD_PAGE": return addPage(state, action.payload);
         case "DELETE_SUBJECT": return deleteSubject(state, action.payload);
