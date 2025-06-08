@@ -5,64 +5,64 @@ import { FaPlus } from "react-icons/fa";
 const defaultName = 'New subject';
 
 const NewSubjectButton = () => {
-    const { addSubject } = useContext(NotebookContext);
-    const [isFormVisible, setIsFormVisible] = useState(false);
-    const [newName, setNewName] = useState(defaultName);
-    const formRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+	const { addSubject } = useContext(NotebookContext);
+	const [isFormVisible, setIsFormVisible] = useState(false);
+	const [newName, setNewName] = useState(defaultName);
+	const formRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
-    const handlerCreateSubject = (e: any) => {
-        e.preventDefault();
-        addSubject(newName);
-        setNewName(defaultName);
-        setIsFormVisible(false);
-    };
+	const handlerCreateSubject = (e: any) => {
+		e.preventDefault();
+		addSubject(newName);
+		setNewName(defaultName);
+		setIsFormVisible(false);
+	};
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if (!formRef.current?.contains(event.target as Node)) {
-            setIsFormVisible(false);
-        }
-    };
+	const handleClickOutside = (event: MouseEvent) => {
+		if (!formRef.current?.contains(event.target as Node)) {
+			setIsFormVisible(false);
+		}
+	};
 
-    useEffect(() => {
-        if (isFormVisible) {
-            inputRef.current?.focus();
-            inputRef.current?.select();
-        }
-    }, [isFormVisible]);
+	useEffect(() => {
+		if (isFormVisible) {
+			inputRef.current?.focus();
+			inputRef.current?.select();
+		}
+	}, [isFormVisible]);
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 
-    return (
-        <>
-            <button data-testid="add-subject" className="new_subject_button" onClick={() => setIsFormVisible(true)}>
-                <FaPlus />
-            </button>
-            {isFormVisible && (
-                <div className="new_subject_form" ref={formRef}>
-                    <form onSubmit={handlerCreateSubject}>
-                        <div className="inputs">
-                            <label htmlFor="newName">Nome da nova matéria:</label>
-                            <input
-                                id="newName"
-                                data-testid="new-name-input"
-                                type="text"
-                                value={newName}
-                                ref={inputRef}
-                                onChange={e => setNewName(e.target.value)}
-                            />
-                        </div>
-                        <button data-testid="new-subject-submit" className="black_button button create_subject" type="submit">Criar</button>
-                    </form>
-                </div>
-            )}
-        </>
-    );
+	return (
+		<>
+			<button data-testid="add-subject" className="new_subject_button" onClick={() => setIsFormVisible(true)}>
+				<FaPlus />
+			</button>
+			{isFormVisible && (
+				<div className="new_subject_form" ref={formRef}>
+					<form onSubmit={handlerCreateSubject}>
+						<div className="inputs">
+							<label htmlFor="newName">Nome da nova matéria:</label>
+							<input
+								id="newName"
+								data-testid="new-name-input"
+								type="text"
+								value={newName}
+								ref={inputRef}
+								onChange={e => setNewName(e.target.value)}
+							/>
+						</div>
+						<button data-testid="new-subject-submit" className="black_button button create_subject" type="submit">Criar</button>
+					</form>
+				</div>
+			)}
+		</>
+	);
 };
 
 export default NewSubjectButton;

@@ -7,10 +7,10 @@ import NewFlashcard from "../components/Flashcards/NewFlashcard"
 import fetchHandler from "../services/fetchHandler"
 
 export const FlashcardsContext = createContext({
-	flashcards: [{id: '', question: '', answer: ''}],
-	addFlashcard: (question: string, answer: string) => {[question, answer]},
-	toggleIsNewFlashcardVisible: () => {},
-	deleteFlashcard: (id: string) => {id},
+	flashcards: [{ id: '', question: '', answer: '' }],
+	addFlashcard: (question: string, answer: string) => { [question, answer] },
+	toggleIsNewFlashcardVisible: () => { },
+	deleteFlashcard: (id: string) => { id },
 })
 
 const Flashcards = () => {
@@ -20,62 +20,62 @@ const Flashcards = () => {
 	const [isNewFlashcardVisible, setIsNewFlashcardVisible] = useState(false)
 
 	useEffect(() => {
-		fetchHandler(`flashcard`, 'GET', ({data}) => setFlashcards(data.flashcards))
+		fetchHandler(`flashcard`, 'GET', ({ data }: any) => setFlashcards(data?.flashcards ?? []))
 	}, [])
 
 	useEffect(() => {
-		if (isRunning) setCurrentFlashcardIndex(0); 
+		if (isRunning) setCurrentFlashcardIndex(0);
 	}, [isRunning]);
 
 	const addFlashcard = async (question: string, answer: string) => {
-		fetchHandler(`flashcard`, 
-					 'POST', 
-					 ({data}) => {
-						setFlashcards([
-							...flashcards,
-							{
-								id: data.id,
-								question: question,
-								answer: answer,
-							}
-						])
-					}, 
-					() => {},
+		fetchHandler(`flashcard`,
+			'POST',
+			({ data }: any) => {
+				setFlashcards([
+					...flashcards,
 					{
-						'question': question,
-						'answer': answer,
-					},)
+						id: data?.id,
+						question: question,
+						answer: answer,
+					}
+				])
+			},
+			() => { },
+			{
+				'question': question,
+				'answer': answer,
+			},)
 		setIsRunning(false)
 	}
 
 	const toggleIsNewFlashcardVisible = () => setIsNewFlashcardVisible(!isNewFlashcardVisible)
 
-	const  toggleIsRunning = () => setIsRunning(!isRunning)
+	const toggleIsRunning = () => setIsRunning(!isRunning)
 
 	function nextFlashcard() {
 		setCurrentFlashcardIndex(prevIndex => {
 			const nextIndex = prevIndex + 1;
-			return nextIndex < flashcards.length ? nextIndex : 0; 
-		  });
+			return nextIndex < flashcards.length ? nextIndex : 0;
+		});
 	}
 
 	const deleteFlashcard = (id: string) => {
-		if(window.confirm('Tem certeza que deseja excluir esse flashcard?')) {
-			fetchHandler('flashcard', 
-						'DELETE', 
-						({}) => setFlashcards(flashcards.filter((fc: any) => fc.id != id)),
-						({}) => alert('Erro ao deletar flashcard'),
-						{'id': id})
+		if (window.confirm('Tem certeza que deseja excluir esse flashcard?')) {
+			fetchHandler('flashcard',
+				'DELETE',
+				({ }) => setFlashcards(flashcards.filter((fc: any) => fc.id != id)),
+				({ }) => alert('Erro ao deletar flashcard'),
+				{ 'id': id })
 		}
 	}
 
 	const deleteAll = () => {
-		if(window.confirm('Tem certeza que deseja excluir todos os flashcards?')) {
-			fetchHandler('flashcard', 
-						'DELETE', 
-						({}) => setFlashcards([]),
-						({}) => alert('Erro ao deletar flashcards'),
-						{'id': 'all'})
+		if (window.confirm('Tem certeza que deseja excluir todos os flashcards?')) {
+			fetchHandler('flashcard',
+				'DELETE',
+				({ }) => setFlashcards([]),
+				({ }) => alert('Erro ao deletar flashcards'),
+				{ 'id': 'all' })
 			setFlashcards([])
 		}
 		setIsRunning(false)
@@ -84,18 +84,18 @@ const Flashcards = () => {
 	const fc = flashcards[currentFlashcardIndex]
 
 	return (
-		<FlashcardsContext.Provider value={{flashcards, addFlashcard, toggleIsNewFlashcardVisible, deleteFlashcard}}>
+		<FlashcardsContext.Provider value={{ flashcards, addFlashcard, toggleIsNewFlashcardVisible, deleteFlashcard }}>
 			<>
 				<Header />
 				<div className="flashcards">
 					<section className="button_area">
-						<button onClick={toggleIsRunning}>{isRunning ? 'Parar' : 'Iniciar' }</button>
+						<button onClick={toggleIsRunning}>{isRunning ? 'Parar' : 'Iniciar'}</button>
 						<button onClick={toggleIsNewFlashcardVisible}>Novo flashcard</button>
 						<button onClick={deleteAll} >Deletar todos</button>
 					</section>
 					<section className="flashcard_area">
 						{isNewFlashcardVisible && <NewFlashcard />}
-						{ isRunning && fc ?
+						{isRunning && fc ?
 							<div className="flashcard_container">
 								<Flashcard key={fc.id} id={fc.id} question={fc.question} answer={fc.answer} />
 								<button className="white_button" onClick={nextFlashcard}>next</button>
