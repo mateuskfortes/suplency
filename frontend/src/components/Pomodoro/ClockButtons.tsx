@@ -8,26 +8,26 @@ const ClockButtons = () => {
 	const { toggleIsInputVisible } = useContext(PomodoroContext)
 
 	return (
-		<div className="buttons">
+		<div data-testid="clock-buttons" className="buttons">
 			{!isStarted ? (
-				<button className="button black_button" onClick={runTimer}>
-					iniciar
+				<button data-testid="start-clock-button" className="button black_button" onClick={runTimer}>
+					Iniciar
 				</button>
 			) : isRunning ? (
-				<button className="button black_button" onClick={pauseTimer}>
+				<button data-testid="stop-clock-button" className="button black_button" onClick={pauseTimer}>
 					Pausar
 				</button>
 			) : (
 				<>
-					<button className="button black_button" onClick={runTimer}>
+					<button data-testid="continue-clock-button" className="button black_button" onClick={runTimer}>
 						Continuar
 					</button>
-					<button className="button black_button" onClick={resetTimer}>
+					<button data-testid="reset-clock-button" className="button black_button" onClick={resetTimer}>
 						Recomeçar
 					</button>
 				</>
 			)}
-			<button className="show_config" onClick={toggleIsInputVisible}>
+			<button data-testid="show-clock-config" className="show_config" onClick={toggleIsInputVisible}>
 				<GoGear />
 			</button>
 		</div>

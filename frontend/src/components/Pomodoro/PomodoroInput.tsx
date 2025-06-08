@@ -8,6 +8,7 @@ const PomodoroInput = ({ id, onChange, type = 'number', min = 0, max = 99, defau
 		<input
 			className="pomodoro_input"
 			id={id}
+			data-testid={`${id}-input`}
 			onChange={onChange}
 			type={type}
 			min={min}

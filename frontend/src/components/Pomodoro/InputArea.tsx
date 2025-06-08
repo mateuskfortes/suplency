@@ -25,7 +25,7 @@ const InputArea = () => {
 	}
 
 	return (
-		<div className="input_area">
+		<div data-testid="clock-config" className="input_area">
 			<label htmlFor="focus_time">
 				Digite o tempo de foco:
 			</label>

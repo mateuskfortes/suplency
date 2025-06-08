@@ -110,14 +110,14 @@ const Clock = () => {
 			pauseTimer,
 			resetTimer,
 		}}>
-			<div className="container_watch">
+			<div data-testid="clock" className="container_watch">
 				<TimerState />
 				<div className="clock">
 					<div>
-						<span id="minutes">{formattedMinutes}</span>
+						<span data-testid="clock-minutes" id="minutes">{formattedMinutes}</span>
 					</div>
 					<div>
-						<span id="seconds">{formattedSeconds}</span>
+						<span data-testid="clock-seconds" id="seconds">{formattedSeconds}</span>
 					</div>
 				</div>
 				<ClockButtons />

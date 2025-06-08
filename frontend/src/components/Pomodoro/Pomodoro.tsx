@@ -45,7 +45,7 @@ const Pomodoro = () => {
 
 	return (
 		<PomodoroContext.Provider value={{ isRunning, setIsRunning, toggleIsInputVisible, times, dispatchTimes }}>
-			<div className="pomodoro">
+			<div data-testid="pomodoro" className="pomodoro">
 				{isInputVisible && <InputArea />}
 				<Clock />
 			</div>
