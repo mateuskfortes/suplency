@@ -13,6 +13,7 @@ export type NotebookConectionTemplate = {
 	add: (args: NotebookConectionAddArgsTemplate) => void,
 	fetch: () => Promise<undefined>,
 	run: () => void,
+	stop: () => void,
 }
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'

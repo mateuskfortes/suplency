@@ -13,7 +13,7 @@ const NotebookConection: NotebookConectionTemplate = {
 		if (this.running) return
 		this.running = true // Set the running flag to true to prevent multiple runs
 
-		while (true) {
+		while (this.running) {
 			await this.fetch()
 			await new Promise(resolve => setTimeout(resolve, 1000));
 		}
@@ -34,6 +34,9 @@ const NotebookConection: NotebookConectionTemplate = {
 		}
 		this.requests = []
 		return
+	},
+	stop() {
+		this.running = false
 	}
 }
 
