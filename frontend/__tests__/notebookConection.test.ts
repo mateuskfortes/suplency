@@ -14,14 +14,11 @@ describe('notebookConection', () => {
   
   beforeEach(() => {
     vi.clearAllMocks()
-    NotebookConection.run()
   });
-  
-  afterEach(() => {
-    NotebookConection.stop()
-  })
-  
-  it.only('Should get the notebook', async () => {
+
+  it('Should get the notebook', async () => {
+    NotebookConection.run()
+    
     const response = {
       ok: true,
       status: 200,
@@ -39,5 +36,36 @@ describe('notebookConection', () => {
     expect(callArgs.data).toEqual(dataOk)
     expect(callArgs.response.ok).toBe(true)
     expect(callArgs.response.status).toBe(200)
+    
+    NotebookConection.stop()
   }); 
+
+  it.only('Should make requests in order', async () => {
+    const executionLog: number[] = []
+
+    for (let index = 0; index < 10; index++) {
+      const response = {
+        ok: true,
+        status: 200,
+        json: async () => ({ index }),
+      } as Response
+
+      mockFetch.mockResolvedValueOnce(response)
+
+      const okFunc = ({ data }: any) => {
+        executionLog.push(data.index)
+      }
+
+      NotebookConection.add({
+        requestClass: GetNotebookRequest,
+        okFunction: okFunc,
+        notOkFunction: notOkFunc,
+        data: {},
+      })
+    }
+
+    await NotebookConection.fetch()
+
+    expect(executionLog).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+  })
 });
