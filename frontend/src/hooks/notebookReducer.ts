@@ -123,7 +123,6 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
 
     const setSubjectName = (st: notebookStateTemplate, id: string, name: string) => {
         if (name.length === 0) return st; // Prevent setting an empty name
-        console.log("Setting subject name", id, name)
         return {
             ...st,
             content: {

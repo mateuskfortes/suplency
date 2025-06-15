@@ -13,12 +13,15 @@ describe('notebookConection', () => {
   const mockFetch = vi.spyOn(global, 'fetch')
   
   beforeEach(() => {
+    NotebookConection.run()
     vi.clearAllMocks()
   });
 
+  afterEach(() => {
+    NotebookConection.stop()
+  });
+
   it('Should get the notebook', async () => {
-    NotebookConection.run()
-    
     const response = {
       ok: true,
       status: 200,
@@ -36,11 +39,9 @@ describe('notebookConection', () => {
     expect(callArgs.data).toEqual(dataOk)
     expect(callArgs.response.ok).toBe(true)
     expect(callArgs.response.status).toBe(200)
-    
-    NotebookConection.stop()
   }); 
 
-  it.only('Should make requests in order', async () => {
+  it('Should make requests in order', async () => {
     const executionLog: number[] = []
 
     for (let index = 0; index < 10; index++) {
