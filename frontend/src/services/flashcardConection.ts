@@ -1,4 +1,5 @@
-import { FlashcardConectionTemplate, FlashcardConectionAddArgsTemplate, FlashcardDataTemplate, RequestMethod, ResponseFunctionTemplate } from "../types/RequestTemplate"
+import { FlashcardConectionTemplate, FlashcardConectionAddArgsTemplate, FlashcardDataTemplate } from "../types/FlashcardRequestTemplate"
+import { RequestMethod, ResponseFunctionTemplate } from "../types/NotebookRequestTemplate"
 import fetchHandler from "./fetchHandler"
 
 const FlashcardConection: FlashcardConectionTemplate = {

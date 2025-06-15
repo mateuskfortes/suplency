@@ -1,5 +1,5 @@
 import fetchHandler from "./fetchHandler"
-import { NotebookDataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTemplate, RequestMethod, ResponseFunctionTemplate } from "../types/RequestTemplate"
+import { NotebookDataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTemplate, RequestMethod, ResponseFunctionTemplate, GetRequestInterface, RequestBase, PutRequestInterface, PostRequestInterface, DeleteRequestInterface } from "../types/NotebookRequestTemplate"
 
 const NotebookConection: NotebookConectionTemplate = {
 	requests: [],
@@ -40,7 +40,7 @@ const NotebookConection: NotebookConectionTemplate = {
 	}
 }
 
-export class GetRequest {
+export class BaseRequest implements RequestBase {
 	route = ''
 	method: RequestMethod = 'GET'
 	okFunction: ResponseFunctionTemplate
@@ -58,15 +58,19 @@ export class GetRequest {
 	}
 }
 
-export class PutRequest extends GetRequest {
+export class GetRequest extends BaseRequest implements GetRequestInterface {
+	method: 'GET' = 'GET'
+}
+
+export class PutRequest extends BaseRequest implements PutRequestInterface {
 	method: 'PUT' = 'PUT'
 }
 
-export class PostRequest extends GetRequest {
+export class PostRequest extends BaseRequest implements PostRequestInterface {
 	method: 'POST' = 'POST'
 }
 
-export class DeleteRequest extends GetRequest {
+export class DeleteRequest extends BaseRequest implements DeleteRequestInterface {
 	method: 'DELETE' = 'DELETE'
 }
 

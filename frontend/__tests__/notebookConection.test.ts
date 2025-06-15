@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import NotebookConection, { GetNotebookRequest } from "../src/services/notebookConection";
+import { ResponseFunctionArgsTemplate } from "../src/types/NotebookRequestTemplate";
 
 describe('notebookConection', () => {
   const okFunc = vi.fn()
@@ -53,7 +54,7 @@ describe('notebookConection', () => {
 
       mockFetch.mockResolvedValueOnce(response)
 
-      const okFunc = ({ data }: any) => {
+      const okFunc = ({ data }: ResponseFunctionArgsTemplate) => {
         executionLog.push(data.index)
       }
 

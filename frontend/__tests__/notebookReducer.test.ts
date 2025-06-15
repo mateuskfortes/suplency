@@ -82,7 +82,7 @@ const defaultContent = {
 
 describe("Notebook Reducer", () => {
     const currentSubjectHandler = findObj(defaultContent.subject, defaultContent.last_subject);
-    const currentPageHandler = findObj(currentSubjectHandler.page, currentSubjectHandler.last_page);
+    const currentPageHandler = findObj(currentSubjectHandler!.page, currentSubjectHandler!.last_page);
     const updateEditorContent = vi.fn();
     let prevState: notebookStateTemplate = {
         content: defaultContent,
@@ -114,11 +114,11 @@ describe("Notebook Reducer", () => {
         const finalState = notebookReducer(prevState, action)
 
         // Check if the page was changed
-        expect(finalState.currentPage.id).toEqual(pgId2)
-        expect(finalState.currentSubject.last_page).toEqual(pgId2)
+        expect(finalState.currentPage!.id).toEqual(pgId2)
+        expect(finalState.currentSubject!.last_page).toEqual(pgId2)
 
         // Check if the previous content was saved
-        assert.deepEqual(prevState.currentPage.content, prevContent)
+        assert.deepEqual(prevState.currentPage!.content, prevContent)
     })
 
     it("Should add a page", () => {
@@ -141,24 +141,24 @@ describe("Notebook Reducer", () => {
         const finalState = notebookReducer(prevState, action)
 
         // Check if the page was added
-        expect(finalState.currentSubject.page).toHaveLength(4)
-        assert.deepEqual(finalState.currentSubject.page[1], action.payload.newPage)
+        expect(finalState.currentSubject!.page).toHaveLength(4)
+        assert.deepEqual(finalState.currentSubject!.page![1], action.payload.newPage)
 
         // Check if the new page is now the current page
         assert.deepEqual(finalState.currentPage, action.payload.newPage)
 
         // Check if the page 1 was not modified
-        assert.deepEqual(finalState.currentSubject.page[0], finalState.currentSubject.page[0])
+        assert.deepEqual(finalState.currentSubject!.page![0], finalState.currentSubject!.page![0])
 
         // Check if the old page 2 is now page 3
-        const prevPg2 = prevState.currentSubject.page[1]
-        const nowPg3 = finalState.currentSubject.page[2]
+        const prevPg2 = prevState.currentSubject!.page[1]
+        const nowPg3 = finalState.currentSubject!.page![2]
         expect(nowPg3.id).toEqual(prevPg2.id)
         expect(nowPg3.number).toEqual(prevPg2.number + 1)
         assert.deepEqual(prevPg2.content, nowPg3.content)
 
         // Check if the previous content was saved
-        assert.deepEqual(prevState.currentPage.content, prevContent)
+        assert.deepEqual(prevState.currentPage!.content, prevContent)
     })
 
     it("Should delete page", () => {
@@ -169,9 +169,9 @@ describe("Notebook Reducer", () => {
         const finalState = notebookReducer(prevState, action)
 
         // Check if the page was deleted
-        expect(finalState.currentSubject.page).toHaveLength(2)
-        expect(finalState.currentPage.id).toEqual(pgId2)
-        expect(finalState.currentSubject.last_page).toEqual(pgId2)
+        expect(finalState.currentSubject!.page).toHaveLength(2)
+        expect(finalState.currentPage!.id).toEqual(pgId2)
+        expect(finalState.currentSubject!.last_page).toEqual(pgId2)
     })
 
     it("Should change subject", () => {
@@ -189,15 +189,15 @@ describe("Notebook Reducer", () => {
         const finalState = notebookReducer(prevState, action)
 
         // Check if the subject was changed
-        expect(finalState.currentSubject.id).toEqual(sbId2)
-        expect(finalState.currentPage.id).toEqual(pgId4)
+        expect(finalState.currentSubject!.id).toEqual(sbId2)
+        expect(finalState.currentPage!.id).toEqual(pgId4)
         expect(finalState.content.last_subject).toEqual(sbId2)
 
         // Check if the previous content was saved
-        assert.deepEqual(prevState.currentPage.content, prevContent)
+        assert.deepEqual(prevState.currentPage!.content, prevContent)
 
         // Check if the previous content was saved
-        assert.deepEqual(prevState.currentPage.content, prevContent)
+        assert.deepEqual(prevState.currentPage!.content, prevContent)
     })
 
     it("Should set subject name", () => {
@@ -210,8 +210,8 @@ describe("Notebook Reducer", () => {
             }
         }
         const finalState = notebookReducer(prevState, action)
-        expect(finalState.currentSubject.id).toEqual(sbId1)
-        expect(finalState.currentSubject.name).toEqual(newName)
+        expect(finalState.currentSubject!.id).toEqual(sbId1)
+        expect(finalState.currentSubject!.name).toEqual(newName)
     })
 
     it("Should add subject", () => {
@@ -249,7 +249,7 @@ describe("Notebook Reducer", () => {
         assert.deepEqual(finalState.currentSubject, newSubject)
 
         // Check if the previous content was saved
-        assert.deepEqual(prevState.currentPage.content, prevContent)
+        assert.deepEqual(prevState.currentPage!.content, prevContent)
     })
 
     it("Should delete subject", () => {
@@ -261,8 +261,8 @@ describe("Notebook Reducer", () => {
 
         // Check if the subject was deleted
         expect(finalState.content.subject).toHaveLength(1)
-        expect(finalState.currentSubject.id).toEqual(sbId1)
-        expect(finalState.currentPage.id).toEqual(pgId1)
+        expect(finalState.currentSubject!.id).toEqual(sbId1)
+        expect(finalState.currentPage!.id).toEqual(pgId1)
     })
 
     it("Should set content", () => {
@@ -307,7 +307,7 @@ describe("Notebook Reducer", () => {
             type: "DELETE_PAGE"
         }
 
-        prevState.currentSubject.page = [
+        prevState.currentSubject!.page = [
             {
                 id: pgId1,
                 number: 0,
@@ -325,8 +325,8 @@ describe("Notebook Reducer", () => {
         const finalState = notebookReducer(prevState, action)
 
         // Check if the page was deleted
-        expect(finalState.currentSubject.page).toHaveLength(0)
-        expect(finalState.currentSubject.last_page).toEqual(null)
+        expect(finalState.currentSubject!.page).toHaveLength(0)
+        expect(finalState.currentSubject!.last_page).toEqual(null)
         expect(finalState.currentPage).toEqual(null)
     })
 

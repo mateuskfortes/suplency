@@ -43,7 +43,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 	const editable = useRef<EditableType | null>(null);
 
 	// Determines the initial subject and page based on the last accessed values
-	const currentSubjectHandler = findObj(content.subject, content.last_subject);
+	const currentSubjectHandler = findObj(content.subject, content.last_subject ?? '');
 
 	// Updates the editor's content and resets the cursor position
 	const updateEditorContent = (content: any) => {
@@ -55,7 +55,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 	const initialState: notebookStateTemplate = {
 		content: content,
 		currentSubject: currentSubjectHandler,
-		currentPage: currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null,
+		currentPage: currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page ?? '') : null,
 		updateEditorContent,
 	}
 
@@ -70,8 +70,10 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
 	// Adds a new page to the current subject in next position
 	const addPage = () => {
+		if (!state.currentSubject) return
 		const id = uuid();
-		const number = state.currentPage?.number + 1 || 0
+		const crNumber = state.currentPage?.number
+		const number = crNumber !== undefined ? crNumber + 1 : 0
 		const data = {
 			id: id,
 			number: number,
@@ -83,6 +85,8 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 	};
 
 	const saveCurrentPage = () => {
+		if (!state.currentPage) return
+
 		const savePageData = {
 			id: state.currentPage.id,
 			content: editor.children,
@@ -92,6 +96,8 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
 	// Changes the currently selected page by ID
 	const changePage = async (id: string, savePage: boolean = true) => {
+		if (!state.currentSubject) return
+
 		const data = {
 			id: state.currentSubject.id,
 			last_page: id,
@@ -103,7 +109,7 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
 	// Changes the currently selected page based on its index within the subject
 	const changePageByNumber = (number: number) => {
-		if (state.currentSubject.page.length > number && number >= 0) {
+		if (state.currentSubject && state.currentSubject.page.length > number && number >= 0) {
 			const newPage = state.currentSubject.page[number];
 			changePage(newPage.id)
 		}
@@ -111,6 +117,8 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
 	// Deletes the currently selected page if there is more than one, reassigning page numbers accordingly
 	const deletePage = () => {
+		if (!state.currentPage) return
+
 		const data = {
 			id: state.currentPage.id
 		}
@@ -156,6 +164,8 @@ const Notebook = ({ content }: { content: NotebookContentTemplate }) => {
 
 	// Updates the name of the currently selected subject
 	const setSubjectName = (newName: string) => {
+		if (!state.currentSubject) return
+
 		const data = {
 			id: state.currentSubject.id,
 			name: newName

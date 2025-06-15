@@ -9,9 +9,9 @@ import { ActionTemplate,
         SubjectTemplate } from "../types/notebookTemplate";
 
 // Utility function to find an object in a list by its ID, return the first object if not found, null if the list is empty
-export const findObj = (list: any[], id: string) => list.find((obj: any) => obj.id === id) || list[0] || null;
-
-
+export const findObj = <T extends { id: string }>(list: T[], id: string): T | null => {
+  return list.find((obj) => obj.id === id) || list[0] || null
+}
 // Utility function returns a new state with the updated subject
 const updateSubject = (state: notebookStateTemplate, newSubject: SubjectTemplate) => {
     return {
@@ -29,6 +29,8 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
 
     // Inserts a new page into the current subject in the new page number position
     const addPage = (st: notebookStateTemplate, { newPage, currentContent }: AddPagePayload) => {
+        if (!st.currentSubject) return st;
+
         // Update page numbers
         const pages = st.currentSubject.page.map((pg: PageTemplate) => ({
             ...pg,
@@ -40,7 +42,7 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
 
         // Create a new subject object with the updated pages
         const updatedSb = {
-            ...findObj(st.content.subject, st.currentSubject.id),
+            ...findObj(st.content.subject, st.currentSubject.id)!,
             page: pages
         }
         
@@ -50,6 +52,8 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
 
     // Changes the current page to the page with the given ID
     const changePage = (st: notebookStateTemplate = state, { id, currentContent }: ChangePagePayload) => {  
+        if (!st.currentSubject) return st;
+
         if (st.currentPage) st.currentPage.content = currentContent // Save the current page content
       
         st.currentSubject.last_page = id || null  // Update the subjet's last page
@@ -66,12 +70,17 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
 
     // Deletes the current page from the current subject and updates the page numbers
     const deletePage = (st: notebookStateTemplate) => {
+        if (!st.currentSubject || !st.currentPage) return st;
 
-        // Update page numbers and remove the current page
-        const pages = st.currentSubject.page.map((pg: PageTemplate) => ({
+        const currentPage = st.currentPage;
+        const currentSubject = st.currentSubject;
+
+        const pages = currentSubject.page
+        .map((pg: PageTemplate) => ({
             ...pg,
-            number: pg.number > st.currentPage.number ? pg.number - 1 : pg.number,
-        })).filter((pg: PageTemplate) => pg.id !== st.currentPage.id)
+            number: pg.number > currentPage.number ? pg.number - 1 : pg.number,
+        }))
+        .filter((pg: PageTemplate) => pg.id !== currentPage.id)
 
         /// Create a new subject object with the updated pages
         const updatedSb = {
@@ -108,7 +117,13 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
         if (st.currentPage) st.currentPage.content = currentContent // Save the current page content
         
         const currentSubjectHandler = findObj(st.content.subject, id)
-        const currentPageHandler = currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null
+
+        let currentPageHandler: PageTemplate | null = null
+
+        if (currentSubjectHandler) {
+            currentPageHandler = findObj(currentSubjectHandler.page, currentSubjectHandler.last_page ?? '')
+        }
+
         st.updateEditorContent(currentPageHandler?.content)
         return {
             ...st,
@@ -149,8 +164,12 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
     }
 
     const setContent = (st: notebookStateTemplate, content: NotebookContentTemplate) => {
-        const currentSubjectHandler = findObj(content.subject, content.last_subject)
-        const currentPageHandler = currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page) : null
+        const currentSubjectHandler = findObj(content.subject, content.last_subject ?? '')
+        const currentPageHandler = currentSubjectHandler ? findObj(currentSubjectHandler.page, currentSubjectHandler.last_page ?? '') : null
+
+        // If there is no current page, don't change the state
+        if (!currentPageHandler) return st;
+
         st.updateEditorContent(currentPageHandler?.content)
         return {
             ...st,
@@ -174,8 +193,7 @@ export const notebookReducer = (state: notebookStateTemplate, action: ActionTemp
     }
 };
 
-const useNotebook = (initializer: notebookStateTemplate) => {
-    return useReducer(notebookReducer, initializer)
-}
+const useNotebook = (initializer: notebookStateTemplate) =>
+  useReducer((notebookReducer as (state: notebookStateTemplate, action: ActionTemplate) => notebookStateTemplate), initializer)
 
 export default useNotebook

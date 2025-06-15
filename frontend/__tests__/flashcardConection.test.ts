@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import FlashcardConection, { DeleteAllFlashcardsRequest, DeleteFlashcardRequest, GetFlashcardRequest, PostFlashcardRequest } from "../src/services/flashcardConection";
+import { ResponseFunctionArgsTemplate } from "../src/types/NotebookRequestTemplate";
 
 const REQUEST_TIMEOUT = 1000
 
@@ -134,8 +135,8 @@ describe('flashcardConection', () => {
 
       mockFetch.mockResolvedValueOnce(response)
 
-      const okFunc = ({ data }: any) => {
-        executionLog.push(data.index)
+      const okFunc = ({ data }: ResponseFunctionArgsTemplate) => {
+        executionLog.push(data?.index)
       }
 
       FlashcardConection.add({

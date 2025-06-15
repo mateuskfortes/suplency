@@ -54,15 +54,15 @@ export type SubjectTemplate = {
 }
 
 export type NotebookContentTemplate = {
-	last_subject: string,
+	last_subject: string | null,
 	subject: SubjectTemplate[]
 }
 
 export type notebookStateTemplate = {
 	content: NotebookContentTemplate,
-	currentSubject: SubjectTemplate,
-	currentPage: PageTemplate,
-	updateEditorContent: (content: CustomElement[]) => void,
+	currentSubject: SubjectTemplate | null,
+	currentPage: PageTemplate | null,
+	updateEditorContent: (content: CustomElement[] | undefined) => void,
 }
 
 export type EditableType = MutableRefObject<typeof Editable | null>;
@@ -71,8 +71,8 @@ export interface NotebookContextType {
 	editor: ReactEditor;
 	editable: any;
 	content: NotebookContentTemplate;
-	currentSubject: SubjectTemplate;
-	currentPage: PageTemplate;
+	currentSubject: SubjectTemplate | null;
+	currentPage: PageTemplate | null;
 	changeSubject: (id: string, savePage?: boolean) => void;
 	changePage: (id: string) => void;
 	changePageByNumber: (number: number) => void;
