@@ -1,8 +1,8 @@
-export type ArgsTemplate = [ResponseFunctionTemplate, ResponseFunctionTemplate, DataTemplate]
+export type ArgsTemplate = [ResponseFunctionTemplate, ResponseFunctionTemplate, NotebookDataTemplate]
 
 export type NotebookConectionAddArgsTemplate = {
 	requestClass: any,
-	data?: DataTemplate,
+	data?: NotebookDataTemplate,
 	okFunction?: ResponseFunctionTemplate,
 	notOkFunction?: ResponseFunctionTemplate,
 }
@@ -66,14 +66,14 @@ export interface PageDeleteDataTemplate {
 	id: string;
 }
 
-export type DataTemplate = NotebookPutDataTemplate
+export type NotebookDataTemplate = NotebookPutDataTemplate
 	| SubjectPostDataTemplate | SubjectPutDataTemplate | SubjectDeleteDataTemplate
 	| PagePostDataTemplate | PagePutDataTemplate | PageDeleteDataTemplate
 
 export interface BaseRequestTemplate {
 	okFunction: ResponseFunctionTemplate
 	notOkFunction: ResponseFunctionTemplate
-	data: DataTemplate;
+	data: NotebookDataTemplate;
 }
 
 
@@ -118,3 +118,35 @@ export interface PutPageRequestTemplate extends BaseRequestTemplate, PutRequestT
 export interface DeletePageRequestTemplate extends BaseRequestTemplate, DeleteRequestTemplate {
 	data: PageDeleteDataTemplate;
 }
+
+/*
+  FlashcardConection
+*/
+
+export type FlashcardConectionAddArgsTemplate = {
+	requestClass: any,
+	data?: FlashcardDataTemplate,
+	okFunction?: ResponseFunctionTemplate,
+	notOkFunction?: ResponseFunctionTemplate,
+}
+
+export type FlashcardConectionTemplate = {
+	requests: any[],
+	running: boolean,
+	add: (args: FlashcardConectionAddArgsTemplate) => void,
+	fetch: () => Promise<undefined>,
+	run: () => void,
+	stop: () => void,
+}
+
+type FlashcardPostDataTemplate = {
+	question: string;
+	answer: string;
+	subject?: string[]
+}
+
+type FlashcardDeleteDataTemplate = {
+	id: string;
+}
+
+export type FlashcardDataTemplate = FlashcardPostDataTemplate | FlashcardDeleteDataTemplate

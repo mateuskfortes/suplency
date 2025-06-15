@@ -4,7 +4,8 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import '../styles/Flashcards.scss'
 import NewFlashcard from "../components/Flashcards/NewFlashcard"
-import fetchHandler from "../services/fetchHandler"
+import FlashcardConection, { DeleteAllFlashcardsRequest, DeleteFlashcardRequest, GetFlashcardRequest, PostFlashcardRequest } from "../services/flashcardConection"
+import { v4 as uuid } from 'uuid'
 
 export const FlashcardsContext = createContext({
 	flashcards: [{ id: '', question: '', answer: '' }],
@@ -20,7 +21,13 @@ const Flashcards = () => {
 	const [isNewFlashcardVisible, setIsNewFlashcardVisible] = useState(false)
 
 	useEffect(() => {
-		fetchHandler(`flashcard`, 'GET', ({ data }: any) => setFlashcards(data?.flashcards ?? []))
+		FlashcardConection.run()
+		FlashcardConection.add({
+			requestClass: GetFlashcardRequest,
+			okFunction: ({ data }: any) => {
+				setFlashcards(data?.flashcards ?? [])
+			}
+		})
 	}, [])
 
 	useEffect(() => {
@@ -28,23 +35,23 @@ const Flashcards = () => {
 	}, [isRunning]);
 
 	const addFlashcard = async (question: string, answer: string) => {
-		fetchHandler(`flashcard`,
-			'POST',
-			({ data }: any) => {
-				setFlashcards([
-					...flashcards,
-					{
-						id: data?.id,
-						question: question,
-						answer: answer,
-					}
-				])
-			},
-			() => { },
-			{
+		const id = uuid()
+		FlashcardConection.add({
+			requestClass: PostFlashcardRequest,
+			data: {
+				'id': id,
 				'question': question,
 				'answer': answer,
-			},)
+			}
+		})
+		setFlashcards([
+			...flashcards,
+			{
+				id,
+				question: question,
+				answer: answer,
+			}
+		])
 		setIsRunning(false)
 	}
 
@@ -61,21 +68,21 @@ const Flashcards = () => {
 
 	const deleteFlashcard = (id: string) => {
 		if (window.confirm('Tem certeza que deseja excluir esse flashcard?')) {
-			fetchHandler('flashcard',
-				'DELETE',
-				({ }) => setFlashcards(flashcards.filter((fc: any) => fc.id != id)),
-				({ }) => alert('Erro ao deletar flashcard'),
-				{ 'id': id })
+			FlashcardConection.add({
+				requestClass: DeleteFlashcardRequest,
+				data: {
+					'id': id,
+				}
+			})
+			setFlashcards(flashcards.filter((fc: any) => fc.id != id))
 		}
 	}
 
 	const deleteAll = () => {
 		if (window.confirm('Tem certeza que deseja excluir todos os flashcards?')) {
-			fetchHandler('flashcard',
-				'DELETE',
-				({ }) => setFlashcards([]),
-				({ }) => alert('Erro ao deletar flashcards'),
-				{ 'id': 'all' })
+			FlashcardConection.add({
+				requestClass: DeleteAllFlashcardsRequest
+			})
 			setFlashcards([])
 		}
 		setIsRunning(false)

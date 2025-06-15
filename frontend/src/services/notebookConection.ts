@@ -1,5 +1,5 @@
 import fetchHandler from "./fetchHandler"
-import { DataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTemplate, RequestMethod, ResponseFunctionTemplate } from "../types/RequestTemplate"
+import { NotebookDataTemplate, NotebookConectionAddArgsTemplate, NotebookConectionTemplate, RequestMethod, ResponseFunctionTemplate } from "../types/RequestTemplate"
 
 const NotebookConection: NotebookConectionTemplate = {
 	requests: [],
@@ -45,9 +45,9 @@ export class GetRequest {
 	method: RequestMethod = 'GET'
 	okFunction: ResponseFunctionTemplate
 	notOkFunction: ResponseFunctionTemplate
-	data: DataTemplate
+	data: NotebookDataTemplate
 
-	constructor(okFunction: ResponseFunctionTemplate, notOkFunction: ResponseFunctionTemplate = () => { }, data: DataTemplate) {
+	constructor(okFunction: ResponseFunctionTemplate, notOkFunction: ResponseFunctionTemplate = () => { }, data: NotebookDataTemplate) {
 		this.okFunction = okFunction
 		this.notOkFunction = notOkFunction
 		this.data = data
@@ -58,15 +58,15 @@ export class GetRequest {
 	}
 }
 
-class PutRequest extends GetRequest {
+export class PutRequest extends GetRequest {
 	method: 'PUT' = 'PUT'
 }
 
-class PostRequest extends GetRequest {
+export class PostRequest extends GetRequest {
 	method: 'POST' = 'POST'
 }
 
-class DeleteRequest extends GetRequest {
+export class DeleteRequest extends GetRequest {
 	method: 'DELETE' = 'DELETE'
 }
 
